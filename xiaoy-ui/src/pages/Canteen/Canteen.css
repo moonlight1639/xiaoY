@@ -1,0 +1,202 @@
+.canteen-page{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: red; */
+    height: fit-content;
+}
+.canteen-header{
+    width:100%;
+    /* align-self: flex-start; */
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* margin-bottom: 2rem; */
+    /* background-color: blue; */
+    h1{
+
+    }
+}
+
+.canteen-container{
+
+    width: 80%;
+    height: fit-content;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+}
+
+.canteen-left{
+    width:20%;
+    height:fit-content;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+    position: sticky;
+    top: 1rem;
+    padding-left: 1rem;
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1); /* 只给左侧添加阴影 */
+    animation: dropDown 3s ease-in-out;
+    /* align-items: center; */
+    /* border : 1px solid purple; */
+    /* background-color: red; */
+}
+@keyframes dropDown{
+    0% {
+        opacity:0.8;
+        max-height: 0;
+        overflow: hidden;
+    }
+    50%{
+        opacity:1;
+        max-height: 50%;
+        overflow: hidden;
+    }
+    100% {
+        opacity:1;
+        /* height: 100%; */
+        max-height: 1000px;
+        overflow-Y: auto;
+        overflow-X: hidden;
+    }
+}
+.canteen-left-header{
+    /* align-self: flex-start; */
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap : 0.5rem;
+
+}
+
+.canteen-left-item{
+    padding-left: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    &:hover{
+        background-color: rgba(0 , 0 , 0 , 0.1);
+    }
+    &:active{
+        background-color: rgba(0 , 0 , 0 , 0.2);
+        transform: translateY(1px);
+    }
+}
+.canteen-right{
+    width:75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: red; */
+}
+
+.canteen-right-container{
+    /* position:sticky;
+    top:2rem; */
+    /* background-color:red; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.canteen-right-header{
+    background-color: #F3F4F6;
+    width:100%;
+    font-size: 2.5rem;
+    font-weight: 700;
+    padding: 0.5rem 0rem 0.5rem 2rem;
+    box-shadow: -10px 0px 0px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: -2rem;
+    /* margin-bottom: 1rem; */
+}
+
+.canteen-right-food-card{
+    min-height: 150px;
+    width: 45%;
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    padding: 1rem 1rem;
+    /* border-bottom: 1px solid var(--color-border); */
+    border-radius: 12px;
+    box-shadow: -2px -2px 18px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+    margin-right: 5%;
+    /* animation: transformRight 0.7s ease-in-out; */
+    img{
+        width: 39%;
+        aspect-ratio: 1;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        object-fit: cover;
+    }
+    .detail{
+        display: flex;
+        flex-direction: column;
+        margin-left: 1rem;
+        gap: 1rem;
+        font-size: 1rem;
+    }
+    svg{
+        justify-self:end;
+        align-self: flex-start;
+        margin-left: auto;
+        margin-right: 0rem;
+        &:hover{
+            cursor: pointer;
+            transform: scale(1.1);
+        }
+        &:active{
+            transform: translateY(1px);
+        }
+    }
+
+
+    &:nth-child(even){
+        animation: transformRight 0.7s ease-in-out;
+        /* background-color:red; */
+        /* background-color: var(--color-bg-card); */
+    }
+    &:nth-child(odd){
+        animation: transformLeft 0.7s ease-in-out;
+        /* background-color: var(--color-bg-card); */
+    }
+}
+
+@keyframes transformRight{
+    0% {
+        opacity:0.8;
+        transform: translateX(50px);
+    }
+    100% {
+        opacity:1;
+        transform: translateX(0px);
+    }
+}
+
+@keyframes transformLeft{
+    0% {
+        opacity:0.8;
+        transform: translateX(-50px);
+    }
+    100% {
+        opacity:1;
+        transform: translateX(0px);
+    }
+}
+.canteen-right-card-container{
+    width: 95%;
+    height: fit-content;
+    padding: 1rem 2rem;
+    display: flex;
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+    /* align-items: center; */
+}

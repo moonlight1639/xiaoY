@@ -1,0 +1,89 @@
+/* 全局样式重置 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  font: inherit;
+  border: none;           /* 重置边框 */
+  background: none;       /* 重置背景 */
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+svg{
+  display
+}
+
+@keyframes translateShowX {
+  0% {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  50% {
+    transform: translateX(10px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateX(0px);
+    opacity: 1;   
+  }
+}
+
+@keyframes translateShowX2 {
+  0% {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  50% {
+    transform: translateX(-10px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateX(0px);
+    opacity: 1;   
+  }
+}
+
+@keyframes translateShowY {
+  0% {
+    transform: translateY(-20px);
+
+  }
+  50% {
+    transform: translateY(-1
+    0px);
+
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}

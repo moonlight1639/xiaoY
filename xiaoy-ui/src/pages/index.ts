@@ -1,0 +1,7 @@
+export { default as Home } from './Home'
+export { default as About } from './About'
+export { default as NotFound } from './NotFound'
+export { default as Courses } from './Courses'
+export { default as Life } from './Life'
+export { default as Reviews } from './Reviews'
+export { default as ChatPage } from './ChatPage'
