@@ -4,6 +4,9 @@ import ReviewInfo from '../pages/ReviewInfo'
 import { Layout } from '../components'
 import Container from '../components/Container'
 import Canteen from '../pages/Canteen'
+import Admin from '../pages/Admin'
+// ...existing code...
+
 function AppRouter() {
   return (
     <Routes>
@@ -21,6 +24,8 @@ function AppRouter() {
         <Route path="/canteen" element={<Canteen />} />
         {/* <Route path="/reviews" element={<Reviews />} /> */}
       </Route>
+      {/* 管理员管理系统路由 */}
+      <Route path="/admin" element={<Admin />} />
       
       <Route path="*" element={<NotFound />} />
     </Routes>
