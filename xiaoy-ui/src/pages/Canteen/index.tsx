@@ -2,6 +2,15 @@ import React, { useRef, useState } from 'react';
 import FoodImg from '@/assets/food/chicken.jpg'
 import './Canteen.css'
 function Canteen() {
+  const [Rank , setRank] = useState([
+    {id : 1 , name: '宫保鸡丁', sales: 150},
+    {id : 2 , name: '鱼香肉丝', sales: 120},
+    {id : 3 , name: '麻婆豆腐', sales: 100},
+    {id : 4 , name: '红烧肉', sales: 90},
+    {id : 5 , name: '剁椒鱼头', sales: 80},
+    {id : 6 , name: '扬州炒饭', sales: 70},
+    {id : 7 , name: '清炒虾仁', sales: 60},
+  ]);
   const [Location , setLocation] = useState(
     [
       {id : 1 , place: '高新校区', price: 12.5 , food : [
@@ -36,26 +45,48 @@ function Canteen() {
   }
   return (
     <div className='canteen-page'>
-      <div className='canteen-header'>
+      {/* <div className='canteen-header'>
         <h1>🍜 食堂信息</h1>
         <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>
           查看各食堂菜单和营业时间
         </p>
-      </div>
+      </div> */}
       
       <div className='canteen-container'>
         
         <div className="canteen-left">
-          <div className='canteen-left-header'>
-            <svg t="1769398174238" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="14549" width="42" height="42"><path d="M934.956522 934.956522h29.681159a44.521739 44.521739 0 0 1 0 89.043478h-920.115942a44.521739 44.521739 0 0 1 0-89.043478h29.68116v-771.710145A133.565217 133.565217 0 0 1 207.768116 29.681159h237.449275a133.565217 133.565217 0 0 1 133.565218 133.565218V296.811594H801.391304a133.565217 133.565217 0 0 1 133.565218 133.565218v504.57971z m-89.043479 0v-504.57971A44.521739 44.521739 0 0 0 801.391304 385.855072h-222.608695v549.10145h267.130434z m-356.173913 0v-771.710145A44.521739 44.521739 0 0 0 445.217391 118.724638H207.768116a44.521739 44.521739 0 0 0-44.521739 44.521739v771.710145h326.492753z m-207.768116-652.985508h89.043479a44.521739 44.521739 0 0 1 0 89.043479h-89.043479a44.521739 44.521739 0 0 1 0-89.043479z m0 207.768116h89.043479a44.521739 44.521739 0 0 1 0 89.043479h-89.043479a44.521739 44.521739 0 0 1 0-89.043479z m385.855073 0h89.043478a44.521739 44.521739 0 0 1 0 89.043479h-89.043478a44.521739 44.521739 0 0 1 0-89.043479z m-385.855073 207.768116h89.043479a44.521739 44.521739 0 0 1 0 89.043479h-89.043479a44.521739 44.521739 0 0 1 0-89.043479z m385.855073 0h89.043478a44.521739 44.521739 0 0 1 0 89.043479h-89.043478a44.521739 44.521739 0 0 1 0-89.043479z" fill="#333333" p-id="14550"></path></svg>
-            <h1>校区</h1>
+          <div className='canteen-header'>
+            <h1>🍜 食堂信息</h1>
+            <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>
+              查看各食堂菜单和营业时间
+            </p>
           </div>
-          {Location.map((item) => (
-            <div className='canteen-left-item' key={item.id} onClick={() => scrollToLocation(item.id)}>
-              <span>{item.place}</span>
+          <div className='canteen-left-container'>
+            <div className='canteen-left-header'>
+              <svg t="1769398174238" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="14549" width="42" height="42"><path d="M934.956522 934.956522h29.681159a44.521739 44.521739 0 0 1 0 89.043478h-920.115942a44.521739 44.521739 0 0 1 0-89.043478h29.68116v-771.710145A133.565217 133.565217 0 0 1 207.768116 29.681159h237.449275a133.565217 133.565217 0 0 1 133.565218 133.565218V296.811594H801.391304a133.565217 133.565217 0 0 1 133.565218 133.565218v504.57971z m-89.043479 0v-504.57971A44.521739 44.521739 0 0 0 801.391304 385.855072h-222.608695v549.10145h267.130434z m-356.173913 0v-771.710145A44.521739 44.521739 0 0 0 445.217391 118.724638H207.768116a44.521739 44.521739 0 0 0-44.521739 44.521739v771.710145h326.492753z m-207.768116-652.985508h89.043479a44.521739 44.521739 0 0 1 0 89.043479h-89.043479a44.521739 44.521739 0 0 1 0-89.043479z m0 207.768116h89.043479a44.521739 44.521739 0 0 1 0 89.043479h-89.043479a44.521739 44.521739 0 0 1 0-89.043479z m385.855073 0h89.043478a44.521739 44.521739 0 0 1 0 89.043479h-89.043478a44.521739 44.521739 0 0 1 0-89.043479z m-385.855073 207.768116h89.043479a44.521739 44.521739 0 0 1 0 89.043479h-89.043479a44.521739 44.521739 0 0 1 0-89.043479z m385.855073 0h89.043478a44.521739 44.521739 0 0 1 0 89.043479h-89.043478a44.521739 44.521739 0 0 1 0-89.043479z" fill="#333333" p-id="14550"></path></svg>
+              <h1>校区</h1>
             </div>
-            ))
-          }
+            {Location.map((item) => (
+              <div className='canteen-left-item' key={item.id} onClick={() => scrollToLocation(item.id)}>
+                <span>{item.place}</span>
+              </div>
+              ))
+            }
+          </div>
+          <div className='canteen-rank'>
+            <h1 style={{fontSize:'30px', marginBottom:'0.5rem'}}> 📈排行榜</h1>
+            
+            {
+              Rank.map((item , index) => (
+                <div className='canteen-rank-item' key={item.id} >
+                  <div className='rank-index'>{
+                    index === 0 ? '🏆' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}` 
+                  } </div> 
+                  <span>{item.name}</span>
+                </div>
+              ))
+            }
+          </div>
         </div>
         <div className="canteen-right">
           {

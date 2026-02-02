@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 function Life() {
   return (
-    <div className="page life-page">
+    <div className="page life-page" style={{ padding: '2rem' }}>
       <h1>🏠 生活帮手</h1>
       <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>
         校园生活一站式服务：食堂、图书馆、快递、校车等

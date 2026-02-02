@@ -2,9 +2,9 @@ import { Routes, Route } from 'react-router-dom'
 import { Home, About, NotFound, Courses, Life, Reviews, ChatPage } from '../pages'
 import ReviewInfo from '../pages/ReviewInfo'
 import { Layout } from '../components'
-import Container from '../components/Container'
 import Canteen from '../pages/Canteen'
 import Admin from '../pages/Admin'
+import Container from '../components/Container'
 // ...existing code...
 
 function AppRouter() {

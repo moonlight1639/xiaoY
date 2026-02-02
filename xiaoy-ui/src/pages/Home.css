@@ -1,5 +1,6 @@
 /* 首页样式 */
 .home-page {
+  padding: 1rem;
   animation: fadeIn 0.5s ease;
   overflow:auto;
 }

@@ -1,6 +1,6 @@
 function Courses() {
   return (
-    <div className="page courses-page">
+    <div className="page courses-page" style={{ padding: '2rem' }}>
       <h1>📚 课程查询</h1>
       <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>
         查询您的课程安排、教室信息和考试时间
