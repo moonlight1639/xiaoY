@@ -1,5 +1,8 @@
 import type { FormProps } from 'antd';
 import { Button, Checkbox, Form, Input } from 'antd';
+import { useRef } from 'react';
+import { registerApi } from '../services/userApi';
+import type {User} from '../types/User';
 type FieldType = {
   username?: string;
   password?: string;
@@ -18,9 +21,30 @@ type RegisterComponentProps = {
 };
 
 function RegisterComponent({ returnLogin }: RegisterComponentProps) {
+  function handerRegister(){
+    console.log("注册");
+    // 注册逻辑
+    if(UserFrom.current.password !== UserFrom.current.repassword){
+      alert("两次输入的密码不一致");
+      return;
+    }
+
+    registerApi({username: UserFrom.current.username , password: UserFrom.current.password} as User).then((response) => {
+      if(response.success == true){
+        alert("注册成功，请登录");
+        returnLogin(false);
+      }
+      else
+        alert("注册失败，" + response.errorMsg);
+      
+    }).catch((error) => {
+      console.error("注册失败", error);
+    });
+  }
   function returnLoginFun(){
     returnLogin(false);
   }
+  const UserFrom = useRef<{ username: string; password: string; repassword: string}>({ username: '', password: '', repassword: ''});
   return (
 
     <div
@@ -64,7 +88,7 @@ function RegisterComponent({ returnLogin }: RegisterComponentProps) {
           // style={{fontSize: '16px'}}
           rules={[{ required: true, message: "请输入用户名!" }]}
         >
-          <Input style={{ width: '200px' }} />
+          <Input style={{ width: '200px' }} value={UserFrom.current.username} onChange={e => UserFrom.current.username = e.target.value} />
         </Form.Item>
 
         <Form.Item<FieldType>
@@ -75,7 +99,7 @@ function RegisterComponent({ returnLogin }: RegisterComponentProps) {
           name="password"
           rules={[{ required: true, message: "请输入密码!" }]}
         >
-          <Input.Password style={{ width: '200px' }}/>
+          <Input.Password style={{ width: '200px' }} value={UserFrom.current.password} onChange={e => UserFrom.current.password = e.target.value} />
         </Form.Item>
 
         
@@ -88,14 +112,14 @@ function RegisterComponent({ returnLogin }: RegisterComponentProps) {
           name="repassword"
           rules={[{ required: true, message: "请再次输入密码!" }]}
         >
-          <Input.Password style={{ width: '200px' }}/>
+          <Input.Password style={{ width: '200px' }} value={UserFrom.current.repassword} onChange={e => UserFrom.current.repassword = e.target.value} />
         </Form.Item>
 
         
         
       </Form>
-      <div style={{display:'flex' , flexDirection:'column' , alignItems:'center'}}>
-          <Button type="dashed"  style={{ width: '300px', marginTop: '10px' , fontWeight: 600 }} onClick={returnLoginFun}>
+      <div style={{display:'flex' , flexDirection:'column' , alignItems:'center'}} onClick={handerRegister}>
+          <Button type="dashed"  style={{ width: '300px', marginTop: '10px' , fontWeight: 600 }} >
             确认
           </Button>
       </div>

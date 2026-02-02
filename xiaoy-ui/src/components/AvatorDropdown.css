@@ -1,0 +1,38 @@
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.375rem 0.75rem;
+  background-color: var(--color-bg);
+  border-radius: 2rem;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all 0.2s;
+  height:50px;
+}
+.user-info:hover {
+  border-color: var(--color-primary);
+}
+.nouser-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.375rem 0.75rem;
+  background-color: var(--color-bg);
+  border-radius: 2rem;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all 0.2s;
+  height:50px;
+}
+
+.nouser-info:hover {
+    border-color: var(--color-primary);
+
+}
+
+.nouser-info:active {
+
+  box-shadow: 0 0 13px rgba(0, 0, 0, 0.6);
+
+}

@@ -112,6 +112,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-right: 2rem;
 }
 
 .theme-btn {
@@ -178,7 +179,7 @@
   flex: 1;
   width: 100%;
   background-color: var(--color-bg);
-  padding: 1.5rem;
+  padding: 1rem  1.5rem;
   /* padding-bottom: 5rem;  给 fixed footer 留出空间 */
   display: flex;           /* 变成 flex 容器 */
   flex-direction: column;

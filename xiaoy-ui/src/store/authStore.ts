@@ -1,12 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-
+import type {UserInfo} from '../types/UserInfo'
 // 用户信息类型
-export interface UserInfo {
-  username: string
-  avatar?: string
-  loginTime: string
-}
 
 // 认证状态类型
 interface AuthState {
@@ -30,9 +25,13 @@ export const useAuthStore = create<AuthState>()(
       token: null,
       isAuthenticated: false,
 
-      setUser: (user, token) => {
-        localStorage.setItem('token', token)
-        set({ user, token, isAuthenticated: true })
+      setUser: (user : UserInfo | null, token: string | null) => {
+        if (token) {
+          localStorage.setItem('token', token)
+        } else {
+          localStorage.removeItem('token')
+        }
+        set({ user, token, isAuthenticated: !!token })
       },
 
       logout: () => {

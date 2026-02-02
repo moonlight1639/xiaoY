@@ -1,8 +1,11 @@
 import type { FormProps } from 'antd';
 import { Button, Checkbox, Form, Input } from 'antd';
 import LogoImg from '../assets/doubao1.jpg'
-import { useState } from 'react';
+import { useState , useRef} from 'react';
 import RegisterComponent from './RegisterComponent';
+import { loginApi } from '../services/userApi';
+import { useAuthStore } from '../store';
+import useLoginStore from '../store/isLogin';
 type FieldType = {
   username?: string;
   password?: string;
@@ -16,11 +19,26 @@ const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
 const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
-function LoginComponent() {
-  const [isRegister , setIsRegister] = useState(false);
 
+function LoginComponent() {
+  const { isLogin , setIsLogin , isRegister , setIsRegister} = useLoginStore();
+  const UserFrom = useRef<{ username: string; password: string;}>({ username: '', password: ''});
+  const setUser = useAuthStore(state => state.setUser);
   function getReturnLogin(value: boolean){
     setIsRegister(value);
+  }
+  function handleLogin(){
+    loginApi({ username: UserFrom.current.username, password: UserFrom.current.password }).then(response => {
+
+      console.log(response);
+      if(response.success && response.data){
+        setUser(response.data , null);
+      }
+    }).catch(error => {
+      console.error(error);
+    }).finally(() => {
+      setIsLogin(false);
+    });
   }
   return (
     <div style={{backgroundColor:'var(--color-bg-card)'}}>
@@ -37,9 +55,23 @@ function LoginComponent() {
           // height: '100%',
         }}
       >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          height: '500px',
+          width: '100%',
+          position: 'relative',
+          flexDirection: "column",
+          animation: 'translateShowX2 0.5s',
+          // height: '100%',
+        }}
+      >
+        
         <img src={LogoImg} alt='logo' style={{ width: '160px', height: '160px', borderRadius: '50%', marginBottom: '30px' , marginTop: '15px',objectFit: 'contain'}} />
         
         <Form
+          
           name="basic"
           labelCol={{ span: 8 , style: { fontSize: '16px', fontWeight: 500, color: '#333' }}}
           wrapperCol={{ span: 16 }}
@@ -64,7 +96,7 @@ function LoginComponent() {
             // style={{fontSize: '16px'}}
             rules={[{ required: true, message: "请输入用户名!" }]}
           >
-            <Input style={{ width: '200px' }} />
+            <Input value={UserFrom.current.username} style={{ width: '200px' }} onChange={e => UserFrom.current.username = e.target.value} />
           </Form.Item>
 
           <Form.Item<FieldType>
@@ -75,7 +107,7 @@ function LoginComponent() {
             name="password"
             rules={[{ required: true, message: "请输入密码!" }]}
           >
-            <Input.Password style={{ width: '200px' }}/>
+            <Input.Password value={UserFrom.current.password} style={{ width: '200px' }} onChange={e => UserFrom.current.password = e.target.value}/>
           </Form.Item>
 
           <Form.Item<FieldType>
@@ -89,7 +121,7 @@ function LoginComponent() {
           
         </Form>
           <div style={{display:'flex' , flexDirection:'column' , alignItems:'center'}}>
-              <Button type="primary"  style={{ width: '300px' }}>
+              <Button type="primary"  style={{ width: '300px' }} onClick={handleLogin}>
                 登录
               </Button>
               <Button type="dashed"  style={{ width: '300px', marginTop: '10px' }} onClick={()=>setIsRegister(true)}>
@@ -97,6 +129,7 @@ function LoginComponent() {
               </Button>
           </div>
         <a href="#" style={{ position:'absolute', bottom: '0px' }}>忘记密码？</a>
+      </div>
       </div>
       : <RegisterComponent returnLogin={getReturnLogin} />}
     </div>

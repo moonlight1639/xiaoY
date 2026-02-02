@@ -38,8 +38,8 @@ function Reviews() {
   }
   return (
     <div className="review-page">
-      <div style={{marginLeft:'6%'}}>
-        <h1>⭐ 课程点评</h1>
+      <div style={{marginLeft:'7%'}}>
+        <h2>⭐ 课程点评</h2>
         <p style={{ color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
           查看和分享课程评价，帮助你做出更好的选课决策
         </p>
@@ -62,8 +62,8 @@ function Reviews() {
         {/* 左侧 */}
         <div id='left' className="review-sidebar">
           
-          <div style={{background : '#2563EB' , height : '40px' , width : '120%' , display: 'flex', justifyContent: 'center' , alignItems: 'center' , borderBottom:'1px solid var(--color-border)'}}>
-            <p style={{color:'white', fontSize:'20px' , fontWeight: '600' , textShadow : '1px 1px 0 rgba(160, 196, 255,0.3)'}}>课程</p>
+          <div style={{background : '#87CEFA' , height : '40px' , width : '120%' , display: 'flex', justifyContent: 'center' , alignItems: 'center' , borderBottom:'1px solid var(--color-border)'}}>
+            <p style={{color:'#2563EB', fontSize:'20px' , fontWeight: '600' , textShadow : '1px 1px 0 rgba(160, 196, 255,0.3)'}}>课程</p>
           </div>
           <div style={{display:'flex' , flexDirection:'column' , flex:'1' , width : '100%' , overflow:'auto' , scrollbarWidth: 'none' }}>
             {
@@ -87,7 +87,7 @@ function Reviews() {
         {/* 右侧 */}
         <div id='right' className="review-main-content">
           <div className="review-right-header">
-            <p style={{color:'white', fontSize:'20px' , fontWeight: '600' , textShadow : '1px 1px 0 rgba(160, 196, 255,0.3)'}}>课程评价</p>
+            <p style={{color:'#2563EB', fontSize:'20px' , fontWeight: '600' , textShadow : '1px 1px 0 rgba(160, 196, 255,0.3)'}}>课程评价</p>
           </div>
           <div className="review-content" ref = {el => container.current = el}>
             {

@@ -5,7 +5,7 @@ import axios from 'axios'
  * 请求前缀为 /xiaozhi
  */
 const http = axios.create({
-  baseURL: 'http://localhost:8080/xiaoy',
+  baseURL: 'http://localhost:8080/xiaoY',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ http.interceptors.request.use(
 // 响应拦截器
 http.interceptors.response.use(
   (response) => {
-    console.log('响应数据:', response)
+    // console.log('响应数据:', response.data)
     return response.data
   },
   (error) => {
