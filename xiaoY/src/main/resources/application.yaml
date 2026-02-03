@@ -1,0 +1,45 @@
+# LangChain4j 配置：DeepSeek 大模型（OpenAI 兼容接口）
+langchain4j:
+  open-ai:
+    chat-model:
+      base-url: https://api.deepseek.com
+      api-key: ${DEEP_SEEK_API_KEY}
+      model-name: deepseek-chat
+      log-requests: true
+      log-responses: true
+  community:
+    dashscope:
+      # 通义千问 普通聊天模型
+      chat-model:
+        api-key: ${DASH_SCOPE_API_KEY}
+        model-name: qwen-max
+      # 通义千问 流式聊天模型
+      streaming-chat-model:
+        api-key: ${DASH_SCOPE_API_KEY}
+        model-name: qwen-plus
+      # 通义千问 嵌入模型
+      embedding-model:
+        api-key: ${DASH_SCOPE_API_KEY}
+        model-name: text-embedding-v3
+
+# MongoDB 配置：聊天记忆库
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/chat_memory_db
+  # MySQL 数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.88.130:3306/xiaoY?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 1234
+
+# 可选：开启全局 DEBUG 日志（如需调试可取消注释，默认关闭）
+# logging:
+#   level:
+#     root: debug
+logging:
+  level:
+    com.pj.xiaoY: debug
+  pattern:
+    dateformat: mm:ss.SSS

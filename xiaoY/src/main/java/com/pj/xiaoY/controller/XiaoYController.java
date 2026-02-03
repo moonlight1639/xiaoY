@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/xiaoy")
+@RequestMapping("/xiaoY")
 public class XiaoYController {
 
     @Autowired

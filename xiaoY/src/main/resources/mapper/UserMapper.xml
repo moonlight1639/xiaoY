@@ -10,6 +10,7 @@
         <result property="password" column="password"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
+        <result property="userinfoId" column="userinfo_id"/>
     </resultMap>
 
 

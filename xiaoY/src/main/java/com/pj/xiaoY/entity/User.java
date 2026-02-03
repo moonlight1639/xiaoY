@@ -10,9 +10,9 @@ import lombok.Data;
 /**
  * 用户核心表（存储登录基础信息）
  * 
- * @author chenshun
+ * @author moonlight1639
  * @email sunlightcs@gmail.com
- * @date 2026-01-30 22:46:58
+ * @date 2026-01-31 21:09:55
  */
 @Data
 @TableName("user")
@@ -40,5 +40,9 @@ public class User implements Serializable {
 	 * 更新时间（自动刷新）
 	 */
 	private Date updateTime;
+	/**
+	 * 关联用户信息表ID
+	 */
+	private Long userinfoId;
 
 }

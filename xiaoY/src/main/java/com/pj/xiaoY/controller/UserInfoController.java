@@ -6,60 +6,52 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.pj.xiaoY.entity.User;
-import com.pj.xiaoY.service.UserService;
+import com.pj.xiaoY.entity.UserInfo;
+import com.pj.xiaoY.service.UserInfoService;
 import com.pj.xiaoY.common.Result;
 
 
 
 /**
- * 用户核心表（存储登录基础信息）
+ * 用户信息主表
  *
  * @author moonlight1639
  * @email sunlightcs@gmail.com
  * @date 2026-01-31 21:09:55
  */
 @RestController
-@RequestMapping("xiaoY/user")
-public class UserController {
+@RequestMapping("xiaoY/userinfo")
+public class UserInfoController {
     @Autowired
-    private UserService userService;
+    private UserInfoService userInfoService;
 
     /**
      * 列表
      */
     @GetMapping("/list")
     public Result list(@RequestParam(name = "pageNum",defaultValue = "1") int pageNum, @RequestParam(name = "pageSize" , defaultValue = "10")int pageSize){
-        List<User> page = userService.queryPage(pageNum , pageSize);
+        List<UserInfo> page = userInfoService.queryPage(pageNum , pageSize);
 
         return Result.ok(page , page.size());
     }
 
-    @PostMapping("/register")
-    public Result register(@RequestBody User user){
-        return userService.register(user);
-    }
 
-    @PostMapping("/login")
-    public Result login(@RequestBody User user){
-        return userService.login(user);
-    }
     /**
      * 信息
      */
     @GetMapping("/{id}")
     public Result info(@PathVariable("id") Long id){
-		User user = userService.getById(id);
+		UserInfo userInfo = userInfoService.getById(id);
 
-        return Result.ok(user);
+        return Result.ok(userInfo);
     }
 
     /**
      * 保存
      */
     @PostMapping("/save")
-    public Result save(@RequestBody User user){
-		userService.save(user);
+    public Result save(@RequestBody UserInfo userInfo){
+		userInfoService.save(userInfo);
 
         return Result.ok();
     }
@@ -68,8 +60,8 @@ public class UserController {
      * 修改
      */
     @PutMapping("/update")
-    public Result update(@RequestBody User user){
-		userService.updateById(user);
+    public Result update(@RequestBody UserInfo userInfo){
+		userInfoService.updateById(userInfo);
 
         return Result.ok();
     }
@@ -79,7 +71,7 @@ public class UserController {
      */
     @DeleteMapping("/delete")
     public Result delete(@RequestBody Long[] ids){
-		userService.removeByIds(Arrays.asList(ids));
+		userInfoService.removeByIds(Arrays.asList(ids));
 
         return Result.ok();
     }
