@@ -23,7 +23,7 @@ public class UserInfo implements Serializable {
 	 * 主键ID（自增）
 	 */
 	@TableId
-	private Long id;
+	private Integer id;
 	/**
 	 * 用户昵称（显示用）
 	 */

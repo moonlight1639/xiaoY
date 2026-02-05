@@ -43,3 +43,8 @@ logging:
     com.pj.xiaoY: debug
   pattern:
     dateformat: mm:ss.SSS
+
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto # 核心：所有表主键默认使用数据库自增，禁用雪花算法

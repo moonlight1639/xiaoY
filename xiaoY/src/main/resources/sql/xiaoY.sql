@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `user_info`;
 CREATE TABLE `user_info` (
-                             `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID（自增）',
+                             `id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID（自增）',
                              `nickname` varchar(64) NOT NULL COMMENT '用户昵称（显示用）',
                              `phone` varchar(20) DEFAULT NULL COMMENT '手机号（唯一，可选）',
                              `email` varchar(128) DEFAULT NULL COMMENT '邮箱（唯一，可选，用于找回密码）',
@@ -22,21 +22,21 @@ CREATE TABLE `user_info` (
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
-                         `id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户唯一ID（主键）',
+                         `id` int NOT NULL AUTO_INCREMENT COMMENT '用户唯一ID（主键）',
                          `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户名（登录/展示用，唯一）',
                          `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '密码（密文存储，如BCrypt/SHA256加密）',
                          `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间（注册时间）',
                          `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间（自动刷新）',
-                         `userinfo_id` bigint NOT NULL COMMENT '关联用户信息表ID',
+                         `userinfo_id` int NOT NULL COMMENT '关联用户信息表ID',
                          PRIMARY KEY (`id`) USING BTREE,
                          UNIQUE INDEX `uk_username`(`username` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2017523356005318658 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户核心表（存储登录基础信息）' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户核心表（存储登录基础信息）' ROW_FORMAT = Dynamic;
 
 DROP TABLE IF EXISTS `course`;
 -- 课程表
 -- 课程表（含软删除）
 CREATE TABLE `course` (
-                          `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '课程主键ID（自增唯一）',
+                          `id` int NOT NULL AUTO_INCREMENT COMMENT '课程主键ID（自增唯一）',
                           `course_name` VARCHAR(128) NOT NULL COMMENT '课程名称（非空）',
                           `teacher` VARCHAR(64) DEFAULT NULL COMMENT '授课老师（可空）',
                           `description` TEXT DEFAULT NULL COMMENT '课程描述（可空）',
@@ -55,7 +55,7 @@ CREATE TABLE `course` (
 DROP TABLE IF EXISTS `course_comment`;
 -- 课程评论表（含软删除，关联course表）
 CREATE TABLE `course_comment` (
-                                  `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '评论主键ID（自增唯一）',
+                                  `id` int NOT NULL AUTO_INCREMENT COMMENT '评论主键ID（自增唯一）',
                                   `course_id` BIGINT NOT NULL COMMENT '关联课程ID，对应course表的id',
                                   `user_id` BIGINT NOT NULL COMMENT '评论用户ID',
                                   `user_name` VARCHAR(64) NOT NULL COMMENT '评论用户名称',
@@ -76,7 +76,7 @@ CREATE TABLE `course_comment` (
 DROP TABLE IF EXISTS `canteen_location`;
 -- 食堂地点表（含软删除）
 CREATE TABLE `canteen_location` (
-                                    `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '食堂地点主键ID（自增唯一）',
+                                    `id` int NOT NULL AUTO_INCREMENT COMMENT '食堂地点主键ID（自增唯一）',
                                     `name` VARCHAR(64) NOT NULL COMMENT '食堂名称（非空）',
                                     `is_deleted` TINYINT NOT NULL DEFAULT 0 COMMENT '软删除 0-未删除 1-已删除',
                                     PRIMARY KEY (`id`) USING BTREE,
@@ -85,9 +85,9 @@ CREATE TABLE `canteen_location` (
 
 
 DROP TABLE IF EXISTS `dish`;
--- 菜品信息表（含软删除+状态+分类，关联canteen_location食堂地点表）
+-- 菜品信息表（含软删除+状态+分类+点赞量，关联canteen_location食堂地点表）
 CREATE TABLE `dish` (
-                        `id` BIGINT NOT NULL AUTO_INCREMENT COMMENT '菜品主键ID（自增唯一）',
+                        `id` int NOT NULL AUTO_INCREMENT COMMENT '菜品主键ID（自增唯一）',
                         `dish_name` VARCHAR(128) NOT NULL COMMENT '菜名（非空，如：番茄炒蛋、红烧肉）',
                         `description` VARCHAR(512) DEFAULT NULL COMMENT '菜品描述（可空，如：酸甜可口、肥瘦相间）',
                         `price` DECIMAL(8,2) DEFAULT NULL COMMENT '菜品价格（单位：元，保留2位小数）',
@@ -96,6 +96,7 @@ CREATE TABLE `dish` (
                         `location_name` VARCHAR(64) NOT NULL COMMENT '食堂地点名称，对应canteen_location表的name',
                         `status` TINYINT NOT NULL DEFAULT 1 COMMENT '菜品状态 1-在售 2-下架 3-售罄',
                         `is_deleted` TINYINT NOT NULL DEFAULT 0 COMMENT '软删除 0-未删除 1-已删除',
+                        `like_count` INT NOT NULL DEFAULT 0 COMMENT '菜品点赞量（int类型，默认0）', -- 新增点赞量字段
                         `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间（自动填充）',
                         `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间（修改时自动刷新）',
                         PRIMARY KEY (`id`) USING BTREE,
@@ -106,3 +107,13 @@ CREATE TABLE `dish` (
 
 
 
+DROP TABLE IF EXISTS `course_summary`;
+CREATE TABLE `course_summary` (
+                                  `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID，自增',
+                                  `course_id` INT(11) NOT NULL COMMENT '课程ID，关联课程主表主键',
+                                  `content` VARCHAR(2000) NOT NULL COMMENT '课程总结内容',
+                                  `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间，自动填充',
+                                  `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间，新增/更新自动刷新',
+                                  PRIMARY KEY (`id`) USING BTREE,
+                                  INDEX `idx_course_id`(`course_id`) USING BTREE COMMENT '课程ID索引，提升关联查询效率'
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '课程总结表';

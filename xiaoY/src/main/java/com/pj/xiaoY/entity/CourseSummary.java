@@ -8,41 +8,37 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 用户核心表（存储登录基础信息）
+ * 课程总结表
  * 
  * @author moonlight1639
  * @email sunlightcs@gmail.com
- * @date 2026-01-31 21:09:55
+ * @date 2026-02-03 19:41:00
  */
 @Data
-@TableName("user")
-public class User implements Serializable {
+@TableName("course_summary")
+public class CourseSummary implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 用户唯一ID（主键）
+	 * 主键ID，自增
 	 */
 	@TableId
 	private Integer id;
 	/**
-	 * 用户名（登录/展示用，唯一）
+	 * 课程ID，关联课程主表主键
 	 */
-	private String username;
+	private Integer courseId;
 	/**
-	 * 密码（密文存储，如BCrypt/SHA256加密）
+	 * 课程总结内容
 	 */
-	private String password;
+	private String content;
 	/**
-	 * 创建时间（注册时间）
+	 * 创建时间，自动填充
 	 */
 	private Date createTime;
 	/**
-	 * 更新时间（自动刷新）
+	 * 修改时间，新增/更新自动刷新
 	 */
 	private Date updateTime;
-	/**
-	 * 关联用户信息表ID
-	 */
-	private Integer userinfoId;
 
 }
