@@ -1,44 +1,80 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './ReviewInfo.css'
 import defaultAvator from '@/assets/avator/defaultAvator.jpg'
 import { Button, Flex } from 'antd';
 import stuAvator from '@/assets/avator/stu.jpg'
 import stuAvator1 from '@/assets/avator/stu1.jpg'
+import { useParams } from 'react-router-dom';
+import type { Course } from '../../types/Course';
+import type { CourseComment } from '../../types/CourseComment';
+import { getCourse } from "@/services/courseApi";
+import { getCourseCommmentsByCourseId } from '@/services/courseCommentApi.ts';
 function ReviewInfo() {
-  const [comment, setComment] = useState([
-    {id: 1, author: '用户A', content: '这本书非常有趣，学到了很多组合数学的知识！', img: stuAvator
+  const [CourseInfo, setCourseInfo] = useState<Course | null>({
+    id: 1,
+    courseName: '组合数学',
+    teacher: '郑慧南',
+    description: '组合数学是数学的一个分支，研究有限或可数离散结构的性质和关系。它涉及排列、组合、图论、设计理论等多个领域，广泛应用于计算机科学、统计学和运筹学等领域。',
+  });
+  const [comment, setComment] = useState<CourseComment[]>([
+    {id: 1, courseId: 1, userId: 1, userName: '用户A', content: '这本书非常有趣，学到了很多组合数学的知识！', userAvatar: stuAvator
     },
     {
-      id: 2, author: '用户B', content: '内容详实，适合初学者入门。' , img: stuAvator1
+      id: 2, courseId: 1, userId: 2, userName: '用户B', content: '内容详实，适合初学者入门。' , userAvatar: stuAvator1
     },
-    { id: 3, author: '用户C', content: '讲解清晰，但例题稍显简单。' ,  img: stuAvator}
+    { id: 3, courseId: 1, userId: 3, userName: '用户C', content: '讲解清晰，但例题稍显简单。' ,  userAvatar: stuAvator}
   ])
-
+  const { id } = useParams<{ id: string }>();
+  useEffect(() => {
+    // 模拟从后端获取评论数据
+    // 这里可以替换为实际的API调用
+    // console.log('课程ID:', id);
+    const fetchCourses = async () => {
+      if(id){
+        const response = await getCourse(Number(id));
+        // console.log('课程详情响应:', response);
+        if(response.success == true && response.data){
+          setCourseInfo(response.data);
+        }
+        const commentRes = await getCourseCommmentsByCourseId(Number(id));
+        console.log('课程评论响应:', commentRes);
+        if(commentRes.success == true && commentRes.data && commentRes.data.length > 0){
+          setComment(commentRes.data);
+        }
+      }
+    };
+    fetchCourses();
+  }, []);
   return (
     <div className='review-info-page'>
     
       <div className='review-info-container'>
+        <div className='review-info-left-out'>
           <div className='review-info-left'>
             
             <img src={defaultAvator} alt={`头像`} />
-            <h2>组合数学</h2>
-            <p style={{color:'black' , marginBottom:'0.5rem'}}>郑慧南</p>
-            <p>组合数学是数学的一个分支，研究有限或可数离散结构的性质和关系。它涉及排列、组合、图论、设计理论等多个领域，广泛应用于计算机科学、统计学和运筹学等领域。</p>
+            <h2>{CourseInfo?.courseName}</h2>
+            <p style={{color:'black' , marginBottom:'0.5rem'}}>{CourseInfo?.teacher}</p>
+            {/* <p>{CourseInfo?.description}</p> */}
+            <p style={{fontSize:'15px' , marginTop:'10px'}}>@该课来自于中国科学技术大学软件学院</p>
           </div>
-
+        </div>
           <div className='review-info-right'>
             <div className='review-info-right-header'>
-              <h1 >组合数学</h1>
-              <p>郑慧南</p> 
+              <div>
+                <h1>🎓 {CourseInfo?.courseName}</h1>
+                <p>{CourseInfo?.teacher}</p> 
+              </div>
+              
             </div>
               
             <div className='review-info-detail'>
               <span style={{fontSize:'1.3rem', lineHeight:'1.5' , fontWeight:'400' , color:'rgba(0,0,0,0.75)'}}>
-                &emsp;&emsp;组合数学是数学的一个分支，研究有限或可数离散结构的性质和关系。它涉及排列、组合、图论、设计理论等多个领域，广泛应用于计算机科学、统计学和运筹学等领域。
+                &emsp;&emsp;{CourseInfo?.description}
               </span>   
             </div>
             <div className='revie-info-comment'>
-              <div style={{position:'absolute' , top:'-30px' , left:'20px' , backgroundColor:'rgba(255,255,255,0.9)' , color:'black',
+              <div style={{position:'absolute' , top:'-30px' , left:'20px' , backgroundColor:'rgba(255,255,255,1)' , color:'black',
                  padding:'2px',
                 display:'flex', alignItems:'center', gap:'5px',
               }}>
@@ -65,13 +101,13 @@ function ReviewInfo() {
               {comment.map((item) => (
                 <div key={item.id} className='review-info-user-comment'>
                   <Flex align="start" gap={10} style={{height:'100%'}}>
-                    <img src={item.img} alt={`头像`} style={{width:'50px', height:'50px', borderRadius:'50%' , objectFit : 'cover' , 
+                    <img src={item.userAvatar || stuAvator1} alt={`头像`} style={{width:'50px', height:'50px', borderRadius:'50%' , objectFit : 'cover' , 
                       
                     }}/>
                     <div style={{width:'90%'}}>
                       <div style={{fontWeight:'600', fontSize:'1.2rem', color:'black',
                         display:'flex', alignItems:'center', gap:'8px'
-                      }}>{item.author} 
+                      }}>{item.userName} 
                       </div>
                       <div style={{minHeight:'10rem', marginTop:'9px', fontSize:'1rem', color:'rgba(0,0,0,0.75)',
                         boxShadow : '0px 0px 4px rgba(0 , 0 , 0 , 0.2)' , padding : '1rem' , 

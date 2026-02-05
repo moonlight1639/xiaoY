@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink, Outlet } from 'react-router-dom';
 import './Admin.css';
 
 const Admin: React.FC = () => {
@@ -8,7 +9,11 @@ const Admin: React.FC = () => {
         <div className="sidebar-title animate-pop">🎩 管理员后台</div>
         <nav className="sidebar-nav">
           <ul>
-            <li className="animate-nav"><span role="img" aria-label="user">👤</span> 用户管理</li>
+            <li className="animate-nav">
+              <NavLink to="/admin/users" className="admin-link">
+                <span role="img" aria-label="user">👤</span> 用户管理
+              </NavLink>
+            </li>
             <li className="animate-nav"><span role="img" aria-label="shield">🛡️</span> 权限设置</li>
             <li className="animate-nav"><span role="img" aria-label="log">📜</span> 系统日志</li>
             <li className="animate-nav"><span role="img" aria-label="setting">⚙️</span> 设置</li>
@@ -27,7 +32,7 @@ const Admin: React.FC = () => {
           </ul>
         </nav>
         <section className="admin-content">
-          <div className="content-placeholder animate-card">✨ 欢迎使用管理员系统！<span role="img" aria-label="star">🌟</span></div>
+          <Outlet />
         </section>
       </main>
     </div>

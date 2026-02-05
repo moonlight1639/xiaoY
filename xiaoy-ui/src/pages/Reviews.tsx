@@ -1,33 +1,53 @@
-import { useState , useRef} from "react"
+import { useState , useRef, useEffect} from "react"
 import { Link } from "react-router-dom";
 import './Reviews.css'
+import type { Course } from "../types/Course";
+import { getCourses } from "../services/courseApi";
 import defaultAvator from '../assets/avator/defaultAvator.jpg'
+import { Button } from "antd"
 function Reviews() {
-  const [courses , setCourses] = useState([
-    { id: 1, name: '计算机导论', reviews: ['非常有趣，适合入门。', '老师讲解清晰，内容丰富。'] },
-    { id: 2, name: '数据结构与算法', reviews: ['课程内容扎实，但作业量较大。', '学到了很多实用的算法技巧。'] },
-    { id: 3, name: '操作系统概论', reviews: ['理论性强，实践环节有待加强。', '对理解计算机工作原理很有帮助。'] },
-    { id: 4, name: '计算机网络', reviews: ['内容全面，涵盖了网络的各个方面。', '实验设计合理，帮助理解概念。']},
-    { id: 5, name: '计算机导论', reviews: ['非常有趣，适合入门。', '老师讲解清晰，内容丰富。'] },
-    { id: 6, name: '数据结构与算法', reviews: ['课程内容扎实，但作业量较大。', '学到了很多实用的算法技巧。'] },
-    { id: 7, name: '操作系统概论', reviews: ['理论性强，实践环节有待加强。', '对理解计算机工作原理很有帮助。'] },
-    { id: 8, name: '计算机网络', reviews: ['内容全面，涵盖了网络的各个方面。', '实验设计合理，帮助理解概念。']},
-    { id: 9, name: '计算机导论', reviews: ['非常有趣，适合入门。', '老师讲解清晰，内容丰富。'] },
-    { id: 10, name: '数据结构与算法', reviews: ['课程内容扎实，但作业量较大。', '学到了很多实用的算法技巧。'] },
-    { id: 11, name: '操作系统概论', reviews: ['理论性强，实践环节有待加强。', '对理解计算机工作原理很有帮助。'] },
-    { id: 12, name: '计算机网络', reviews: ['内容全面，涵盖了网络的各个方面。', '实验设计合理，帮助理解概念。']},
-    { id: 13, name: '数据结构与算法', reviews: ['课程内容扎实，但作业量较大。', '学到了很多实用的算法技巧。'] },
-    { id: 14, name: '操作系统概论', reviews: ['理论性强，实践环节有待加强。', '对理解计算机工作原理很有帮助。'] },
-    { id: 15, name: '计算机网络', reviews: ['内容全面，涵盖了网络的各个方面。', '实验设计合理，帮助理解概念。']},
-    { id: 16, name: '计算机导论', reviews: ['非常有趣，适合入门。', '老师讲解清晰，内容丰富。'] },
-    { id: 17, name: '数据结构与算法', reviews: ['课程内容扎实，但作业量较大。', '学到了很多实用的算法技巧。'] },
-    { id: 18, name: '操作系统概论', reviews: ['理论性强，实践环节有待加强。', '对理解计算机工作原理很有帮助。'] },
-    { id: 19, name: '计算机网络', reviews: ['内容全面，涵盖了网络的各个方面。', '实验设计合理，帮助理解概念。']},
+  const [courses , setCourses] = useState<Course[]>([
+    { id: 1, courseName: '计算机导论' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 2, courseName: '数据结构与算法' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 3, courseName: '操作系统概论' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 4, courseName: '计算机网络' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 5, courseName: '计算机导论' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 6, courseName: '数据结构与算法' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 7, courseName: '操作系统概论' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 8, courseName: '计算机网络' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 9, courseName: '计算机导论' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 10, courseName: '数据结构与算法' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 11, courseName: '操作系统概论' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 12, courseName: '计算机网络' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 13, courseName: '数据结构与算法' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 14, courseName: '操作系统概论' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 15, courseName: '计算机网络' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 16, courseName: '计算机导论' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 17, courseName: '数据结构与算法' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 18, courseName: '操作系统概论' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
+    { id: 19, courseName: '计算机网络' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
   ]);
+
   const listRefs = useRef<Record<number, HTMLDivElement | null>>({});
   const [highLightRef, setHighLightRef] = useState(-1);
   const timerId = useRef<ReturnType<typeof setTimeout> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const fetchCourses = async () => {
+      
+      const res = await getCourses();
+      if (res.success == true && res.data) {
+        
+        setCourses(res.data);
+      }
+      
+    };
+    fetchCourses();
+  }, []);
+
+  useEffect(() => {
+    listRefs.current = {};
+  }, [courses]);
   function scrollToCourse(id : number) {
     const containerTop = container.current?.getBoundingClientRect().top;
     const target = listRefs.current[id]
@@ -44,23 +64,24 @@ function Reviews() {
 
   }
   return (
-    <div className="review-page" ref = {el => container.current = el}>
+    <div className="review-page" ref={container}>
       
       
       
         {/* 左侧 */}
-        <div id='left' className="review-sidebar" style={{position:'sticky' , top:'0'}}>
-          <div style={{marginLeft:'7%' ,textAlign:'left'}}>
+        <div id='left' className="review-sidebar-left" style={{position:'sticky' , top:'0'}}>
+          <div style={{textAlign:'left' , width:'100%'}}>
             <h2>⭐ 课程点评</h2>
             <p style={{ color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
               查看和分享课程评价，帮助你做出更好的选课决策
             </p>
           </div>
-          <div style={{width:"100%" , height:'fit-content'}}>
-            <div style={{borderRadius:'4px 4px 0 0' , background : '#87CEFA' , height : '40px' , width : '100%' , display: 'flex', justifyContent: 'center' , alignItems: 'center' , borderBottom:'1px solid var(--color-border)'}}>
-              <p style={{color:'#2563EB', fontSize:'20px' , fontWeight: '600' , textShadow : '1px 1px 0 rgba(160, 196, 255,0.3)'}}>课程</p>
+          <div style={{background:'white', width:"100%" , minHeight:'0', flex:'1' ,border : '1.7px solid var(--color-border)', borderRadius: '1rem', display:'flex' , flexDirection:'column' ,alignContent:'center' , alignItems:'center'  }}>
+            <div style={{borderRadius:'4px 4px 0 0'  , height : '40px' , width : '100%' , display: 'flex', justifyContent: 'center' , alignItems: 'center'   }}>
+              <p style={{ fontSize:'20px' , fontWeight: '600' , textShadow : '1px 1px 0 rgba(160, 196, 255,0.3)'}}>课程</p>
             </div>
-            <div style={{display:'flex' , flexDirection:'column' , flex:'1' , width : '100%' , overflow:'auto' , scrollbarWidth: 'none' , border: '1.7px solid var(--color-border)'}}>
+            {/* , scrollbarWidth: 'none' */}
+            <div style={{display:'flex' ,flexDirection:'column' , flex:'1' , width : '100%' , overflow:'auto' , scrollbarWidth: 'none' , alignItems: 'center' }}>  
               {
 
               courses.map(course => (
@@ -69,7 +90,7 @@ function Reviews() {
                     <span style={{fontSize:'15px' , fontWeight : '500' , textShadow : '0.5px 0px 0 rgba(0,0,0,0.3)', color:'var(--color-text)'}}
                       
                       >
-                      {course.name}
+                      {course.courseName}
                       </span>
                   </div>
 
@@ -83,28 +104,46 @@ function Reviews() {
 
         {/* 中间 */}
         <div id='right' className="review-main-content">
-          
+          <div className="review-sidebar-right-header" >
+              <h2>🧾 教师列表</h2>
+          </div>
           <div className="review-content" >
+            
             {
             courses.map(course => (
 
 
-                <Link to='info' id={'course' + course.id} key={course.id} ref={el => listRefs.current[course.id] = el} 
+                <div  id={'course' + course.id} key={course.id} ref={el => {
+                  if (el) {
+                    listRefs.current[course.id] = el;
+                  } else {
+                    delete listRefs.current[course.id];
+                  }  
+                }} 
                 className={`review-Reviewitem${highLightRef === course.id ? ' highlight' : ''}`} >
-                  <img src={defaultAvator} alt={`${course.name} avatar`} />
-                  <div>
-                    <h4>{course.name}</h4>
-                    <span style={{fontSize:'1.1rem' , color:'rgba(0 , 0 , 0 , 0.9)',marginTop:'2px'}}>授课老师 : 刘春英</span>
-                    <span style={{fontSize:'0.9rem' , color:'rgba(0 , 0 , 0 , 0.5)'}}>{course.name}是中科大春节学期开办的一门课，授课老师为刘春英，一个学期有20节课</span>
-                    <div className="review-card-footer">
-                      <span>查看详细</span>
-                      <span>阅读 点赞 评论 收藏</span>
+                  <div style={{display:'none'}}>
+                    默认值赋值
+                    {course.teacher = course.teacher || '刘春英'}
+                    {course.description = course.description || `${course.courseName}是中科大春节学期开办的一门课，授课老师为刘春英，一个学期有20节课`}
+                    {course.avatar = course.avatar || defaultAvator}
+                  </div>
+                  <img src={course.avatar} alt={`${course.courseName} avatar`} />
+                  <Link to={`info/${course.id}`} style={{width:'90%'}}>
+                  
+                    <div>
+                      <h4 style={{fontSize:'1.2rem' , fontWeight:'600' , color:'rgba(0 , 0 , 0 , 0.9)'}}>{course.courseName}</h4>
+                      <span style={{fontSize:'0.95rem' , fontWeight:'550', color:'rgba(0 , 0 , 0 , 0.9)',marginTop:'2px'}}>授课老师 : {course.teacher}</span>
+                      <span style={{fontSize:'0.9rem' , color:'rgba(0 , 0 , 0 , 0.5)'}}>{course.description}</span>
+                      <div className="review-card-footer">
+                        {/* <Link to={`info/${course.id}`}><Button >查看详细</Button></Link> */}
+                        <span style={{fontWeight:'400' , fontSize:'0.9rem'}} >阅读 {course.readCount} 点赞 {course.likeCount} 评论 {course.commentCount} 收藏 {course.collectCount}</span>
+                        
+                      </div>
                       
                     </div>
-                    
-                  </div>
+                  </Link>
                   
-                </Link>
+                </div>
 
               ))}
           </div>
@@ -112,13 +151,13 @@ function Reviews() {
         
         </div>
         
-        <div id='left' className="review-sidebar" style={{position:'sticky',
+        <div id='left' className="review-sidebar-right" style={{position:'sticky',
     top:'100px'}}>
           
-          <div style={{borderRadius:'4px 4px 0 0' , background : '#87CEFA' , height : '40px' , width : '100%' , display: 'flex', justifyContent: 'center' , alignItems: 'center' , borderBottom:'1px solid var(--color-border)'}}>
-            <p style={{color:'#2563EB', fontSize:'20px' , fontWeight: '600' , textShadow : '1px 1px 0 rgba(160, 196, 255,0.3)'}}>课程评价</p>
+          <div style={{ borderRadius:'4px 4px 0 0' , height : '40px' , width : '100%' , display: 'flex', justifyContent: 'center' , alignItems: 'center' }}>
+            <p style={{ fontSize:'20px' , fontWeight: '600' }}>课程评价</p>
           </div>
-          <div style={{display:'flex' , justifyContent:'center' ,flexDirection:'column' , flex:'1' , width : '100%' , minHeight:'200px' , scrollbarWidth: 'none' , border: '1.7px solid var(--color-border)'}}>
+          <div style={{ display:'flex' , justifyContent:'center' ,flexDirection:'column' , flex:'1' , width : '100%' , minHeight:'200px' , scrollbarWidth: 'none' }}>
             <span style={{fontSize:'1.5rem' , marginTop:'1rem'}}>暂无ai总结</span>
           </div>
             

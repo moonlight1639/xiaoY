@@ -1,0 +1,169 @@
+.schoolbus-page {
+	min-height: 100vh;
+	padding: 2.5rem 1.5rem 4rem;
+	background: radial-gradient(circle at top, #dfe9f7 0%, #c7d9f2 35%, #b9cfea 100%);
+	color: #0f172a;
+}
+
+.schoolbus-hero {
+	text-align: center;
+	margin-bottom: 2.5rem;
+}
+
+.hero-subtitle {
+	letter-spacing: 0.25rem;
+	font-weight: 600;
+	color: #1f2937;
+}
+
+.hero-title {
+	margin-top: 0.5rem;
+	font-size: clamp(2.25rem, 4vw, 3.5rem);
+	font-weight: 800;
+	color: #0b1f44;
+}
+
+.schoolbus-card {
+	max-width: 1100px;
+	margin: 0 auto 2rem;
+	background: #ffffffcc;
+	border-radius: 1rem;
+	border: 1px solid #c7d2fe;
+	box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
+	padding: 1.5rem 1.75rem 2rem;
+	backdrop-filter: blur(6px);
+}
+
+.card-title {
+	background: #0b3a86;
+	color: #fff;
+	border-radius: 0.75rem;
+	padding: 0.75rem 1rem;
+	font-weight: 700;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0.75rem;
+	margin-bottom: 1.25rem;
+}
+
+.card-title em {
+	font-style: normal;
+	font-weight: 500;
+	opacity: 0.85;
+}
+
+.campus-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: 1rem;
+}
+
+.campus-col {
+	background: #f8fafc;
+	border: 1px solid #e2e8f0;
+	border-radius: 0.75rem;
+	padding: 1rem;
+}
+
+.campus-col h3 {
+	font-size: 1rem;
+	color: #0b3a86;
+	margin-bottom: 0.75rem;
+	text-align: center;
+}
+
+.campus-col ul {
+	list-style: none;
+	display: grid;
+	gap: 0.35rem;
+	margin: 0;
+	padding: 0;
+	font-weight: 600;
+	color: #0f172a;
+	text-align: center;
+}
+
+.campus-rules {
+	background: #f1f5f9;
+	border: 1px dashed #94a3b8;
+	border-radius: 0.75rem;
+	padding: 1rem;
+}
+
+.campus-rules h3 {
+	margin-bottom: 0.75rem;
+	color: #0b3a86;
+	text-align: center;
+}
+
+.campus-rules ul {
+	margin: 0;
+	padding-left: 1.2rem;
+	color: #334155;
+	line-height: 1.6;
+}
+
+.bus-block {
+	margin-bottom: 1.5rem;
+}
+
+.bus-block h3 {
+	text-align: center;
+	margin-bottom: 0.75rem;
+	color: #0b3a86;
+}
+
+.bus-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: 1rem;
+}
+
+.bus-col {
+	background: #f8fafc;
+	border: 1px solid #e2e8f0;
+	border-radius: 0.75rem;
+	padding: 1rem;
+}
+
+.bus-route {
+	font-weight: 600;
+	text-align: center;
+	color: #1e3a8a;
+	margin-bottom: 0.75rem;
+}
+
+.bus-times {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.5rem 0.75rem;
+	text-align: center;
+	font-weight: 600;
+	color: #0f172a;
+}
+
+.bus-note {
+	margin-top: 0.5rem;
+	font-size: 0.85rem;
+	color: #475569;
+	text-align: center;
+}
+
+.schoolbus-footer {
+	text-align: center;
+	font-weight: 700;
+	letter-spacing: 0.25rem;
+	color: #0b1f44;
+	margin-top: 2rem;
+}
+
+@media (max-width: 720px) {
+	.schoolbus-page {
+		padding: 2rem 1rem 3rem;
+	}
+
+	.bus-times {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}

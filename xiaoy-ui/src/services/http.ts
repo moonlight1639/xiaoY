@@ -2,10 +2,13 @@ import axios from 'axios'
 
 /**
  * Axios 实例配置
- * 请求前缀为 /xiaozhi
+ * 请求前缀为 /xiaoy
  */
+const preUrl = 'http://localhost:8080'
+// const preUrl = '/api'
 const http = axios.create({
-  baseURL: 'http://localhost:8080/xiaoY',
+  baseURL: preUrl + '/xiaoY',
+  // baseURL: '/api',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'

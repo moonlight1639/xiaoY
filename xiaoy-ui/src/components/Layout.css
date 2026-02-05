@@ -8,7 +8,17 @@
   --color-primary: #3b82f6;
   --color-primary-hover: #2563eb;
   --color-primary-light: rgba(59, 130, 246, 0.1);
-  --color-bg: #ffffff;
+  --color-bg: white;
+  --color-bg-dynamic: linear-gradient(
+    120deg,
+    #f9fcff 0%,
+    #f5f9ff 35%,
+    #f9fcff 70%,
+    #e0f7ff 100%
+  );
+  background: white;
+  background-size: 200% 200%;
+  animation: bg-shift 14s ease-in-out infinite;
   --color-bg-card: #ffffff;
   --color-text: #1e3a5f;
   --color-text-secondary: #64748b;
@@ -275,4 +285,14 @@
     text-align: center;
   }
 }
+
+@keyframes bg-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 提示：CSS columns 为顺序填充，不会自动放到最短列 */
+/* 提示：column-fill 仍按顺序填充，非最短列 */
+/* 真正“最短列”需 JS 计算并把卡片分配到三列 */
 

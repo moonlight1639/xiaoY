@@ -27,9 +27,9 @@
 
 .canteen-container{
 
-    width: 80%;
+    width: 85%;
     height: fit-content;
-    background-color: white;
+    /* background-color: white; */
     display: flex;
     justify-content: space-between;
 }
@@ -57,26 +57,34 @@
     /* align-items: center; */
     width: 100%;
     height: fit-content;
+    /* text-align: center; */
     padding-bottom: 1rem;
     padding-left: 1rem;
     padding-top: 1rem;
-    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1); /* 只给左侧添加阴影 */
+    /* box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1); 只给左侧添加阴影 */
     border-radius: 8px;
+    border : 1.5px solid var(--color-border);
+    background-color: var(--color-bg-card);
 }
 
 .canteen-rank{
+    width:100%;
     margin-top: 2rem;
-    padding-top: 1rem;
+    padding-top: 0.5rem;
+    /* padding-left: 1rem; */
     padding-bottom: 1rem;
     font-size: 1.5rem;
+    text-align: center;
     font-weight: 600;
-    padding-left: 0.8rem;
-    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1); /* 只给左侧添加阴影 */
-
+    /* padding-left: 0.8rem; */
+    /* box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1); 只给左侧添加阴影 */
+    background-color: var(--color-bg-card);
+    border-radius: 8px;
+    border : 1.5px solid var(--color-border);
 }
 .canteen-rank-item{
-    width:85%;
-    margin-left: 0.5rem;
+    width:70%;
+    margin-left: 2rem;
     display: flex;
     border-radius: 8px;
     span{
@@ -144,11 +152,19 @@
     }
 }
 .canteen-right{
-    width:75%;
+    width:45%;
     display: flex;
     flex-direction: column;
     align-items: center;
     /* background-color: red; */
+}
+.canteen-ai{
+    width: 22%;
+    min-height:300px;
+    margin-top: 10rem;
+    height: fit-content;
+    border-radius: 8px;
+    border : 1px solid var(--color-border);
 }
 
 .canteen-right-container{
@@ -175,46 +191,36 @@
 }
 
 .canteen-right-food-card{
-    min-height: 150px;
-    width: 45%;
-    display: flex;
-    /* justify-content: space-between; */
-    /* flex-direction: column; */
-    align-items: center;
-    padding: 1rem 1rem;
-    /* border-bottom: 1px solid var(--color-border); */
+    height: fit-content;
+    width: 100%;
+    margin: 0 0 1.25rem 0;
+    display: inline-block;
+    break-inside: avoid;
+    /* padding-left: 1rem; */
+    padding-bottom: 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+    /* padding-left: 0.8rem; */
+    /* box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1); 只给左侧添加阴影 */
+    /* background-color: var(--color-bg-card); */
     border-radius: 12px;
-    box-shadow: -2px -2px 18px rgba(0, 0, 0, 0.2);
     margin-bottom: 2rem;
     margin-left: 3%;
     /* animation: transformRight 0.7s ease-in-out; */
-    img{
-        width: 39%;
-        aspect-ratio: 1;
-        border-radius: 4px;
-        margin-bottom: 1rem;
-        object-fit: cover;
-    }
+
     .detail{
         display: flex;
         flex-direction: column;
-        margin-left: 1rem;
-        gap: 1rem;
+        margin-left: 0rem;
+        /* gap: 0.6rem; */
         font-size: 1rem;
-    }
-    svg{
-        justify-self:end;
-        align-self: flex-start;
-        margin-left: auto;
-        margin-right: 0rem;
-        &:hover{
-            cursor: pointer;
-            transform: scale(1.1);
-        }
-        &:active{
-            transform: translateY(1px);
+        span{
+            font-weight: 550;
+            font-size: 1rem;
         }
     }
+
 
 
     &:nth-child(even){
@@ -227,7 +233,52 @@
         /* background-color: var(--color-bg-card); */
     }
 }
-
+.canteen-right-location-card{
+    height: fit-content;
+    width: 100%;
+    margin: 0 0 1.25rem 0;
+    display: inline-block;
+    break-inside: avoid;
+    /* padding-left: 1rem; */
+    padding-bottom: 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+    /* padding-left: 0.8rem; */
+    /* box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1); 只给左侧添加阴影 */
+    /* background-color: var(--color-bg-card); */
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    margin-left: 3%;
+}
+.canteen-right-food-card-svg{
+    /* justify-self:end;
+    align-self: flex-start; */
+    margin-left: auto;
+    /* margin-right: 1rem; */
+    height:20px;
+    &:hover{
+        cursor: pointer;
+        transform: scale(1.1);
+    }
+    &:active{
+        transform: translateY(1px);
+    }
+}
+.canteen-right-food-card-img{
+    /* flex:1; */
+    width: 95%;
+    min-length:0;
+    
+    img{
+        /* width: 39%; */
+        aspect-ratio: 1;
+        border-radius: 4px;
+        /* margin-bottom: 1rem; */
+        object-fit: cover;
+        border-radius: 1rem;
+    }
+}
 @keyframes transformRight{
     0% {
         opacity:0.8;
@@ -253,8 +304,19 @@
     width: 100%;
     height: fit-content;
     padding: 1rem 0rem;
-    display: flex;
-    /* flex-direction: column; */
-    flex-wrap: wrap;
-    /* align-items: center; */
+    display: block;
+    column-count: 2 ;
+    column-gap: 1.25rem;
+    column-fill: balance; /* 仅平衡列高，非真正“最短列”算法 */
+    gap: 1.25rem;
+    align-items: start;
+    /* flex-wrap: wrap; */
+    /* display: block; */
+    /* column-fill: auto; 顺序填充，不是最短列 */
+}
+
+@supports (grid-template-rows: masonry) {
+    .canteen-right-card-container{
+        grid-template-rows: masonry;
+    }
 }

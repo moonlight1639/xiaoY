@@ -118,9 +118,7 @@
   padding: 40px 48px;
   background: #f5faff;
   overflow-y: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
 }
 
 .content-placeholder {
@@ -158,4 +156,174 @@
 }
 .animate-nav {
   animation: navItemPop 0.5s;
+}
+
+.admin-link {
+  color: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.admin-page {
+  width: 100%;
+}
+
+.admin-page-header h3 {
+  margin: 0 0 6px 0;
+  font-size: 1.4rem;
+  color: #1f3b8f;
+}
+.admin-page-header p {
+  margin: 0 0 18px 0;
+  color: #6b7aa1;
+}
+
+.admin-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.admin-filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.admin-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px 0 rgba(33,85,205,0.07);
+  padding: 16px 20px 8px;
+}
+
+.admin-input,
+.admin-select {
+  height: 36px;
+  border: 1px solid #dbe3f2;
+  border-radius: 8px;
+  padding: 0 12px;
+  outline: none;
+  background: #fff;
+  color: #20305f;
+}
+.admin-input:focus,
+.admin-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.98rem;
+}
+.admin-table th,
+.admin-table td {
+  text-align: left;
+  padding: 12px 8px;
+  border-bottom: 1px solid #eef2f8;
+}
+.admin-table thead th {
+  color: #4b5d87;
+  font-weight: 600;
+  background: #f7f9fe;
+}
+.admin-table tbody tr:hover {
+  background: #f9fbff;
+}
+
+.admin-btn {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-right: 8px;
+}
+.admin-btn.primary {
+  background: #3b82f6;
+  color: #fff;
+}
+.admin-btn.ghost {
+  background: #fff;
+  border-color: #cfe0ff;
+  color: #2b4aa0;
+}
+.admin-btn.danger {
+  background: #ffe8e8;
+  color: #c0352b;
+  border-color: #ffd2d2;
+}
+
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  background: #edf2ff;
+  color: #2b4aa0;
+}
+.tag.role-管理员 { background: #e6f0ff; color: #2155cd; }
+.tag.role-运营 { background: #ecfdf3; color: #10b981; }
+.tag.role-访客 { background: #fff7ed; color: #f59e0b; }
+.tag.status-启用 { background: #ecfdf3; color: #10b981; }
+.tag.status-停用 { background: #ffe8e8; color: #c0352b; }
+
+.admin-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0 6px;
+  color: #6b7aa1;
+}
+.admin-pagination .pager {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.empty {
+  text-align: center;
+  color: #94a3c4;
+  padding: 24px 0;
+}
+
+.admin-modal-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 24, 60, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+.admin-modal {
+  width: 420px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(23, 32, 80, 0.2);
+}
+.admin-form {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 16px;
+}
+.admin-form label {
+  color: #5b6b93;
+  font-size: 0.9rem;
+}
+.admin-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
