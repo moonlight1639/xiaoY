@@ -1,12 +1,9 @@
 import { Link, useLocation, Outlet } from 'react-router-dom'
-import { useAppStore, useAuthStore } from '../store'
-import AvatarDropdown from './AvatarDropdown'
+import { useAppStore } from '@/store'
+import {AvatarDropdown , LoginComponent} from '@/components'
 import './Layout.css'
-import React, { useState } from 'react';
 import { Button, Modal } from 'antd';
-import LoginComponent from './LoginComponent';
-import RegisterComponent from './RegisterComponent';
-import useLoginStore from '../store/isLogin';
+import useLoginStore from '@/store/isLogin';
 function Layout() {
   const location = useLocation()
   const { theme, toggleTheme } = useAppStore()
@@ -86,9 +83,8 @@ function Layout() {
         onCancel={handleCancel}
         width='450px'
         footer={null}
-        style={{top:'25%' , maxWidth:'600px' , boxShadow:'0 4px 12px rgba(0, 0, 0, 0.15)' , body: { height:500 } 
-          
-        }}
+        style={{top:'25%' , maxWidth:'600px' , boxShadow:'0 4px 12px rgba(0, 0, 0, 0.15)'}}
+        bodyStyle={{ height: 500 }}
 
         
         // className='my-custom-modal'

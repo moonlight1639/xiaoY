@@ -1,10 +1,12 @@
 import { useState , useRef, useEffect} from "react"
 import { Link } from "react-router-dom";
-import './Reviews.css'
-import type { Course } from "../types/Course";
-import { getCourses } from "../services/courseApi";
-import defaultAvator from '../assets/avator/defaultAvator.jpg'
-import { Button } from "antd"
+import './Reviews.css';
+import { getCourses } from "@/services/courseApi";
+import defaultAvator from '@/assets/avator/defaultAvator.jpg'
+import type { ChatMessageList ,Course} from "@/types";
+import { ChatView } from "@/components";
+// import doubapImg from '@/assets/doubao1.jpg'
+// import stuImg from '@/assets/avator/stu.jpg'
 function Reviews() {
   const [courses , setCourses] = useState<Course[]>([
     { id: 1, courseName: '计算机导论' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
@@ -32,6 +34,16 @@ function Reviews() {
   const [highLightRef, setHighLightRef] = useState(-1);
   const timerId = useRef<ReturnType<typeof setTimeout> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
+  const [activeConversation, setActiveConversation] = useState<ChatMessageList | null>({
+    memoryId: '1',
+    title: '示例对话',
+    messages: [
+      { type: 'user', content: '这是一条用户消息', createTime: new Date().toISOString() },
+      { type: 'assistant', content: '这是一条助手消息', createTime: new Date().toISOString() }
+    ],
+    createTime: new Date().toISOString(),
+  })
+  
   useEffect(() => {
     const fetchCourses = async () => {
       
@@ -47,6 +59,7 @@ function Reviews() {
 
   useEffect(() => {
     listRefs.current = {};
+    console.log('Courses updated, reset listRefs')
   }, [courses]);
   function scrollToCourse(id : number) {
     const containerTop = container.current?.getBoundingClientRect().top;
@@ -69,7 +82,7 @@ function Reviews() {
       
       
         {/* 左侧 */}
-        <div id='left' className="review-sidebar-left" style={{position:'sticky' , top:'0'}}>
+        <div id='left' className="review-sidebar-left" style={{position:'sticky' , top:'0'}} key={'review-left'}>
           <div style={{textAlign:'left' , width:'100%'}}>
             <h2>⭐ 课程点评</h2>
             <p style={{ color: 'var(--color-text-secondary)', marginBottom: '1rem' }}>
@@ -151,17 +164,27 @@ function Reviews() {
         
         </div>
         
-        <div id='left' className="review-sidebar-right" style={{position:'sticky',
-    top:'100px'}}>
+        <div id='right' key={'review-right'} className="review-sidebar-right" style={{ position:'sticky' ,
+    top:'10px' , marginTop:'50px'}}>
           
-          <div style={{ borderRadius:'4px 4px 0 0' , height : '40px' , width : '100%' , display: 'flex', justifyContent: 'center' , alignItems: 'center' }}>
+          
+          {/* /* <div style={{ borderRadius:'4px 4px 0 0' , height : '40px' , width : '100%' , display: 'flex', justifyContent: 'center' , alignItems: 'center' }}>
             <p style={{ fontSize:'20px' , fontWeight: '600' }}>课程评价</p>
           </div>
           <div style={{ display:'flex' , justifyContent:'center' ,flexDirection:'column' , flex:'1' , width : '100%' , minHeight:'200px' , scrollbarWidth: 'none' }}>
             <span style={{fontSize:'1.5rem' , marginTop:'1rem'}}>暂无ai总结</span>
+          </div> */ }
+          
+          <div key='chat-header' style = {{padding : '0.5rem 0.7rem', textAlign:'left', fontSize:'1.2rem', marginBottom:'0.5rem' , fontWeight:'600' , color:'rgba(0 , 0 , 0 , 0.9)'}}>
+            <span >聊天助手</span>
           </div>
-            
-          </div>
+          
+          <ChatView key='chat-body' AvatorSize={39} />
+          
+          
+          
+        </div>
+          
 
 
 

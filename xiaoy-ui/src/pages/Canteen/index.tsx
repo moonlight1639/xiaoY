@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import FoodImg from '@/assets/food/chicken.jpg'
 import './Canteen.css'
 import type { Location } from '@/types/Location';
-import type { Dish } from '@/types/Dish';
+import type { Dish } from '../../types/Dish';
+import { ChatView } from '@/components';
 function Canteen() {
   const [Rank ] = useState([
     {id : 1 , name: '宫保鸡丁', sales: 150},
@@ -47,7 +48,7 @@ function Canteen() {
     ]
   );
   useEffect(() => {
-
+    
   }, []);
 
   const LocationRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -157,7 +158,10 @@ function Canteen() {
             </div>
         </div>
         <div className='canteen-ai'>
-          <p>ai对话</p>
+          <div style = {{padding : '0.5rem 0.7rem', textAlign:'left', fontSize:'1.2rem', marginBottom:'0.5rem' , fontWeight:'600' , color:'rgba(0 , 0 , 0 , 0.9)'}}>
+            <span>聊天助手</span>
+          </div>
+          <ChatView AvatorSize={39} ContainerSize={300} />
         </div>
       </div>
       <footer className="footer">

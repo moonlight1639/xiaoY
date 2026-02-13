@@ -10,7 +10,7 @@ interface AuthState {
   isAuthenticated: boolean
   
   // Actions
-  setUser: (user: UserInfo, token: string) => void
+  setUser: (user: UserInfo | null, token: string | null) => void
   logout: () => void
 }
 

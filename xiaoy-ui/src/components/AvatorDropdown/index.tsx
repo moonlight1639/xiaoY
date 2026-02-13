@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { useAuthStore } from "../store";
-import stuImg from '../assets/avator/stu.jpg';
-import { getUserInfo } from "../services/userInfo";
+import { useAuthStore } from "../../store";
+import stuImg from '@/assets/avator/stu.jpg';
+import { getUserInfo } from "../../services/userInfo";
 import './AvatorDropdown.css';
-import {useLoginStore} from '../store/isLogin';
+import {useLoginStore} from '../../store/isLogin';
 function AvatarDropdown() {
-  const {isLogin , setIsLogin} = useLoginStore();
+  const { setIsLogin} = useLoginStore();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const { user , setUser} = useAuthStore()

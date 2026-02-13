@@ -1,5 +1,5 @@
 import http from "./http";
-import type { CourseComment } from "../types/CourseComment";
+import type { CourseComment , UpdateCourseComment , InsertCourseComment } from "../types/CourseComment";
 
 export interface ResponseCourseComments{
   success: boolean;
@@ -8,6 +8,12 @@ export interface ResponseCourseComments{
   total?: number;
 }
 
+export interface ResponseUpdateCourseComments{
+  success: boolean;
+  errorMsg?: string;
+  data?: UpdateCourseComment[];
+  total?: number;
+}
 export interface ResponseCourseComment {
   success: boolean;
   errorMsg?: string;
@@ -24,3 +30,15 @@ export const getCourseCommmentsByCourseId = (id : number): Promise<ResponseCours
   return http.get(`/coursecomment/${id}`);
 };
 
+export const getUpdateCoursesCommmentList = (pageNum?:number , pageSize?:number): Promise<ResponseUpdateCourseComments> => {
+  return http.get("/coursecomment/list" , {
+    params: {
+      pageNum,
+      pageSize
+    }
+  });
+}
+
+export const updateCourseComment = (data: UpdateCourseComment): Promise<ResponseUpdateCourseComments> => {
+  return http.put("/coursecomment/update" , data);
+}

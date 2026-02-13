@@ -1,0 +1,223 @@
+.chatview-chat-conversation {
+  /* flex: 1; */
+  display: flex;
+  width: 100%;
+  height: 100%;
+  /* height: 100%; */
+  /* min-height: 200px; */
+  flex-direction: column;
+  min-height: 0; 
+   /* 关键：让 flex 子元素可以收缩并溢出 */
+  /* max-height:100%; */
+  flex:1;
+  overflow: hidden;
+  animation: chatview-fadeInUp 0.4s ease;  /* 使用 animation，元素挂载时会自动播放 */
+  /* height: 100%; */
+}
+
+@keyframes chatview-fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(1px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chatview-messages-container {
+  flex: 1 1 auto;
+  min-height: 0;  /* 关键：让 flex 子元素可以收缩 */
+
+  overflow-y: auto;
+  
+  /* contain: strict; */
+  padding: 0.1rem 2%;  /* 左右各 10%，内容区域就是 80% */
+  /* min-height: 0;  让容器可以收缩 */
+  /* max-height:100%; */
+}
+.chatview-message {
+  display: flex;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+  max-width: 75%;
+}
+
+/* 用户消息靠右 */
+.chatview-message.user {
+  flex-direction: row-reverse;
+  margin-left: auto;
+}
+
+/* AI 消息靠左 */
+.chatview-message.assistant {
+  margin-right: auto;
+}
+
+.chatview-message-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  /* background-color: var(--color-bg-card); */
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  flex-shrink: 0;  overflow: hidden;  /* 让图片不超出圆形 */
+}
+
+.chatview-message-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;}
+
+.chatview-message.assistant .chatview-message-avatar {
+  /* background-color: var(--color-primary); */
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.chatview-message-body {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  /* width:80%; */
+}
+.chatview-message.user .chatview-message-body {
+  text-align: right;
+}
+
+.chatview-message-role {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: black;
+  margin-bottom: 0.25rem;
+}
+
+.chatview-message-content {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 1rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+/* 用户消息气泡 - 蓝色 */
+.chatview-message.user .chatview-message-content {
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: 1rem 0.25rem 1rem 1rem;
+}
+
+.chatview-message.assistant .chatview-message-content {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  border-radius: 0.25rem 1rem 1rem 1rem;
+}
+
+.chatview-message-content p {
+  margin: 0 0 0.5rem;
+}
+
+.chatview-message-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* 打字指示器 */
+.chatview-typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 8px 0;
+}
+
+.chatview-typing-indicator span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-text-secondary);
+  animation: chatview-typing 1.4s infinite ease-in-out both;
+}
+
+.chatview-typing-indicator span:nth-child(1) { animation-delay: 0s; }
+.chatview-typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.chatview-typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes chatview-typing {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.chatview-input-area {
+  width: 100%;
+  padding: 0.5rem;
+  /* border-top: 1px solid var(--color-border); */
+  /* background-color: var(--color-bg-card); */
+  flex: 0 0 auto;
+}
+
+.chatview-input-container {
+  width: 80%;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 0.2rem;
+  transition: border-color 0.2s;
+}
+
+.chatview-input-container:focus-within {
+  border-color: var(--color-primary);
+}
+
+.chatview-chat-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding-bottom: 0.5rem;
+  padding-left: 0.5rem;
+  /* font-size: 0.9375rem; */
+  color: var(--color-text);
+  resize: none;
+  font-family: inherit;
+  line-height: 1;
+}
+
+.chatview-chat-input:focus {
+  outline: none;
+}
+
+.chatview-chat-input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.chatview-send-btn {
+  padding: 0.5rem 1.25rem;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  align-self: flex-end;
+}
+
+.chatview-send-btn:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
+
+.chatview-send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

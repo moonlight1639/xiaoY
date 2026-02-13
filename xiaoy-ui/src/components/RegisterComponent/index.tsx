@@ -1,8 +1,8 @@
 import type { FormProps } from 'antd';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { useRef } from 'react';
-import { registerApi } from '../services/userApi';
-import type {User} from '../types/User';
+import { registerApi } from '../../services/userApi';
+import type {User} from '../../types/User';
 type FieldType = {
   username?: string;
   password?: string;
@@ -58,7 +58,7 @@ function RegisterComponent({ returnLogin }: RegisterComponentProps) {
       }}
     >
       <div style={{position:'absolute' , top:'10px', left:'10px', cursor:'pointer'}} onClick={returnLoginFun}>
-      <svg t="1769171393710" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4804" width="32" height="32"><path d="M455.7312 866.6112l-4.096-3.4304-324.5056-304.2304a64 64 0 0 1-7.168-85.4528l4.1984-5.12 2.9184-2.9184L451.584 160.9216a42.6496 42.6496 0 0 1 62.0544 58.3168l-3.6864 3.8912-262.4 246.2208h627.0976a42.7008 42.7008 0 0 1 5.12 85.0432l-5.12 0.3072H247.2448l262.7072 246.1696a42.6496 42.6496 0 0 1 5.376 56.32l-3.4304 4.1472a42.7008 42.7008 0 0 1-56.32 5.12z" fill="#2c2c2c" p-id="4805"></path></svg>
+      <svg  className="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4804" width="32" height="32"><path d="M455.7312 866.6112l-4.096-3.4304-324.5056-304.2304a64 64 0 0 1-7.168-85.4528l4.1984-5.12 2.9184-2.9184L451.584 160.9216a42.6496 42.6496 0 0 1 62.0544 58.3168l-3.6864 3.8912-262.4 246.2208h627.0976a42.7008 42.7008 0 0 1 5.12 85.0432l-5.12 0.3072H247.2448l262.7072 246.1696a42.6496 42.6496 0 0 1 5.376 56.32l-3.4304 4.1472a42.7008 42.7008 0 0 1-56.32 5.12z" fill="#2c2c2c" p-id="4805"></path></svg>
       </div>
       
       <h1 style={{marginBottom:'20px' , fontSize: '40px', fontWeight: '600' , marginTop: '15px'}}>注&emsp;册</h1>

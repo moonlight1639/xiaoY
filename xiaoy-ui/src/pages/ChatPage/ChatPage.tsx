@@ -1,99 +1,195 @@
 import { useState, useRef, useEffect } from 'react'
+import type {ChatMessage ,ChatForm , ChatMessageList , ChatMessageTitle } from '@/types';
+import { xiaoY_chat , getList , getMessages } from '@/services'
 import './ChatPage.css'
-import doubapImg from '../assets/doubao1.jpg'
-import chatApi from '../services/chatapi'
-import type { SendMessageParams } from '../services/chatapi'
+import doubapImg from '@/assets/doubao1.jpg'
 import stuImg from '@/assets/avator/stu.jpg'
-interface Message {
-  id: string
-  role: 'user' | 'assistant'
-  content: string
-  timestamp: Date
-}
-
-interface Conversation {
-  id: string
-  title: string
-  messages: Message[]
-  createdAt: Date
-}
 
 function ChatPage() {
-  const [conversations, setConversations] = useState<Conversation[]>([])
+  const [conversations, setConversations] = useState<ChatMessageTitle[]>([
+    {
+        memoryId: '1',
+        title: '今天有什么课？',
+        createTime: '2024-06-01 10:00:00',
+
+    },
+    {
+        memoryId: '2',
+        title: '明天有什么课？',
+        createTime: '2024-06-02 10:00:00',
+    },
+    {
+        memoryId: '3',
+        title: '明天有什么课？',
+        createTime: '2024-06-02 10:00:00',
+    }
+  ])
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null)
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+  const [activeConversation, setActiveConversation] = useState<ChatMessageList | null>(null)
 
+  /*
+
+{
+    memoryId: '1',
+    title: '今天有什么课？',
+    messages: [{
+      type: 'user',
+      content: '今天有什么课？',
+      createTime: '2024-06-01 10:00:00',
+    },{
+      type: 'assistant',
+      content: '今天你有以下课程安排：\n- 周一：高等数学 (8:00-9:40)\n- 周二：大学英语 (10:00-11:40)\n- 周三：程序设计 (14:00-15:40)',
+      createTime: '2024-06-01 10:01:00',
+    }],
+    createTime: '2024-06-01 10:00:00',
+  }
+
+
+  */
   // 获取当前对话
-  const activeConversation = conversations.find(c => c.id === activeConversationId)
 
   // 滚动到底部
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    messagesEndRef.current?.scrollIntoView({ behavior: 'auto' })
   }
 
   useEffect(() => {
-    scrollToBottom()
-  }, [activeConversation?.messages])
+    const fetchMessages = async () => {
+      const res =  await getList();
+      if(res.success === true && res.data){
+        setConversations(res.data);
+        
+      }
+      
+    }
+    fetchMessages().then(() => {scrollToBottom()});
+    
+  }, [activeConversation, activeConversationId]);
 
   // 创建新对话
   const handleNewChat = () => {
     setActiveConversationId(null)
+    setActiveConversation(null)
     setInputValue('')
+  }
+
+    // 输入框回车发送
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSend()
+    }
+  }
+
+  // 删除对话
+  const handleDeleteConversation = (id: string, e: React.MouseEvent) => {
+
+    e.stopPropagation()
+    setConversations(prev => prev.filter(c => c.memoryId !== id))
+    if (activeConversationId === id) {
+      setActiveConversationId(null)
+    }
+    // const fetchMessages = async () => {
+    //   const res =  await getList();
+    //   if(res.success === true && res.data){
+    //     setConversations(res.data);
+    //     // setConversations(prev => prev.filter(c => c.memoryId !== id))
+    //   }
+    // }
+  }
+
+  //选中对话
+  const handleClickTitle = (memoryId: string) => {
+    setActiveConversationId(memoryId)
+    const fetchMessages = async () => {
+        const res =  await getMessages(memoryId);
+        if(res.success === true && res.data){
+          setActiveConversation(res.data);
+          console.log(activeConversation);
+        }else{
+          setActiveConversation({
+              memoryId: memoryId,
+              title: conversations.find(c => c.memoryId === memoryId)?.title || '新对话',
+              messages: [],
+              createTime: conversations.find(c => c.memoryId === memoryId)?.createTime || new Date().toISOString(),
+            })
+        }
+    }
+    fetchMessages();
+
+    
   }
 
   // 发送消息
   const handleSend = async () => {
     if (!inputValue.trim() || isLoading) return
+    setActiveConversation(prev => (prev && {
+      ...prev,
+      messages: [
+        ...prev.messages,{
+          type: 'user',
+          content: inputValue.trim(),
+          createTime: new Date().toISOString(),
+        }
+    ]}))
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      role: 'user',
-      content: inputValue.trim(),
-      timestamp: new Date()
-    }
-
-    // 如果没有活动对话，创建新对话
-    if (!activeConversationId) {
-      const newConversation: Conversation = {
-        id: Date.now().toString(),
-        title: inputValue.trim().slice(0, 20) + (inputValue.length > 20 ? '...' : ''),
-        messages: [userMessage],
-        createdAt: new Date()
-      }
-      setConversations(prev => [newConversation, ...prev])
-      setActiveConversationId(newConversation.id)
-    } else {
-      // 添加到现有对话
-      setConversations(prev => prev.map(conv => 
-        conv.id === activeConversationId 
-          ? { ...conv, messages: [...conv.messages, userMessage] }
-          : conv
-      ))
-    }
-
-    setInputValue('')
     setIsLoading(true)
 
-    // 模拟 AI 响应
-    setTimeout(async () => {
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: await generateResponse(userMessage.content),
-        timestamp: new Date()
+    const userMessage: ChatForm = {
+      memoryId: activeConversationId || undefined,
+      content: inputValue.trim()
+    }
+    setInputValue('')
+    let assistantMessage: ChatMessage = {
+      memoryId :Date.now().toString(),
+      title: '新对话',
+      type: 'assistant',
+      content: "齐达内进球了！",
+      createTime: new Date().toISOString(),
+    }
+    const fetchResponse = async () => {
+      const res = await xiaoY_chat(userMessage);
+      if(res.success === true && res.data){
+        console.log("ai的消息啊，西八.data:", res.data);
+        Object.assign(assistantMessage, res.data);
+        assistantMessage = res.data;
+        setActiveConversationId(assistantMessage.memoryId)
+        
       }
+    }
+    await fetchResponse();
+    // console.log("运行到这了", assistantMessage);
+    // 如果没有活动对话，创建新对话
 
-      setConversations(prev => prev.map(conv => 
-        conv.id === (activeConversationId || prev[0]?.id)
-          ? { ...conv, messages: [...conv.messages, assistantMessage] }
-          : conv
-      ))
-      setIsLoading(false)
-    }, 200)
+      // 添加到现有对话
+    setActiveConversation(prev => (prev && {
+      ...prev,
+      messages: [
+        ...prev.messages, {
+          type: 'assistant',
+          content: assistantMessage.content,
+          createTime: assistantMessage.createTime,
+        }
+    ]}))
+    
+    // console.log("运行到这了2", assistantMessage);
+
+    
+
+    // 模拟 AI 响应
+
+
+
+      
+    
+    setIsLoading(false)
+    // console.log("运行到这了3", assistantMessage);
+
   }
 
   // 模拟回复
@@ -109,27 +205,13 @@ function ChatPage() {
   //   }
   //   return `你好！我是科大小Y，很高兴为你服务。\n\n你问的是："${question}"\n\n这是一个模拟回复，实际使用时会连接后端 AI 接口为你提供更准确的答案。`
   // }
-     const generateResponse = async(question: string):Promise<string> => {
-        const result = await chatApi.sendMessage({memoryId: 1 , message: question} as SendMessageParams);
+    //  const generateResponse = async(question: string):Promise<string> => {
+    //     const result = await chatApi.sendMessage({memoryId: activeConversationId || "23412345" , content: question} );
         
-        return result; 
+    //     return result; 
    
-     }
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      handleSend()
-    }
-  }
+    //  }
 
-  // 删除对话
-  const handleDeleteConversation = (id: string, e: React.MouseEvent) => {
-    e.stopPropagation()
-    setConversations(prev => prev.filter(c => c.id !== id))
-    if (activeConversationId === id) {
-      setActiveConversationId(null)
-    }
-  }
 
   return (
     <div className='chat-page-outer'>
@@ -158,15 +240,15 @@ function ChatPage() {
             ) : (
               conversations.map(conv => (
                 <div
-                  key={conv.id}
-                  className={`conversation-item ${activeConversationId === conv.id ? 'active' : ''}`}
-                  onClick={() => setActiveConversationId(conv.id)}
+                  key={conv.memoryId}
+                  className={`conversation-item ${activeConversationId === conv.memoryId ? 'active' : ''}`}
+                  onClick={() => {handleClickTitle(conv.memoryId)}}
                 >
-                  <svg t="1769527783553" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="18052" width="24" height="24"><path d="M507.904 60.416q93.184-1.024 175.104 33.792t143.872 94.72 97.792 141.312 36.864 174.592q1.024 88.064-30.208 165.888t-87.04 137.728-131.072 98.816-162.304 48.128q-22.528 3.072-48.128 5.12t-56.832 3.072-69.632 0-86.528-6.144q-106.496-10.24-158.208-26.624t-41.472-18.432q54.272-9.216 93.184-29.696 20.48-11.264 16.896-32.256t-19.968-39.424q-52.224-57.344-84.48-133.632t-34.304-164.352q-1.024-93.184 33.792-175.104t95.232-143.36 142.336-97.28 175.104-36.864zM707.584 510.976q0 26.624 18.432 45.568t45.056 18.944 45.568-18.944 18.944-45.568-18.944-45.056-45.568-18.432-45.056 18.432-18.432 45.056zM450.56 510.976q0 26.624 19.456 46.08t46.08 19.456q27.648 0 46.592-19.456t18.944-46.08q0-27.648-18.944-46.592t-46.592-18.944q-26.624 0-46.08 18.944t-19.456 46.592zM196.608 509.952q0 26.624 18.944 46.08t45.568 19.456q27.648 0 46.592-19.456t18.944-46.08-18.944-45.568-46.592-18.944q-26.624 0-45.568 18.944t-18.944 45.568z" p-id="18053" fill="#bfbfbf"></path></svg>
+                  <svg className="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="18052" width="24" height="24"><path d="M507.904 60.416q93.184-1.024 175.104 33.792t143.872 94.72 97.792 141.312 36.864 174.592q1.024 88.064-30.208 165.888t-87.04 137.728-131.072 98.816-162.304 48.128q-22.528 3.072-48.128 5.12t-56.832 3.072-69.632 0-86.528-6.144q-106.496-10.24-158.208-26.624t-41.472-18.432q54.272-9.216 93.184-29.696 20.48-11.264 16.896-32.256t-19.968-39.424q-52.224-57.344-84.48-133.632t-34.304-164.352q-1.024-93.184 33.792-175.104t95.232-143.36 142.336-97.28 175.104-36.864zM707.584 510.976q0 26.624 18.432 45.568t45.056 18.944 45.568-18.944 18.944-45.568-18.944-45.056-45.568-18.432-45.056 18.432-18.432 45.056zM450.56 510.976q0 26.624 19.456 46.08t46.08 19.456q27.648 0 46.592-19.456t18.944-46.08q0-27.648-18.944-46.592t-46.592-18.944q-26.624 0-46.08 18.944t-19.456 46.592zM196.608 509.952q0 26.624 18.944 46.08t45.568 19.456q27.648 0 46.592-19.456t18.944-46.08-18.944-45.568-46.592-18.944q-26.624 0-45.568 18.944t-18.944 45.568z" p-id="18053" fill="#bfbfbf"></path></svg>
                   <span className="conversation-title">{conv.title}</span>
                   <button 
                     className="delete-btn"
-                    onClick={(e) => handleDeleteConversation(conv.id, e)}
+                    onClick={(e) => handleDeleteConversation(conv.memoryId, e)}
                     title="删除对话"
                   >
                     <svg  className="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9595" width="20" height="20"><path d="M814.29 136.567H207.664c-55.752 0-101.274 13.3-101.274 56.776v26.086h808.663v-26.086c0.511-42.965-45.011-56.776-100.763-56.776" p-id="9596" fill="#707070"></path><path d="M723.245 191.808l-19.948-140.66c-3.58-27.62-29.667-50.125-57.287-50.125H376.456c-28.132 0-53.707 22.505-57.799 50.126l-19.948 141.17c-3.58 27.621 15.856 22.506 43.477 22.506h337.07c28.133-0.511 47.57 4.604 43.989-23.017z m-360.6-28.643L377.99 51.66h265.463l15.344 111.505H362.645zM831.17 282.342H190.785c-36.827 0-64.959 30.177-61.378 67.005l55.24 607.648c3.58 36.827 36.316 67.005 73.655 67.005h505.35c36.828 0 70.074-30.178 73.655-67.005l55.24-607.137c3.58-36.827-24.04-67.516-61.378-67.516zM376.456 953.415H245.514l-43.476-592.816h174.418v592.816z m221.474 0H423.512V360.599H597.93v592.816z m177.487 0H646.01V360.599h172.883l-43.476 592.816z" p-id="9597" fill="#707070"></path></svg>
@@ -236,14 +318,14 @@ function ChatPage() {
 
               {/* 消息列表 */}
               <div className="messages-container">
-                {activeConversation?.messages.map(msg => (
-                  <div key={msg.id} className={`message ${msg.role}`}>
+                {activeConversation?.messages.map((msg , index) => (
+                  <div className={`message ${msg.type === 'user' ? 'user' : 'assistant'}`} key={index}>
                     <div className="message-avatar">
-                      {msg.role === 'user' ? <img src={stuImg} alt="用户" /> : <img src={doubapImg} alt="科大小Y" />}
+                      {msg.type === 'user' ? <img src={stuImg} alt="用户" /> : <img src={doubapImg} alt="科大小Y" />}
                     </div>
                     <div className="message-body">
                       <div className="message-role">
-                        {msg.role === 'user' ? '你' : '科大小Y'}
+                        {msg.type === 'user' ? '你' : '科大小Y'}
                       </div>
                       <div className="message-content">
                         {msg.content.split('\n').map((line, i) => (

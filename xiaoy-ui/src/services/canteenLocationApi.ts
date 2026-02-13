@@ -1,6 +1,5 @@
 import http from "./http";
-import type { CanteenLocation } from "../types/CanteenLocation";
-import type { Location } from "../types/Location";
+import type { CanteenLocation , UpdateLocation , Location } from "../types";
 export interface ResponseCanteenLocations {
   success: boolean;
   errorMsg?: string;
@@ -8,6 +7,12 @@ export interface ResponseCanteenLocations {
   total?: number;
 }
 
+export interface ResponseUpdateLocations {
+  success: boolean;
+  errorMsg?: string;
+  data?: UpdateLocation[];
+  total?: number;
+}
 export interface ResponseCanteenLocation {
   success: boolean;
   errorMsg?: string;
@@ -23,9 +28,29 @@ export interface ResponseLocations {
 }
 
 
-export const getCanteenLocations = (): Promise<ResponseCanteenLocations> => {
-  return http.get("/canteenlocation/list");
+export const getCanteenLocations = (pageNum?: number , pageSize?:number): Promise<ResponseCanteenLocations> => {
+  return http.get("/canteenlocation/list",{
+      params:{
+        pageNum,
+        pageSize
+      }
+    }
+  );
 };
+
+export const getUpdateLocations = (pageNum?: number , pageSize?:number): Promise<ResponseUpdateLocations> => {
+  return http.get("/canteenlocation/list",{
+      params:{
+        pageNum,
+        pageSize
+      }
+    }
+  );
+};
+
+export const updateCanteenLocation = (data : UpdateLocation): Promise<ResponseCanteenLocation> => {
+  return http.put(`/canteenlocation/update`,data);
+}
 
 export const getCanteenLocation = (id : number): Promise<ResponseCanteenLocation> => {
   return http.get(`/canteenlocation/${id}`);

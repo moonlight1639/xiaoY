@@ -22,7 +22,11 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "baseUrl": ".", // 基础路径
+    "paths": {
+      "@/*": ["src/*"] // 匹配@/xxx 到 src/xxx
+    },
   },
   "include": ["src"]
 }

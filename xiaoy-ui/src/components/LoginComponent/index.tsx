@@ -1,11 +1,11 @@
 import type { FormProps } from 'antd';
 import { Button, Checkbox, Form, Input } from 'antd';
-import LogoImg from '../assets/doubao1.jpg'
-import { useState , useRef} from 'react';
-import RegisterComponent from './RegisterComponent';
-import { loginApi } from '../services/userApi';
-import { useAuthStore } from '../store';
-import useLoginStore from '../store/isLogin';
+import LogoImg from '@/assets/doubao1.jpg'
+import { useRef} from 'react';
+import RegisterComponent from '../RegisterComponent';
+import { loginApi } from '../../services/userApi';
+import { useAuthStore } from '../../store';
+import useLoginStore from '../../store/isLogin';
 type FieldType = {
   username?: string;
   password?: string;
@@ -21,7 +21,7 @@ const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
 };
 
 function LoginComponent() {
-  const { isLogin , setIsLogin , isRegister , setIsRegister} = useLoginStore();
+  const { setIsLogin , isRegister , setIsRegister} = useLoginStore();
   const UserFrom = useRef<{ username: string; password: string;}>({ username: '', password: ''});
   const setUser = useAuthStore(state => state.setUser);
   function getReturnLogin(value: boolean){

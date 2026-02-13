@@ -27,7 +27,7 @@
 
 .canteen-container{
 
-    width: 85%;
+    width: 88%;
     height: fit-content;
     /* background-color: white; */
     display: flex;
@@ -160,8 +160,11 @@
 }
 .canteen-ai{
     width: 22%;
-    min-height:300px;
-    margin-top: 10rem;
+    min-height:0;
+    height: fit-content;
+    /* margin-top: 10rem; */
+    position: sticky;
+    top: 4rem;
     height: fit-content;
     border-radius: 8px;
     border : 1px solid var(--color-border);

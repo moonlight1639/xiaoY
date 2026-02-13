@@ -1,12 +1,12 @@
 import { Routes, Route } from 'react-router-dom'
-import { Home, About, NotFound, Courses, Life, Reviews, ChatPage  } from '../pages'
+import { Home, NotFound, Courses, Life, Reviews, ChatPage , AdminLocations , AdminCourses , AdminDishs , AdminCourseComments} from '../pages'
 import ReviewInfo from '../pages/ReviewInfo'
 import { Layout } from '../components'
 import Canteen from '../pages/Canteen'
-import Admin from '../pages/Admin'
+import Admin from '../pages/Admin/Admin'
 import Container from '../components/Container'
 import SchoolBus from '../pages/SchoolBus'
-import AdminUsers from '../pages/admin/AdminUsers'
+import AdminUsers from '../pages/Admin/AdminUsers'
 // ...existing code...
 
 function AppRouter() {
@@ -16,7 +16,7 @@ function AppRouter() {
         <Route path="/" element={<Home />} />
         <Route index element={<Home />} />
         <Route path="/chat" element={<ChatPage />} />
-        <Route path="/about" element={<About />} />
+        {/* <Route path="/about" element={<About />} /> */}
         <Route path="/courses" element={<Courses />} />
         <Route path="/life" element={<Life />} />
          <Route path="/reviews" element={<Container />} >
@@ -31,6 +31,10 @@ function AppRouter() {
       <Route path="/admin" element={<Admin />}>
         <Route index element={<AdminUsers />} />
         <Route path="users" element={<AdminUsers />} />
+        <Route path="locations" element={<AdminLocations />} />
+        <Route path="courses" element={<AdminCourses />} />
+        <Route path="dishs" element={<AdminDishs />} /> {/* 这里需要替换成 AdminDishs 组件 */}
+        <Route path="coursecomments" element={<AdminCourseComments />} />
       </Route>
       
       <Route path="*" element={<NotFound />} />

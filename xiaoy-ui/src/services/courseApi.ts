@@ -1,5 +1,5 @@
 import http from "./http";
-import type { Course } from "../types/Course";
+import type { Course , UpdateCourse , InsertCourse } from "../types/Course";
 
 export interface ResponseCourses {
   success: boolean;
@@ -15,7 +15,19 @@ export interface ResponseCourse {
   total?: number;
 }
 
+export interface ResponseUpdateCourses {
+  success: boolean;
+  errorMsg?: string;
+  data?: UpdateCourse[];
+  total?: number;
+}
 
+export interface ResponseUpdateCourse {
+  success: boolean;
+  errorMsg?: string;
+  data?: UpdateCourse;
+  total?: number;
+}
 export const getCourses = (): Promise<ResponseCourses> => {
   return http.get("/course/list");
 };
@@ -23,3 +35,15 @@ export const getCourses = (): Promise<ResponseCourses> => {
 export const getCourse = (id : number): Promise<ResponseCourse> => {
   return http.get(`/course/${id}`);
 };
+
+export const getUpdateCourses = (pageNum? : number , pageSize?: number): Promise<ResponseUpdateCourses> => {
+  return http.get("/course/list",{
+    params: {
+      pageNum,
+      pageSize
+    }
+  });
+}
+export const updateCourse = (course: UpdateCourse): Promise<ResponseUpdateCourse> => {
+  return http.put("/course/update", course);
+}

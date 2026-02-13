@@ -1,13 +1,8 @@
 import http from './http'
-
-export interface SendMessageParams {
-  memoryId: number;
-  message: string;
-}
-
+import type {ChatForm} from '../types';
 export const chatApi = {
-  sendMessage: ({ memoryId, message }: SendMessageParams) =>
-    http.post('/chat', { memoryId, message }),
+  sendMessage: (chatForm: ChatForm):Promise<string> =>
+    http.post('/chat', chatForm),
 }
 
 export default chatApi 

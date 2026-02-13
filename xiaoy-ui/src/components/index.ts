@@ -1,1 +1,6 @@
 export { default as Layout } from './Layout'
+export { default as LoginComponent } from './LoginComponent'
+export { default as RegisterComponent } from './RegisterComponent'
+export { default as Container } from './Container'
+export { default as AvatarDropdown } from './AvatorDropdown'
+export { default as ChatView } from './ChatView'
