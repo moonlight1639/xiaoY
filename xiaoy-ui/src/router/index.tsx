@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import { Home, NotFound, Courses, Life, Reviews, ChatPage , AdminLocations , AdminCourses , AdminDishs , AdminCourseComments} from '../pages'
+import { UserInfoPage, Home, NotFound, Courses, Life, Reviews, ChatPage , AdminLocations , AdminCourses , AdminDishs , AdminCourseComments} from '../pages'
 import ReviewInfo from '../pages/ReviewInfo'
 import { Layout } from '../components'
 import Canteen from '../pages/Canteen'
@@ -26,6 +26,7 @@ function AppRouter() {
         <Route path="/canteen" element={<Canteen />} />
         <Route path="/schoolbus" element={<SchoolBus />} />
         {/* <Route path="/reviews" element={<Reviews />} /> */}
+        <Route path="/userinfo" element={<UserInfoPage />} />
       </Route>
       {/* 管理员管理系统路由 */}
       <Route path="/admin" element={<Admin />}>

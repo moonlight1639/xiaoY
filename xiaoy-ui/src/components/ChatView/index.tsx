@@ -46,11 +46,8 @@ const ChatView: React.FC<ChatViewProps> = (props) => {
   //滑到消息列表的底部
   const scrollToBottom = () => {
     const container = messagesContainerRef.current;
-    if (container) {
-      container.scrollTop = container.scrollHeight;
-      return;
-    }
-    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+    if (!container) return;
+    container.scrollTop = container.scrollHeight;
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -101,14 +98,12 @@ const ChatView: React.FC<ChatViewProps> = (props) => {
   };
 
   return (
-    <div
-      className="chatview-chat-conversation"
-      style={{ fontSize: "12px", ...(ContainerSize && { height: `${ContainerSize}px` }) }}
-    >
+    <div className="chatview-chat-conversation" style = {{fontSize : '12px'}}>
       {/* 消息列表 */}
       <div
         className="chatview-messages-container"
         ref={messagesContainerRef}
+        style={{ ...(ContainerSize && { maxHeight: `${ContainerSize}px` }) }}
       >
         {activeConversationList.map((msg, index) => (
           <div

@@ -1,15 +1,17 @@
 .chatview-chat-conversation {
-  /* flex: 1; */
+  flex: 1;
   display: flex;
   width: 100%;
-  height: 100%;
+  /* height: 100% !important; */
+  min-height:500px;
+  max-height: 100%;
   /* height: 100%; */
   /* min-height: 200px; */
   flex-direction: column;
-  min-height: 0; 
+  /* min-height: 0;  */
    /* 关键：让 flex 子元素可以收缩并溢出 */
   /* max-height:100%; */
-  flex:1;
+  /* flex:1; */
   overflow: hidden;
   animation: chatview-fadeInUp 0.4s ease;  /* 使用 animation，元素挂载时会自动播放 */
   /* height: 100%; */

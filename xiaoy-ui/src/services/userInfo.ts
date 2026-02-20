@@ -27,7 +27,11 @@ export const getUserInfoList = (pageNum?: number, pageSize?: number): Promise<Re
   });
 };
 
+
+
 export const updateUserInfo = (userinfo:updateUserInfoParams): Promise<ResponseUserInfoList> => {
   return http.put("/userinfo/update", userinfo);
 };
+
+
 

@@ -8,3 +8,4 @@ export { getCanteenLocations , getCanteenLocation , getDishList , getUpdateLocat
 export { getDishes , getDish , getUpdateDishes , updateDish } from './dishApi'
 export { getCourseCommmentsByCourseId , getCoursesCommmentList , getUpdateCoursesCommmentList , updateCourseComment} from './courseCommentApi'
 export { xiaoY_chat , getList , getMessages } from './ChatMessagesApi'
+export { uploadAvatar } from './common'

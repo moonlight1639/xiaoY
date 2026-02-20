@@ -161,7 +161,10 @@ function Canteen() {
           <div style = {{padding : '0.5rem 0.7rem', textAlign:'left', fontSize:'1.2rem', marginBottom:'0.5rem' , fontWeight:'600' , color:'rgba(0 , 0 , 0 , 0.9)'}}>
             <span>聊天助手</span>
           </div>
-          <ChatView AvatorSize={39} ContainerSize={300} />
+          <div style={{flex:'1'}}>
+            <ChatView key='canteen-chat-body' AvatorSize={39} />
+          </div>
+          
         </div>
       </div>
       <footer className="footer">

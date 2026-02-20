@@ -1,4 +1,4 @@
-import { Link, useLocation, Outlet } from 'react-router-dom'
+import { Link, useLocation, Outlet, NavLink } from 'react-router-dom'
 import { useAppStore } from '@/store'
 import {AvatarDropdown , LoginComponent} from '@/components'
 import './Layout.css'
@@ -58,10 +58,13 @@ function Layout() {
             <Button type="primary" style={{display:'none'}} onClick={()=>{setIsLogin(true)}}>
               测试登录页面
             </Button>
-            <button className="theme-btn" onClick={toggleTheme}>
+            <button className="theme-btn" style={{display:'none'}} onClick={toggleTheme}>
               {theme === 'light' ? '🌙' : '☀️'}
             </button>
             
+            <NavLink to="/admin" className="admin-link">
+              🖥️ 后台管理
+            </NavLink>
             <AvatarDropdown />
             
             

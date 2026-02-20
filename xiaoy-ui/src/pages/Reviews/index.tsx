@@ -165,7 +165,7 @@ function Reviews() {
         </div>
         
         <div id='right' key={'review-right'} className="review-sidebar-right" style={{ position:'sticky' ,
-    top:'10px' , marginTop:'50px'}}>
+    top:'50px' , marginTop:'50px'}}>
           
           
           {/* /* <div style={{ borderRadius:'4px 4px 0 0' , height : '40px' , width : '100%' , display: 'flex', justifyContent: 'center' , alignItems: 'center' }}>
@@ -178,8 +178,10 @@ function Reviews() {
           <div key='chat-header' style = {{padding : '0.5rem 0.7rem', textAlign:'left', fontSize:'1.2rem', marginBottom:'0.5rem' , fontWeight:'600' , color:'rgba(0 , 0 , 0 , 0.9)'}}>
             <span >聊天助手</span>
           </div>
+          <div style={{flex:'1'}}>
+            <ChatView key='review-chat-body' AvatorSize={39} />
+          </div>
           
-          <ChatView key='chat-body' AvatorSize={39} />
           
           
           

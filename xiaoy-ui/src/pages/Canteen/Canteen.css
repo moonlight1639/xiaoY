@@ -160,12 +160,16 @@
 }
 .canteen-ai{
     width: 22%;
-    min-height:0;
+    
     height: fit-content;
+    /* min-height:400px; */
+    /* height: fit-content; */
     /* margin-top: 10rem; */
     position: sticky;
+    display: flex;
+    flex-direction: column;
     top: 4rem;
-    height: fit-content;
+    /* height: fit-content; */
     border-radius: 8px;
     border : 1px solid var(--color-border);
 }

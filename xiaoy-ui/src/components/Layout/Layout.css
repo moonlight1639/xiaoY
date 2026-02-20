@@ -243,6 +243,18 @@
   color: var(--color-primary);
 }
 
+.admin-link {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 6px 14px;
+  border-radius: 6px;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+}
+
+.admin-link:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
 /* 响应式 */
 @media (max-width: 900px) {
   .header {
