@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useAuthStore } from "../../store";
 import stuImg from "@/assets/avator/stu.jpg";
-import { getUserInfo } from "../../services/userInfo";
+// import { getUserInfo } from "../../services/userInfo";
 import "./AvatorDropdown.css";
 import { useLoginStore } from "../../store/isLogin";
 import { NavLink } from "react-router-dom";
@@ -20,15 +20,15 @@ function AvatarDropdown() {
 
     return () => document.removeEventListener("click", handler);
   }, []);
-  useEffect(() => {
-    getUserInfo().then((response) => {
-      console.log("用户信息", response);
-      if (response.data && response.success) {
-        const userInfo = response.data;
-        setUser(userInfo, null);
-      }
-    });
-  }, [setUser]);
+  // useEffect(() => {
+  //   getUserInfo().then((response) => {
+  //     console.log("用户信息", response);
+  //     if (response.data && response.success) {
+  //       const userInfo = response.data;
+  //       setUser(userInfo, null);
+  //     }
+  //   });
+  // }, [setUser]);
   return (
     <div
       ref={ref}
