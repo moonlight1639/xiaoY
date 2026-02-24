@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.pj.xiaoY.entity.UserInfo;
 import com.pj.xiaoY.service.UserInfoService;
 import com.pj.xiaoY.common.Result;
-
+import org.springframework.web.multipart.MultipartFile;
 
 
 /**
@@ -36,6 +36,12 @@ public class UserInfoController {
     }
 
 
+/*    @GetMapping("/total")
+    public Result list(){
+        int to
+
+        return Result.ok(page , page.size());
+    }  */
     /**
      * 信息
      */
@@ -76,4 +82,15 @@ public class UserInfoController {
         return Result.ok();
     }
 
+    @PostMapping("/uploadavatar")
+    public Result uploadAvatar(@RequestParam("file") MultipartFile file) {
+//        if(PathValidator.isLegalPath(path) == false){
+//            return Result.fail("文件路径不合法");
+//        }
+        if(file.isEmpty()){
+            return Result.fail("文件不能为空");
+        }
+        userInfoService.uploadAvatar(file);
+        return Result.ok();
+    }
 }

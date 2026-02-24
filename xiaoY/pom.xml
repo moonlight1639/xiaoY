@@ -17,7 +17,7 @@
         <spring-boot.version>3.2.6</spring-boot.version>
         <knife4j.version>4.3.0</knife4j.version>
         <langchain4j.version>1.0.0-beta3</langchain4j.version>
-        <mybatis-plus.version>3.5.11</mybatis-plus.version>
+        <mybatis-plus.version>3.5.5</mybatis-plus.version>
         <langchain4j.version>1.0.0-beta3</langchain4j.version>
     </properties>
     <dependencies>
@@ -99,7 +99,7 @@
 <!--        <dependency>-->
 <!--            <groupId>com.baomidou</groupId>-->
 <!--            <artifactId>mybatis-plus-boot-starter</artifactId>-->
-<!--            <version>3.5.5</version>-->
+<!--            <version>${mybatis-plus.version}</version>-->
 <!--        </dependency>-->
 
         <!-- MySQL 驱动（根据你数据库选择） -->
@@ -108,7 +108,17 @@
 <!--            <artifactId>mysql-connector-java</artifactId>-->
 <!--            <version>8.1.0</version>-->
 <!--        </dependency>-->
-
+        <!-- minio        -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.5.7</version>
+        </dependency>
+<!--        reids的引入 缓存-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

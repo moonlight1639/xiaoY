@@ -26,14 +26,26 @@ langchain4j:
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/chat_memory_db
+      uri: mongodb://localhost:27017/xiaoY_chat_memory_db
+    redis:
+      host: 192.168.88.130
+      port: 6379
   # MySQL 数据库配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.88.130:3306/xiaoY?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: 1234
-
+    # 服务器地址（本地：localhost，生产：Redis 服务器IP）
+    # 端口（默认6379）
+  servlet:
+    multipart:
+      max-file-size: 100MB        # 单个文件最大大小
+      max-request-size: 200MB     # 单次请求所有文件总大小
+      enabled: true               # 开启文件上传支持
+  # 2. Tomcat 层面的限制（Spring Boot 内嵌 Tomcat 需配置，避免兜底限制）
+  tomcat:
+    max-swallow-size: -1          # 取消 Tomcat 的吞入大小限制（-1 表示无限制）
 # 可选：开启全局 DEBUG 日志（如需调试可取消注释，默认关闭）
 # logging:
 #   level:
@@ -48,3 +60,13 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto # 核心：所有表主键默认使用数据库自增，禁用雪花算法
+
+# MinIO 配置
+minio:
+  url: http://192.168.88.130:9001  # MinIO服务地址（注意：Spring Boot 3.x需加http/https）
+  access-key: minioadmin           # 访问密钥（AK）
+  secret-key: minioadmin           # 秘钥（SK）
+  bucket-name: my-bucket        # 默认存储桶
+  file-prefix: files/
+  expire-seconds: 604800          # 预览链接有效期（秒），默认7天
+

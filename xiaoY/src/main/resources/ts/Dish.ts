@@ -1,4 +1,5 @@
 export interface Dish {
+ serialVersionUID: number;
  id: number;
  dishName: string;
  description: string;
@@ -8,6 +9,7 @@ export interface Dish {
  locationName: string;
  status: number;
  isDeleted: number;
+ likeCount: number;
  createTime: string;
  updateTime: string;
 };

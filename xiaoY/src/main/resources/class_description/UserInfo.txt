@@ -1,0 +1,47 @@
+public class UserInfo {
+    /**
+     * 主键ID（自增）不用填
+     */
+    private Integer id;
+    /**
+     * 用户昵称（显示用）
+     */
+    private String nickname;
+    /**
+     * 手机号（唯一，可选）
+     */
+    private String phone;
+    /**
+     * 邮箱（唯一，可选，用于找回密码）
+     */
+    private String email;
+    /**
+     * 性别 0-未知 1-男 2-女
+     */
+    private Integer gender;
+    /**
+     * 用户头像（URL地址）
+     */
+    private String avatar;
+    /**
+     * 用户类型 0-管理员 1-运营人员 2-访客 默认为2
+     */
+    private Integer userType;
+    /**
+     * 账号状态 0-禁用 1-正常 2-锁定 默认为1
+     */
+    private Integer userStatus;
+    /**
+     * 创建时间（自动填充）
+     */
+    private Date createTime;
+    /**
+     * 更新时间（自动更新）
+     */
+    private Date updateTime;
+    /**
+     * 软删除 0-未删除 1-已删除 默认为0
+     */
+    private Integer isDeleted;
+
+}

@@ -2,6 +2,7 @@ package com.pj.xiaoY.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pj.xiaoY.entity.UserInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,5 +16,7 @@ import java.util.List;
 public interface UserInfoService extends IService<UserInfo> {
 
     List<UserInfo> queryPage(int pageNum, int pageSize);
+
+    void uploadAvatar(MultipartFile file);
 }
 

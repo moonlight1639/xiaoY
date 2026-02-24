@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Result {
+
     private Boolean success;
     private String errorMsg;
     private Object data;
@@ -30,4 +31,5 @@ public class Result {
     public static Result fail(String errorMsg){
         return new Result(false, errorMsg, null, null);
     }
+
 }

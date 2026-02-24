@@ -17,7 +17,7 @@ public class XiaoYController {
 
     @PostMapping("/chat")
     public String chat(@RequestBody ChatForm chatForm){
-        System.out.println(chatForm.getMessage());
-        return xiaoY.chat(chatForm.getMemoryId(),chatForm.getMessage());
+        System.out.println(chatForm.getContent());
+        return xiaoY.chat(chatForm.getMemoryId(),chatForm.getContent());
     }
 }

@@ -1,10 +1,17 @@
 package com.pj.xiaoY.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.xiaoymin.knife4j.core.util.StrUtil;
+import com.pj.xiaoY.common.GlobalConfigConst;
+import com.pj.xiaoY.common.RedisKeyPrefixConst;
 import com.pj.xiaoY.common.Result;
+import com.pj.xiaoY.common.exception.GlobalException;
 import com.pj.xiaoY.entity.UserInfo;
+import com.pj.xiaoY.entity.vo.LoginVo;
 import com.pj.xiaoY.mapper.UserInfoMapper;
+import com.pj.xiaoY.utils.UserInfoThreadPoolUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
@@ -25,7 +32,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private  UserMapper userMapper;
 
     @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
     private UserInfoMapper userInfoMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Override
     public Result register(User user){
         if(StrUtil.isBlank(user.getUsername()) == true){
@@ -40,7 +53,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 
         UserInfo userInfo = new UserInfo();
-        userInfo.setNickname("ustc_" + UUID.randomUUID().toString());
+        userInfo.setNickname("ustc" + UUID.randomUUID().toString().substring(0, 5));
         userInfoMapper.insert(userInfo);
         user.setUserinfoId(userInfo.getId());
         userMapper.insert(user);
@@ -63,14 +76,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return Result.fail("密码错误");
         }
         UserInfo userInfo = userInfoMapper.selectById(dbUser.getUserinfoId());
+        LoginVo loginVo = new LoginVo();
+        loginVo.setUserInfo(userInfo);
         if(userInfo == null){
             return Result.fail("系统内部错误");
         }
-        return Result.ok(userInfo);
+        if(GlobalConfigConst.isAuthentication) {
+            try {
+                String token = RedisKeyPrefixConst.PREFIX_LOGIN_USER_TOKEN + UUID.randomUUID().toString();
+                stringRedisTemplate.opsForValue().set(token, objectMapper.writeValueAsString(userInfo));
+                loginVo.setToken(token);
+            } catch (Exception e) {
+                throw new GlobalException("token生成失败");
+            }
+        }
+        return Result.ok(loginVo);
     }
 
+    @Autowired
+    private UserInfoThreadPoolUtil userInfoThreadPoolUtil;
     @Override
     public List<User> queryPage(int pageNum, int pageSize) {
+        System.out.println(userInfoThreadPoolUtil.get());
         Page<User> page = new Page<>(pageNum, pageSize);
         IPage<User> result = userMapper.selectPage(page, null);
 

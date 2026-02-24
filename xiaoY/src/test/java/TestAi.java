@@ -1,4 +1,4 @@
-package com.pj;
+package com.pj.xiaoY;
 import com.pj.xiaoY.assistant.XiaoY;
 import dev.langchain4j.community.model.dashscope.QwenStreamingChatModel;
 import org.junit.jupiter.api.Test;
@@ -21,11 +21,10 @@ public class TestAi {
 
 //    @Autowired
 //    private QwenChatModel  qwenChatModel;
-    @Autowired
-    private QwenStreamingChatModel qwenStreamingChatModel;
+
     @Test
     public void test1(){
-        String result = xiaoY.chat(1L, "你好");
+        String result = xiaoY.chat("kelisida", "你好");
         System.out.println(result);
     }
 

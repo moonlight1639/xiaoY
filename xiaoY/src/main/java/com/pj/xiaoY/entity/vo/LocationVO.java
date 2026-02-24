@@ -1,7 +1,8 @@
-package com.pj.xiaoY.entity;
+package com.pj.xiaoY.entity.vo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.pj.xiaoY.entity.Dish;
 import lombok.Data;
 
 import java.io.Serializable;

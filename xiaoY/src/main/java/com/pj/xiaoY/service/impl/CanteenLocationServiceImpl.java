@@ -3,7 +3,7 @@ package com.pj.xiaoY.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pj.xiaoY.common.Result;
 import com.pj.xiaoY.entity.Dish;
-import com.pj.xiaoY.entity.LocationVO;
+import com.pj.xiaoY.entity.vo.LocationVO;
 import com.pj.xiaoY.mapper.DishMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

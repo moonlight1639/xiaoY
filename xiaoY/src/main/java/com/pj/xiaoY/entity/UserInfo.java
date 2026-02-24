@@ -1,10 +1,13 @@
 package com.pj.xiaoY.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -20,7 +23,7 @@ public class UserInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 主键ID（自增）
+	 * 主键ID（自增）不用填
 	 */
 	@TableId
 	private Integer id;
@@ -55,14 +58,20 @@ public class UserInfo implements Serializable {
 	/**
 	 * 创建时间（自动填充）
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 	/**
 	 * 更新时间（自动更新）
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date updateTime;
 	/**
 	 * 软删除 0-未删除 1-已删除
 	 */
+	@TableLogic(
+			value = "0",    // 未删除值
+			delval = "1"    // 已删除值
+	)
 	private Integer isDeleted;
 
 }
