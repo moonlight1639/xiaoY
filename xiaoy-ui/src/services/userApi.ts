@@ -7,10 +7,14 @@ export interface ResponseUser {
   data?: User;
   total?: number;
 }
+export interface LoginVo{
+  userInfo: UserInfo;
+  token?: string;
+}
 export interface ResponseUserInfo {
   success: boolean;
   errorMsg?: string;
-  data?: UserInfo;
+  data?: LoginVo;
   total?: number;
 }
 

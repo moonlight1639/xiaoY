@@ -8,14 +8,15 @@ import Container from '../components/Container'
 import SchoolBus from '../pages/SchoolBus'
 import AdminUsers from '../pages/Admin/AdminUsers'
 // ...existing code...
-
+import { useAuthStore } from '@/store'
 function AppRouter() {
+  const { token } = useAuthStore();
   return (
     <Routes>
       <Route element={<Layout/>}>
         <Route path="/" element={<Home />} />
         <Route index element={<Home />} />
-        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/chat" element={<ChatPage key={`chat${token}`}/>} />
         {/* <Route path="/about" element={<About />} /> */}
         <Route path="/courses" element={<Courses />} />
         <Route path="/life" element={<Life />} />
@@ -24,9 +25,9 @@ function AppRouter() {
           <Route path="info/:id?" element={<ReviewInfo />} /> 
         </Route> 
         <Route path="/canteen" element={<Canteen />} />
-        <Route path="/schoolbus" element={<SchoolBus />} />
+        <Route path="/bus" element={<SchoolBus />} />
         {/* <Route path="/reviews" element={<Reviews />} /> */}
-        <Route path="/userinfo" element={<UserInfoPage />} />
+        <Route path="/userinfo" element={<UserInfoPage key={`userinfo${token}`} />} />
       </Route>
       {/* 管理员管理系统路由 */}
       <Route path="/admin" element={<Admin />}>

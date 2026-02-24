@@ -4,25 +4,9 @@ import { xiaoY_chat , getList , getMessages } from '@/services'
 import './ChatPage.css'
 import doubapImg from '@/assets/doubao1.jpg'
 import stuImg from '@/assets/avator/stu.jpg'
-
+import { useAuthStore } from '@/store';
 function ChatPage() {
   const [conversations, setConversations] = useState<ChatMessageTitle[]>([
-    {
-        memoryId: '1',
-        title: '今天有什么课？',
-        createTime: '2024-06-01 10:00:00',
-
-    },
-    {
-        memoryId: '2',
-        title: '明天有什么课？',
-        createTime: '2024-06-02 10:00:00',
-    },
-    {
-        memoryId: '3',
-        title: '明天有什么课？',
-        createTime: '2024-06-02 10:00:00',
-    }
   ])
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null)
   const [inputValue, setInputValue] = useState('')
@@ -30,8 +14,14 @@ function ChatPage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
-  const [activeConversation, setActiveConversation] = useState<ChatMessageList | null>(null)
-
+  const [isNewConversation, setIsNewConversation] = useState(true)
+  const [activeConversation, setActiveConversation] = useState<ChatMessageList>({
+    memoryId: '',
+    title: '',
+    messages: [],
+    createTime: '',
+  })
+  const { token } = useAuthStore();
   /*
 
 {
@@ -69,12 +59,20 @@ function ChatPage() {
     }
     fetchMessages().then(() => {scrollToBottom()});
     
-  }, [activeConversation, activeConversationId]);
-
+  }, [activeConversationId]);
+  useEffect(() => {
+    
+  }, [activeConversation,isNewConversation]);
   // 创建新对话
-  const handleNewChat = () => {
+  const handleNewChat = async () => {
     setActiveConversationId(null)
-    setActiveConversation(null)
+    setActiveConversation({
+      memoryId: '',
+      title: '',
+      messages: [],
+      createTime: '',
+    })
+    setIsNewConversation(true)
     setInputValue('')
   }
 
@@ -110,6 +108,7 @@ function ChatPage() {
         const res =  await getMessages(memoryId);
         if(res.success === true && res.data){
           setActiveConversation(res.data);
+          setIsNewConversation(false);
           console.log(activeConversation);
         }else{
           setActiveConversation({
@@ -128,6 +127,12 @@ function ChatPage() {
   // 发送消息
   const handleSend = async () => {
     if (!inputValue.trim() || isLoading) return
+    console.log('before setActiveConversation:', activeConversation);
+    if(token == null){
+      alert("请先登录！");
+      return;
+    }
+    setIsNewConversation(false);
     setActiveConversation(prev => (prev && {
       ...prev,
       messages: [
@@ -137,7 +142,7 @@ function ChatPage() {
           createTime: new Date().toISOString(),
         }
     ]}))
-
+    console.log('after setActiveConversation:', activeConversation);
     setIsLoading(true)
 
     const userMessage: ChatForm = {
@@ -149,7 +154,7 @@ function ChatPage() {
       memoryId :Date.now().toString(),
       title: '新对话',
       type: 'assistant',
-      content: "齐达内进球了！",
+      content: "好的欢迎您！",
       createTime: new Date().toISOString(),
     }
     const fetchResponse = async () => {
@@ -159,7 +164,7 @@ function ChatPage() {
         Object.assign(assistantMessage, res.data);
         assistantMessage = res.data;
         setActiveConversationId(assistantMessage.memoryId)
-        
+        console.log(activeConversationId , assistantMessage.memoryId)
       }
     }
     await fetchResponse();
@@ -262,7 +267,7 @@ function ChatPage() {
         {/* 右侧主区域 */}
         <main className="chat-main">
           {/* 没有对话时的欢迎界面 */}
-          {!activeConversation && !isLoading ? (
+          {isNewConversation ? (
             <div className="chat-welcome">
               <div className="welcome-content">
                 

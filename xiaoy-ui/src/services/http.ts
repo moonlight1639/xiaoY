@@ -9,7 +9,7 @@ const preUrl = 'http://localhost:8080'
 const http = axios.create({
   baseURL: preUrl + '/xiaoY',
   // baseURL: '/api',
-  timeout: 10000,
+  timeout: 50000,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -20,8 +20,9 @@ http.interceptors.request.use(
   (config) => {
     // 可以在这里添加 token 等认证信息
     const token = localStorage.getItem('token')
+    // console.log('请求拦截器 - token:', token)
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = `${token}`
     }
     return config
   },

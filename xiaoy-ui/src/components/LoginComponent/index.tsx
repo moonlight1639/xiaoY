@@ -32,12 +32,15 @@ function LoginComponent() {
 
       console.log(response);
       if(response.success && response.data){
-        setUser(response.data , null);
+        setUser(response.data.userInfo , response.data.token || null);
+        setIsLogin(false);
+      }else{
+        alert(response.errorMsg || '登录失败');
       }
     }).catch(error => {
       console.error(error);
     }).finally(() => {
-      setIsLogin(false);
+      
     });
   }
   return (
@@ -51,8 +54,8 @@ function LoginComponent() {
           width: '100%',
           position: 'relative',
           flexDirection: "column",
-          animation: 'translateShowX2 0.5s',
-          // height: '100%',
+          animation: 'translateShowX2 0.5s linear',
+          // height: '100%', 
         }}
       >
       <div
@@ -63,7 +66,7 @@ function LoginComponent() {
           width: '100%',
           position: 'relative',
           flexDirection: "column",
-          animation: 'translateShowX2 0.5s',
+          // animation: 'translateShowX2 0.5s',
           // height: '100%',
         }}
       >

@@ -41,6 +41,7 @@
     width: 300px;
     
     height: fit-content;
+    max-height: 600px;
     min-height: 0;
     /* min-height:0;
     max-height:70%; */
@@ -55,7 +56,7 @@
     text-align: center;
     /* max-height: 100%; */
     animation: tranfromright 0.5s ease-in-out;
-    overflow:hidden;
+    /* overflow:auto; */
     /* contain: strict; */
     /* margin-right: 2rem; */
 }
@@ -309,16 +310,25 @@
     }
 }
 
-@media (max-width: 600px){
-    .review-sidebar{
+@media (max-width: 700px){
+    .review-sidebar-right {
         display:none;
     }
-
+    .review-sidebar-left{
+        display:none;
+    }
     .review-main-content{
         width: 100%;
         justify-content: center;
         border: none;
         
+    }
+
+    .review-Reviewitem{
+        img{
+            height: 100px;
+            width: 100px;
+        }
     }
     .review-content{
         justify-content: center;

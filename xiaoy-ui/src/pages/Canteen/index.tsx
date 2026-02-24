@@ -4,6 +4,7 @@ import './Canteen.css'
 import type { Location } from '@/types/Location';
 import type { Dish } from '../../types/Dish';
 import { ChatView } from '@/components';
+import { getDishList } from '../../services';
 function Canteen() {
   const [Rank ] = useState([
     {id : 1 , name: '宫保鸡丁', sales: 150},
@@ -14,7 +15,7 @@ function Canteen() {
     {id : 6 , name: '扬州炒饭', sales: 70},
     {id : 7 , name: '清炒虾仁', sales: 60},
   ]);
-  const [Location ] = useState<Location[]>(
+  const [Location , setLocation] = useState<Location[]>(
     [
       {
         id: 1,
@@ -48,7 +49,16 @@ function Canteen() {
     ]
   );
   useEffect(() => {
-    
+    const fetchDishList = async () => {
+      const res = await getDishList();
+      if(res.success == true && res.data){
+        console.log('菜品列表：', res.data);
+        setLocation(res.data);
+      } else {
+        // console.error('获取菜品列表失败：', res.errorMsg);
+      }
+    }
+    fetchDishList();
   }, []);
 
   const LocationRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -161,9 +171,9 @@ function Canteen() {
           <div style = {{padding : '0.5rem 0.7rem', textAlign:'left', fontSize:'1.2rem', marginBottom:'0.5rem' , fontWeight:'600' , color:'rgba(0 , 0 , 0 , 0.9)'}}>
             <span>聊天助手</span>
           </div>
-          <div style={{flex:'1'}}>
-            <ChatView key='canteen-chat-body' AvatorSize={39} />
-          </div>
+          
+          <ChatView key='canteen-chat-body' AvatorSize={39} />
+          
           
         </div>
       </div>

@@ -1,7 +1,10 @@
 .schoolbus-page {
-	min-height: 100vh;
+	/* min-height: 100vh; */
+	width: 100%;
+	height: 100%;
+	overflow-y:auto;
 	padding: 2.5rem 1.5rem 4rem;
-	background: radial-gradient(circle at top, #dfe9f7 0%, #c7d9f2 35%, #b9cfea 100%);
+	/* background: radial-gradient(circle at top, #dfe9f7 0%, #c7d9f2 35%, #b9cfea 100%); */
 	color: #0f172a;
 }
 
@@ -23,147 +26,49 @@
 	color: #0b1f44;
 }
 
-.schoolbus-card {
-	max-width: 1100px;
-	margin: 0 auto 2rem;
-	background: #ffffffcc;
-	border-radius: 1rem;
-	border: 1px solid #c7d2fe;
-	box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
-	padding: 1.5rem 1.75rem 2rem;
-	backdrop-filter: blur(6px);
-}
-
-.card-title {
-	background: #0b3a86;
-	color: #fff;
-	border-radius: 0.75rem;
-	padding: 0.75rem 1rem;
-	font-weight: 700;
+.schoolbus-table-container{
+	width: 100%;
+	padding: 0 10rem;
+	/* width: max-content; */
 	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	gap: 0.75rem;
-	margin-bottom: 1.25rem;
+	justify-content: space-between;
 }
 
-.card-title em {
-	font-style: normal;
-	font-weight: 500;
-	opacity: 0.85;
+.field-name-cell::after {
+	content: "→"; /* 箭头符号（也可用 ▶/➡️） */
+	position: absolute; /* 绝对定位到单元格右侧 */
+	right: -15px; /* 调整位置，卡在两列之间 */
+	top: 50%;
+	transform: translateY(-50%);
+	color: red; /* 箭头颜色 */
+	font-weight: 1500;
+	font-size: 30px;
+	/* background: #fff; 背景覆盖表格边框 */
+	padding: 0 2px;
 }
 
-.campus-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-	gap: 1rem;
+table {
+	border-collapse: collapse; /* 合并边框，避免间隙 */
+	width: 600px;
+	margin: 20px;
+	border: 3px solid #000;
+	border-radius: 8px;
 }
-
-.campus-col {
-	background: #f8fafc;
-	border: 1px solid #e2e8f0;
-	border-radius: 0.75rem;
-	padding: 1rem;
-}
-
-.campus-col h3 {
-	font-size: 1rem;
-	color: #0b3a86;
-	margin-bottom: 0.75rem;
+th{
+	/* border: 1px solid #000; */
+	padding: 8px 16px;
 	text-align: center;
+	position: relative;
+	/* background: #f0f0f0; */
 }
-
-.campus-col ul {
-	list-style: none;
-	display: grid;
-	gap: 0.35rem;
-	margin: 0;
-	padding: 0;
-	font-weight: 600;
-	color: #0f172a;
+td {
+	border: 1px solid #000;
+	padding: 8px 16px;
 	text-align: center;
+	position: relative; /* 给伪元素定位用 */
 }
 
-.campus-rules {
-	background: #f1f5f9;
-	border: 1px dashed #94a3b8;
-	border-radius: 0.75rem;
-	padding: 1rem;
-}
-
-.campus-rules h3 {
-	margin-bottom: 0.75rem;
-	color: #0b3a86;
-	text-align: center;
-}
-
-.campus-rules ul {
-	margin: 0;
-	padding-left: 1.2rem;
-	color: #334155;
-	line-height: 1.6;
-}
-
-.bus-block {
-	margin-bottom: 1.5rem;
-}
-
-.bus-block h3 {
-	text-align: center;
-	margin-bottom: 0.75rem;
-	color: #0b3a86;
-}
-
-.bus-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-	gap: 1rem;
-}
-
-.bus-col {
-	background: #f8fafc;
-	border: 1px solid #e2e8f0;
-	border-radius: 0.75rem;
-	padding: 1rem;
-}
-
-.bus-route {
-	font-weight: 600;
-	text-align: center;
-	color: #1e3a8a;
-	margin-bottom: 0.75rem;
-}
-
-.bus-times {
-	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 0.5rem 0.75rem;
-	text-align: center;
-	font-weight: 600;
-	color: #0f172a;
-}
-
-.bus-note {
-	margin-top: 0.5rem;
-	font-size: 0.85rem;
-	color: #475569;
-	text-align: center;
-}
-
-.schoolbus-footer {
-	text-align: center;
-	font-weight: 700;
-	letter-spacing: 0.25rem;
-	color: #0b1f44;
-	margin-top: 2rem;
-}
-
-@media (max-width: 720px) {
-	.schoolbus-page {
-		padding: 2rem 1rem 3rem;
-	}
-
-	.bus-times {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-	}
+td p{
+	font-size: 28px;
+	margin-bottom: 20px;
 }

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import './Reviews.css';
 import { getCourses } from "@/services/courseApi";
 import defaultAvator from '@/assets/avator/defaultAvator.jpg'
-import type { ChatMessageList ,Course} from "@/types";
+import type { Course} from "@/types";
 import { ChatView } from "@/components";
 // import doubapImg from '@/assets/doubao1.jpg'
 // import stuImg from '@/assets/avator/stu.jpg'
@@ -34,15 +34,7 @@ function Reviews() {
   const [highLightRef, setHighLightRef] = useState(-1);
   const timerId = useRef<ReturnType<typeof setTimeout> | null>(null);
   const container = useRef<HTMLDivElement | null>(null);
-  const [activeConversation, setActiveConversation] = useState<ChatMessageList | null>({
-    memoryId: '1',
-    title: '示例对话',
-    messages: [
-      { type: 'user', content: '这是一条用户消息', createTime: new Date().toISOString() },
-      { type: 'assistant', content: '这是一条助手消息', createTime: new Date().toISOString() }
-    ],
-    createTime: new Date().toISOString(),
-  })
+
   
   useEffect(() => {
     const fetchCourses = async () => {
@@ -178,9 +170,9 @@ function Reviews() {
           <div key='chat-header' style = {{padding : '0.5rem 0.7rem', textAlign:'left', fontSize:'1.2rem', marginBottom:'0.5rem' , fontWeight:'600' , color:'rgba(0 , 0 , 0 , 0.9)'}}>
             <span >聊天助手</span>
           </div>
-          <div style={{flex:'1'}}>
-            <ChatView key='review-chat-body' AvatorSize={39} />
-          </div>
+          
+          <ChatView key='review-chat-body' AvatorSize={39} />
+          
           
           
           

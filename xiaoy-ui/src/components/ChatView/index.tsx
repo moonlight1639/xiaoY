@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import doubapImg from "@/assets/doubao1.jpg";
 import stuImg from "@/assets/avator/stu.jpg";
 import "./ChatView.css";
+import {xiaoY_chat} from "@/services";
 // import type {ChatMessage ,ChatForm , ChatMessageList , ChatMessageTitle } from '@/types';
 
 interface ChatMessageList {
@@ -17,7 +18,7 @@ interface ChatViewProps {
   ContainerSize?: number;
 
   // 父组件传的「事件回调函数」（子组件触发）
-  handleSend?: (msg: string) => void; // 发送消息事件
+  handleSend?: (msg: string) => ChatMessageList; // 发送消息事件
 }
 
 const ChatView: React.FC<ChatViewProps> = (props) => {
@@ -26,15 +27,12 @@ const ChatView: React.FC<ChatViewProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const [memoryId , setMemoryId] = useState<string | null>(null);
   const [activeConversationList, setActiveConversationList] = useState<
     ChatMessageList[]
   >(Conversation || [{
     type: "assistant",
     content: "你好呀，我是科大小Y，很高兴为你服务！",
-    createTime: new Date().toISOString(),
-  },{
-    type: "user",
-    content: "你好！",
     createTime: new Date().toISOString(),
   }]);
 
@@ -64,38 +62,51 @@ const ChatView: React.FC<ChatViewProps> = (props) => {
   const handleOnClick = () => {
 
     if (inputValue.trim()) {
-      if (handleSend) handleSend(inputValue);
-      else defaultHandleSend();
+      MyHandleSend();
+      // if (handleSend) handleSend(inputValue);
+      // else defaultHandleSend();
     }
 
 
   };
-  const defaultHandleSend = () => {
-    if (!inputValue.trim() || isLoading) return;
-    
-    setActiveConversationList((prev) => [
-      ...prev,
-      {
-        type: "user",
-        content: inputValue.trim(),
-        createTime: new Date().toISOString(),
-      },
-    ]);
-    setIsLoading(true);
-    setTimeout(() => {
+
+    const MyHandleSend = async () => {
+      if (!inputValue.trim() || isLoading) return;
+
       setActiveConversationList((prev) => [
         ...prev,
         {
-          type: "assistant",
-          content: "你好呀，我是科大小Y，很高兴为你服务！",
+          type: "user",
+          content: inputValue.trim(),
           createTime: new Date().toISOString(),
         },
       ]);
+      setIsLoading(prev => !prev);
+      const fetchData = async () => {
+        const res = await xiaoY_chat({ content: inputValue.trim() , memoryId: memoryId || undefined })
+        if(res.success == true && res.data){
+          setMemoryId(res.data.memoryId);
+          // console.log("res.data", res.data);
+          setActiveConversationList(prev => [
+            ...prev,
+            res.data as ChatMessageList
+          ]);
+        }else{
+          setActiveConversationList(prev => [
+            ...prev,{
+              type: "assistant",
+              content: "你好呀，我是科大小Y，很高兴为你服务！",
+              createTime: new Date().toISOString(),
+            }
+          ]);
+        }
+      };
+      fetchData().then(() => {setIsLoading(false) ;setInputValue("")}
 
-      setInputValue("");
-      setIsLoading(false);
-    }, 2000);
-  };
+      );
+      
+    };
+  
 
   return (
     <div className="chatview-chat-conversation" style = {{fontSize : '12px'}}>

@@ -54,7 +54,7 @@ function RegisterComponent({ returnLogin }: RegisterComponentProps) {
         height: '400px',
         position: 'relative',
         flexDirection: "column",
-        animation: 'translateShowX 0.8s'
+        animation: 'translateShowX 0.8s linear'
       }}
     >
       <div style={{position:'absolute' , top:'10px', left:'10px', cursor:'pointer'}} onClick={returnLoginFun}>

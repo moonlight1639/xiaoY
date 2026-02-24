@@ -1,5 +1,5 @@
 import http from './http'
-import type { ChatMessage ,ChatForm ,SingleChatMessage , ChatMessageList , ChatMessageTitle } from '../types';
+import type { ChatMessage ,ChatForm  , ChatMessageList , ChatMessageTitle } from '../types';
 
 
 export interface ResponseSingleChatMessage{

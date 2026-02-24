@@ -12,7 +12,7 @@
    /* 关键：让 flex 子元素可以收缩并溢出 */
   /* max-height:100%; */
   /* flex:1; */
-  overflow: hidden;
+  overflow: auto;
   animation: chatview-fadeInUp 0.4s ease;  /* 使用 animation，元素挂载时会自动播放 */
   /* height: 100%; */
 }
@@ -29,11 +29,10 @@
 }
 
 .chatview-messages-container {
-  flex: 1 1 auto;
+  flex: 1;
   min-height: 0;  /* 关键：让 flex 子元素可以收缩 */
-
   overflow-y: auto;
-  
+  /* max-height: 100% ; */
   /* contain: strict; */
   padding: 0.1rem 2%;  /* 左右各 10%，内容区域就是 80% */
   /* min-height: 0;  让容器可以收缩 */

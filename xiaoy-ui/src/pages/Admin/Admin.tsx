@@ -6,59 +6,33 @@ const Admin: React.FC = () => {
   return (
     <div className="admin-container">
       <aside className="admin-sidebar">
-        <div className="sidebar-title animate-pop">科大小Y后管</div>
+        <div className="sidebar-title">科大小Y 后台</div>
         <nav className="sidebar-nav">
           <ul>
-            <NavLink to="/admin/users" className="admin-link-button">
-              <li className="animate-nav">
-                <span role="img" aria-label="user">
-                  👤 用户管理
-                </span>
-              </li>
+            <NavLink to="/admin/users" className={({ isActive }) => `admin-link-button${isActive ? " active" : ""}`}>
+              <li>👤 用户管理</li>
             </NavLink>
-            <NavLink to="/admin/coursecomments" className="admin-link-button">
-              <li className="animate-nav">
-                <span role="img" aria-label="shield">
-                  💬 评论管理
-                </span>
-              </li>
+            <NavLink to="/admin/coursecomments" className={({ isActive }) => `admin-link-button${isActive ? " active" : ""}`}>
+              <li>💬 评论管理</li>
             </NavLink>
-            <NavLink to="/admin/courses" className="admin-link-button">
-              <li className="animate-nav">
-                <span role="img" aria-label="log">
-                  📖 课程管理
-                </span>
-              </li>
+            <NavLink to="/admin/courses" className={({ isActive }) => `admin-link-button${isActive ? " active" : ""}`}>
+              <li>📖 课程管理</li>
             </NavLink>
-            <NavLink to="/admin/locations" className="admin-link-button">
-              <li className="animate-nav">📍 地点管理</li>
+            <NavLink to="/admin/locations" className={({ isActive }) => `admin-link-button${isActive ? " active" : ""}`}>
+              <li>📍 地点管理</li>
             </NavLink>
-            <NavLink to="/admin/dishs" className="admin-link-button">
-              <li className="animate-nav">
-                <span role="img" aria-label="setting">
-                  🍜 食物管理
-                </span>
-              </li>
+            <NavLink to="/admin/dishs" className={({ isActive }) => `admin-link-button${isActive ? " active" : ""}`}>
+              <li>🍜 食物管理</li>
             </NavLink>
           </ul>
         </nav>
+        <div className="sidebar-footer">v1.0 · 科大小Y</div>
       </aside>
       <main className="admin-main">
-        <header className="admin-header animate-fadein">
-          <div>
-            <h2 style={{ margin: "auto 50px" }}>
-              <span role="img" aria-label="hi">
-                欢迎，管理员 👋
-              </span>
-            </h2>
-          </div>
-
+        <header className="admin-header">
+          <h2>欢迎，管理员 👋</h2>
           <NavLink to="/" className="admin-link-main">
-            <h2 >
-              <span role="img" aria-label="home">
-                🏠 首页
-              </span>
-            </h2>
+            <span>🏠 返回首页</span>
           </NavLink>
         </header>
         <section className="admin-content">

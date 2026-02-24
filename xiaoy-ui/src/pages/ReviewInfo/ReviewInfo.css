@@ -178,18 +178,23 @@
 }
 
 @media (max-width: 760px) {
-
-    .review-info-left{
-        display: none;
+    .review-info-left-out{
+        display:none;
     }
+    /* .review-info-left{
+        display: none;
+    } */
     .review-info-right{
         width:100%;
+        padding:0;
         /* margin-bottom: 2rem; */
     }
-
+        /* .review-info-right */
     .review-info-container{
         width:100%;
+        padding:0;
     }
+
     .review-info-page{
         padding:0;
     }

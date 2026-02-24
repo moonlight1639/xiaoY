@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import type { UserInfo , insertUserInfoParams} from "@/types";
-import { Pagination } from 'antd';
+import { Button, Pagination } from 'antd';
 import "./AdminUser.css";
 import {getUserInfoList , updateUserInfo} from "@/services";
+import {Modal} from "antd";
+import { Input } from 'antd';
+import {fillClassApi} from "@/services";
+const { TextArea } = Input;
 const userInfoitem: UserInfo[] = [
   {
     id: 1001,
@@ -69,14 +73,15 @@ const AdminUsers: React.FC = () => {
     {title: "更新时间", dataIndex: "updateTime" },
   ]);
   const [keyword, setKeyword] = useState("");
-
+  const [fillModalOpen, setFillModalOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(500);
   const [pageSize , setPageSize] = useState(10);
   const [modalOpen, setModalOpen] = useState(false);
-
+  const [UserContext, setUserContext] = useState('');
   //提交表单
   const [editing, setEditing] = useState<number | null>(null);
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const [form, setForm] = useState<insertUserInfoParams>(
     {
       nickname: "" ,
@@ -165,7 +170,28 @@ const AdminUsers: React.FC = () => {
   const onDelete = (id: number) => {
     setItems((prev) => prev.filter((i) => i.id !== id));
   };
+// ai自动填充功能// 目前只是打开了一个模态框，后续可以接入真正的ai接口来实现自动填充表单的功能
+  const handleFill = async() => {
+    // 
+    console.log("用户输入的上下文信息：" , UserContext);
+    setConfirmLoading(true);
+    const res = await fillClassApi.fillClass(UserContext, "UserInfo", "UserInfo");
+    if(res.success == true && res.data){
+      console.log("填充成功" , res.data);
+      // 可以在这里将res.data中的内容填充到form中，来实现自动填充的功能
+      setForm(
+        (v) => { 
+          return {
+            ...v,
+            ...res.data
+          };
+        }
 
+      );
+    }
+    setConfirmLoading(false);
+    setFillModalOpen(false);
+  }
   return (
     <div className="userAdmin-page">
       <div className="userAdmin-page-header">
@@ -263,7 +289,11 @@ const AdminUsers: React.FC = () => {
       {modalOpen && (
         <div className="userAdmin-modal-mask">
           <div className="userAdmin-modal">
-            <h4>{editing ? "编辑用户" : "新增用户"}</h4>
+            <div style={{display:'flex', justifyContent:'space-between', gap:'10px' , alignContent:'center'}}>
+              <h4>{editing ? "编辑用户" : "新增用户"}</h4>
+              <Button onClick={() => setFillModalOpen(true)} type="primary">ai自动填充</Button>
+            </div>
+            
             <div className="userAdmin-form">
               <label>姓名</label>
               <input
@@ -344,7 +374,7 @@ const AdminUsers: React.FC = () => {
             <div className="userAdmin-modal-actions">
               <button
                 className="userAdmin-btn ghost"
-                onClick={() => setModalOpen(false)}
+                onClick={() => {setModalOpen(false); setUserContext("");setConfirmLoading(false);}}
               >
                 取消
               </button>
@@ -354,6 +384,22 @@ const AdminUsers: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {fillModalOpen && (
+        <Modal
+          title="ai自动填充"
+          open={fillModalOpen}
+          onOk={() => {handleFill()}}
+          onCancel={() => setFillModalOpen(false)}
+          okText="确认填充"
+          style={{ top:"30%" , height:'400px'}}
+          confirmLoading={confirmLoading}
+          // bodyStyle={{height:'fit-content'}}
+        >
+          <TextArea value={UserContext} onChange={(e) => setUserContext(e.target.value)} style={{marginBottom:'15px'}} showCount rows={4} />
+          
+        </Modal>
       )}
     </div>
   );
