@@ -7,6 +7,7 @@ import {Modal} from "antd";
 import { Input } from 'antd';
 import {fillClassApi} from "@/services";
 const { TextArea } = Input;
+import { UpLoad } from "@/components";
 const userInfoitem: UserInfo[] = [
   {
     id: 1001,
@@ -66,6 +67,7 @@ const AdminUsers: React.FC = () => {
     { title: "姓名", dataIndex: "nickname" },
     { title: "电话", dataIndex: "phone" },
     { title: "邮箱", dataIndex: "email" },
+    { title: "头像", dataIndex: "avatar" },
     { title: "性別", dataIndex: "gender" },
     { title: "角色", dataIndex: "userType" },
     { title: "状态", dataIndex: "userStatus" },
@@ -84,9 +86,9 @@ const AdminUsers: React.FC = () => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [form, setForm] = useState<insertUserInfoParams>(
     {
-      nickname: "" ,
-      email: "" ,
-      phone: "" ,
+      nickname: undefined ,
+      email: undefined ,
+      phone: undefined ,
       gender: 1  ,
       userType: 0 ,
       userStatus: 1 ,
@@ -111,10 +113,10 @@ const AdminUsers: React.FC = () => {
   const openCreate = () => {
     setEditing(null);
     setForm({
-      nickname: "" ,
-      email: "",
-      phone: "",
-      gender: 1 ,
+      nickname: undefined ,
+      email: undefined ,
+      phone: undefined ,
+      gender: 1  ,
       userType: 0 ,
       userStatus: 1 ,
     });
@@ -125,8 +127,8 @@ const AdminUsers: React.FC = () => {
     setEditing(item.id);
     setForm({
       nickname: item.nickname,
-      email: item.email || "",
-      phone: item.phone || "",
+      email: item.email ,
+      phone: item.phone ,
       gender: item.gender,
       userType: item.userType,
       userStatus: item.userStatus,
@@ -142,21 +144,26 @@ const AdminUsers: React.FC = () => {
       const res = await getUserInfoList(page, pageSize);
       if (res.success == true && res.data) {
         setItems(res.data);
-        console.log("更新列表成功" , res.data , items);
-        setModalOpen(false);
+        // console.log("更新列表成功" , res.data , items);
+        
       }
       
-    };
+      
+    }
     if (editing) {
       const updateuseInfo = async () => {
         const res = await updateUserInfo({ id: editing, ...form });
         if (res.success == true) {
-          console.log("更新成功");
+          // console.log("更新成功");
           fetchUserInfoList();
           setPage(1);
         }
       };
-      updateuseInfo();
+      updateuseInfo().then(() => {
+        setModalOpen(false);
+        // setUserContext("");
+        setConfirmLoading(false);
+      });
       
     } 
     // else {
@@ -191,6 +198,19 @@ const AdminUsers: React.FC = () => {
     }
     setConfirmLoading(false);
     setFillModalOpen(false);
+  }
+
+  const handleAvatarChange = (src: string , id: number) => {
+    // console.log("新的头像URL：" , src);
+    // 可以在这里将新的头像URL更新到对应用户的信息中，或者直接调用接口更新用户信息
+    const updateuseInfo = async () => {
+        const res = await updateUserInfo({ id: id , avatar: src });
+        if (res.success == true) {
+          // console.log("更新成功");
+          
+        }
+      };
+      updateuseInfo();
   }
   return (
     <div className="userAdmin-page">
@@ -241,6 +261,8 @@ const AdminUsers: React.FC = () => {
                 <td>{item.nickname}</td>
                 <td>{item.phone ? item.phone : "null"}</td>
                 <td>{item.email ? item.email : "null"}</td>
+                
+                <td><UpLoad avatar={item.avatar} returnSrc={(src:string) => {handleAvatarChange(src , item.id)}}/></td>
                 <td>
                   <span className="userAdmin-tag" style={userGenderItems[item.gender]?.style}>
                     {userGenderItems[item.gender]?.label || item.gender}

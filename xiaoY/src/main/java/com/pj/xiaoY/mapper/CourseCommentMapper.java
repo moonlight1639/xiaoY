@@ -1,8 +1,12 @@
 package com.pj.xiaoY.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pj.xiaoY.entity.CourseComment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * 课程评论信息表
@@ -13,5 +17,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface CourseCommentMapper extends BaseMapper<CourseComment> {
-	
+
+    IPage<CourseComment> queryPage(Page<CourseComment> page);
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { UpdateCourseComment , InsertCourseComment} from "@/types";
 import { Pagination } from 'antd';
+import defaultAvatar from "@/assets/avator/defaultAvator1.jpg";
 import "./AdminCourseComments.css";
 import {getUpdateCoursesCommmentList , updateCourseComment} from "@/services";
 const userInfoitem: UpdateCourseComment[] = [
@@ -213,7 +214,7 @@ const AdminCourseComments: React.FC = () => {
                 <td>{item.courseId}</td>
                 <td>{item.userId}</td>
                 <td>{item.userName}</td>
-                <td>{item.userAvatar}</td>
+                <td><img src={item.userAvatar || defaultAvatar} alt="用户头像" className="CourseCommentsAdmin-avatar" /></td>
                 <td>{item.content}</td>
                 <td>{item.likeNum}</td>
                 <td>{item.dislikeNum}</td>

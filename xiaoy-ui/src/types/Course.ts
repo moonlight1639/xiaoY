@@ -3,6 +3,7 @@ export interface Course {
  courseName: string;
  teacher?: string;
  description?: string;
+ content?: string;
  avatar?: string;
  readCount?: number;
  likeCount?: number;
@@ -18,6 +19,7 @@ export interface UpdateCourse {
  courseName: string;
  teacher?: string;
  description?: string;
+ content?: string;
  avatar?: string;
  readCount?: number;
  likeCount?: number;
@@ -31,6 +33,7 @@ export interface InsertCourse {
  courseName: string;
  teacher?: string;
  description?: string;
+ content?: string;
  avatar?: string;
  readCount?: number;
  likeCount?: number;

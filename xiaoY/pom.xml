@@ -4,11 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.pj</groupId>
-    <artifactId>xiaoY</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
-
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.6</version>
+        <relativePath/>
+    </parent>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -16,10 +17,21 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>3.2.6</spring-boot.version>
         <knife4j.version>4.3.0</knife4j.version>
-        <langchain4j.version>1.0.0-beta3</langchain4j.version>
+<!--        <langchain4j-community.version>1.10.0-beta18</langchain4j-community.version>-->
+<!--        <langchain4j.version>1.2.0</langchain4j.version>-->
+<!--        <langchain4j.version>1.0.0-beta18</langchain4j.version>-->
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
         <langchain4j.version>1.0.0-beta3</langchain4j.version>
     </properties>
+
+    <groupId>com.pj</groupId>
+    <artifactId>xiaoY</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+
+
+
     <dependencies>
         <!-- web应用程序核心依赖 -->
         <dependency>
@@ -119,7 +131,28 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-pinecone</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-embeddings-bge-small-zh</artifactId>
+        </dependency>
+
+
+
+
     </dependencies>
+
+
+
+
+
+
+
+
     <dependencyManagement>
         <dependencies>
             <!--引入SpringBoot依赖管理清单-->
@@ -144,12 +177,21 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- 引入 DJL BOM，统一管理所有 ai.djl 开头的依赖版本 -->
+
         </dependencies>
 
-        <!--引入langchain4j依赖管理清单-->
+
 
 
 
     </dependencyManagement>
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

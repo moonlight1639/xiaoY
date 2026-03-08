@@ -9,7 +9,7 @@ const preUrl = 'http://localhost:8080'
 const http = axios.create({
   baseURL: preUrl + '/xiaoY',
   // baseURL: '/api',
-  timeout: 50000,
+  timeout: 200000,
   headers: {
     'Content-Type': 'application/json'
   }

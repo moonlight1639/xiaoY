@@ -18,5 +18,7 @@ public interface CourseCommentService extends IService<CourseComment> {
     List<CourseComment> queryPage(int pageNum, int pageSize);
 
     Result getByCourseId(Long id);
+
+    void commitComment(CourseComment courseComment);
 }
 

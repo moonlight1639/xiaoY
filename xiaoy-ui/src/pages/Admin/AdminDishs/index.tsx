@@ -3,11 +3,14 @@ import type { UpdateDish , InsertDish , UpdateLocation} from "@/types";
 import { Pagination } from 'antd';
 import "./AdminDishs.css";
 import {getUpdateDishes , updateDish , getUpdateLocations} from "@/services";
+import defaultImg from "@/assets/avator/defaultAvator1.jpg";
+import { UpLoad } from "@/components";
 const userInfoitem: UpdateDish[] = [
   {
     id: 1001,
     dishName: "宫保鸡丁",
     description: "经典川菜，麻辣鲜香",
+    photo: "",
     price: 25.5,
     category: "川菜",
     locationId: 1,
@@ -21,6 +24,7 @@ const userInfoitem: UpdateDish[] = [
     id: 1002,
     dishName: "鱼香肉丝",
     description: "酸甜可口，开胃下饭",
+    photo: "",
     price: 22.0,
     category: "川菜",
     locationId: 1,
@@ -34,6 +38,7 @@ const userInfoitem: UpdateDish[] = [
     id: 1003,
     dishName: "麻婆豆腐",
     description: "麻辣鲜香，豆腐嫩滑",
+    photo: "",
     price: 18.0,
     category: "川菜",
     locationId: 2,
@@ -66,6 +71,7 @@ const AdminDishs: React.FC = () => {
   const [columns] = useState([
     { title: "菜名", dataIndex: "dishName" },
     { title: "描述", dataIndex: "description" },
+    { title: "饭菜图片", dataIndex: "photo" },
     { title: "价格", dataIndex: "price" },
     { title: "类别", dataIndex: "category" },
     { title: "位置名称", dataIndex: "locationName" },
@@ -110,6 +116,7 @@ const AdminDishs: React.FC = () => {
     {
       dishName: "",
       description: "",
+      photo: "",
       price: 0,
       category: "",
       status: 1,
@@ -143,6 +150,7 @@ const AdminDishs: React.FC = () => {
     setForm({
       dishName: "",
       description: "",
+      photo: "",
       price: 0,
       category: "",
       locationId: 0,
@@ -158,12 +166,14 @@ const AdminDishs: React.FC = () => {
     setForm({
       dishName: item.dishName,
       description: item.description || "",
+      photo: item.photo || "",
       price: item.price || 0,
       status: item.status || 1,
       category: item.category || "",
       locationId: item.locationId || 0,
       locationName: item.locationName || "",
       isDeleted: item.isDeleted || 0,
+      
     });
 
 
@@ -200,7 +210,18 @@ const AdminDishs: React.FC = () => {
     
     
   };
-
+  const handleAvatarChange = (src: string , item: UpdateDish) => {
+      // console.log("新的头像URL：" , src);
+      // 可以在这里将新的头像URL更新到对应用户的信息中，或者直接调用接口更新用户信息
+      const updateuseInfo = async () => {
+          const res = await updateDish({ ...item ,photo: src});
+          if (res.success == true) {
+            // console.log("更新成功");
+            
+          }
+        };
+        updateuseInfo();
+    }
   const onDelete = (id: number) => {
     setItems((prev) => prev.filter((i) => i.id !== id));
   };
@@ -254,6 +275,7 @@ const AdminDishs: React.FC = () => {
               <tr key={item.id}>
                 <td>{item.dishName}</td>
                 <td>{item.description ? item.description : "null"}</td>
+                <td><UpLoad avatar={item.photo} returnSrc={(src:string) => handleAvatarChange(src, item)}></UpLoad></td>
                 <td>{item.price ? item.price : "null"}</td>
                 <td>
                  {item.category ? item.category : "null"}

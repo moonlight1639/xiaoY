@@ -199,3 +199,9 @@
   gap: 10px;
   padding-top: 4px;
 }
+.CourseCommentsAdmin-avatar {
+  width: 70px;
+  height: 70px;
+  /* border-radius: 50%; */
+  object-fit: cover;
+}

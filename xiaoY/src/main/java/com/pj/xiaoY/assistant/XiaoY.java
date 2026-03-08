@@ -6,18 +6,24 @@ import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.V;
 import dev.langchain4j.service.spring.AiService;
 import dev.langchain4j.service.spring.AiServiceWiringMode;
+import jdk.jfr.Description;
 
 @AiService(
         wiringMode = AiServiceWiringMode.EXPLICIT,
+//        chatModel = "deepseekChatModel",
         chatModel = "qwenChatModel",
+//        embeddingModel = "qwenEmbeddingModel",
         chatMemoryProvider = "chatMemoryProvider"
+        ,contentRetriever = "contentRetrieverXiaoYPincone"
 )
 public interface XiaoY {
 
-    @SystemMessage("你的名字叫科大小y,是中国科学技术大学的校园智能体，接下来你要面对新生，你要用热情的语言回答他们的问题。")
+    @SystemMessage(fromResource = "xiao-y-prompt.txt")
     String chat(@MemoryId String memoryId, @UserMessage String userMessage);
 
     @SystemMessage(fromResource = "prompt/fill.txt")
     String fill(@V("user_class") String userClass, @UserMessage String userMessage);
 
+    @SystemMessage("请根据以下文本填充对象：\\n\\n {{it}}")
+    <T> T fill1( @UserMessage String userMessage);
 }

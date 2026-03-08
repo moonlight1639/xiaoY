@@ -20,20 +20,28 @@ langchain4j:
       # 通义千问 嵌入模型
       embedding-model:
         api-key: ${DASH_SCOPE_API_KEY}
-        model-name: text-embedding-v3
-
+        model-name: text-embedding-v4
+custom:
+  api:
+    # 192.168.88.130
+    # 120.26.103.63
+    # 目标服务器的host（可改：IP/域名+端口）
+    host: 192.168.88.130
+    out-host: 192.168.88.130
+    # 可选：配置接口路径前缀，更灵活
+    path-prefix: /api/v1
 # MongoDB 配置：聊天记忆库
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/xiaoY_chat_memory_db
+      uri: mongodb://${custom.api.host}:27017/xiaoY_chat_memory_db
     redis:
-      host: 192.168.88.130
+      host: ${custom.api.host}
       port: 6379
   # MySQL 数据库配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.88.130:3306/xiaoY?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://${custom.api.host}:3306/xiaoY?useUnicode=true&characterEncoding=UTF-8&useSSL=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
     password: 1234
     # 服务器地址（本地：localhost，生产：Redis 服务器IP）
@@ -53,8 +61,10 @@ spring:
 logging:
   level:
     com.pj.xiaoY: debug
+#    org.springframework.beans.factory.support: DEBUG # 打印 Bean 加载日志
   pattern:
     dateformat: mm:ss.SSS
+
 
 mybatis-plus:
   global-config:
@@ -63,7 +73,8 @@ mybatis-plus:
 
 # MinIO 配置
 minio:
-  url: http://192.168.88.130:9001  # MinIO服务地址（注意：Spring Boot 3.x需加http/https）
+  #url: http://${custom.api.host}:9001
+  url: http://${custom.api.host}:9001  # MinIO服务地址（注意：Spring Boot 3.x需加http/https）
   access-key: minioadmin           # 访问密钥（AK）
   secret-key: minioadmin           # 秘钥（SK）
   bucket-name: my-bucket        # 默认存储桶

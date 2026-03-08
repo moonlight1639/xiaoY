@@ -162,6 +162,7 @@ function UserInfoPage() {
                 </>
               )}
             </div>
+            
             <input
               ref={fileInputRef}
               type="file"

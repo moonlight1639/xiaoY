@@ -2,6 +2,7 @@ export interface Dish {
  id: number;
  dishName: string;
  description: string;
+ photo?: string;
  price: number;
  category: string;
  locationId: number;
@@ -18,6 +19,7 @@ export interface UpdateDish {
  id: number;
  dishName: string;
  description: string;
+ photo: string;
  price: number;
  category: string;
  locationId: number;
@@ -31,6 +33,7 @@ export interface UpdateDish {
 export interface InsertDish {
  dishName: string;
  description: string;
+ photo: string;
  price: number;
  category: string;
  locationId: number;

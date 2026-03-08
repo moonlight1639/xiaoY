@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         if(GlobalConfigConst.isAuthentication) {
             registry.addInterceptor(authInterceptor)
-                    .addPathPatterns("/xiaoY/chatmessagebyuser/**") // 需要认证的路径
+                    .addPathPatterns("/xiaoY/chatmessagebyuser/**" , "/xiaoY/coursecomment/commit-comment") // 需要认证的路径
                     .excludePathPatterns("/xiaoY/user/login", "/xiaoY/user/register"); // 排除白名单（可选，和拦截器内白名单重复也没关系，双重保障）
         }
     }

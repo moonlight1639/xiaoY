@@ -1,0 +1,64 @@
+.my-upLoad-wrapper {
+  width: 70px;
+  height: 70px;
+  /* border-radius: 50%; */
+  border: 4px solid #fff;
+  /* box-shadow: 0 4px 20px rgba(59, 130, 246, 0.25); */
+  overflow: hidden;
+  background: #f0f4f8;
+  /* margin-top: -48px; */
+  flex-shrink: 0;
+  position: relative;
+  cursor: pointer;
+  animation: userinfo-scaleIn 0.5s ease 0.2s both;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.my-upLoad-wrapper:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 28px rgba(59, 130, 246, 0.35);
+}
+
+.my-upLoad {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.3s ease;
+}
+
+.my-upLoad-wrapper:hover .my-upLoad {
+  filter: brightness(0.7);
+}
+
+/* 头像上传遮罩 */
+.my-upLoad-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.my-upLoad-wrapper:hover .my-upLoad-overlay {
+  opacity: 1;
+}
+
+.my-upLoad-overlay-icon {
+  font-size: 1.6rem;
+  margin-bottom: 0.15rem;
+}
+
+.my-upLoad-overlay-text {
+  font-size: 0.78rem;
+  color: #fff;
+  font-weight: 500;
+}
+
+.my-upLoad-input {
+  display: none;
+}

@@ -24,7 +24,7 @@ public class TestAi {
 
     @Test
     public void test1(){
-        String result = xiaoY.chat("kelisida", "你好");
+        String result = xiaoY.chat("kelisida", "你好,我");
         System.out.println(result);
     }
 

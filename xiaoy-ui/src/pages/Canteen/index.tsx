@@ -15,39 +15,44 @@ function Canteen() {
     {id : 6 , name: '扬州炒饭', sales: 70},
     {id : 7 , name: '清炒虾仁', sales: 60},
   ]);
-  const [Location , setLocation] = useState<Location[]>(
+    const [Location , setLocation] = useState<Location[]>(
     [
-      {
-        id: 1,
-        name: '高新校区',
-        dishList: [
-          { id:1 , dishName: '宫保鸡丁',  description: '经典川菜，口味麻辣鲜香。' , price: 12.5, category: '川菜', locationId: 1, locationName: '高新校区' },
-          { id:2 , dishName: '鱼香肉丝',  description: '酸甜适口，风味独特。' , price: 10.0 , category: '川菜', locationId: 1, locationName: '高新校区' },
-          { id:3 , dishName: '麻婆豆腐',  description: '麻辣鲜香，豆腐嫩滑。' , price: 9.0, category: '川菜', locationId: 1, locationName: '高新校区' },
-          { id:4 , dishName: '红烧肉',  description: '肥而不腻，入口即化。' , price: 15.0, category: '湘菜', locationId: 1, locationName: '高新校区' },
-        ]
-      },{
-        id: 2,
-        name: '东校区',
-        dishList: [
-          { id:1 , dishName: '宫保鸡丁',  description: '经典川菜，口味麻辣鲜香。' , price: 12.5, category: '川菜', locationId: 1, locationName: '高新校区' },
-          { id:2 , dishName: '鱼香肉丝',  description: '酸甜适口，风味独特。' , price: 10.0, category: '川菜', locationId: 1, locationName: '高新校区' },
-          { id:3 , dishName: '麻婆豆腐',  description: '麻辣鲜香，豆腐嫩滑。' , price: 9.0, category: '川菜', locationId: 1, locationName: '高新校区' },
-          { id:4 , dishName: '红烧肉',  description: '肥而不腻，入口即化。' , price: 15.0, category: '湘菜', locationId: 1, locationName: '高新校区' },
-        ]
-      },{
-        id: 3,
-        name: '西校区',
-        dishList: [
-          { id:1 , dishName: '宫保鸡丁',  description: '经典川菜，口味麻辣鲜香。' , price: 12.5, category: '川菜', locationId: 1, locationName: '高新校区' },
-          { id:2 , dishName: '鱼香肉丝',  description: '酸甜适口，风味独特。' , price: 10.0, category: '川菜', locationId: 1, locationName: '高新校区' },
-          { id:3 , dishName: '麻婆豆腐',  description: '麻辣鲜香，豆腐嫩滑。' , price: 9.0, category: '川菜', locationId: 1, locationName: '高新校区' },
-          { id:4 , dishName: '红烧肉',  description: '肥而不腻，入口即化。' , price: 15.0, category: '湘菜', locationId: 1, locationName: '高新校区' },
-        ]
-      }
       
     ]
   );
+  // const [Location , setLocation] = useState<Location[]>(
+  //   [
+  //     {
+  //       id: 1,
+  //       name: '高新校区',
+  //       dishList: [
+  //         { id:1 , dishName: '宫保鸡丁',  description: '经典川菜，口味麻辣鲜香。' , price: 12.5, category: '川菜', locationId: 1, locationName: '高新校区' },
+  //         { id:2 , dishName: '鱼香肉丝',  description: '酸甜适口，风味独特。' , price: 10.0 , category: '川菜', locationId: 1, locationName: '高新校区' },
+  //         { id:3 , dishName: '麻婆豆腐',  description: '麻辣鲜香，豆腐嫩滑。' , price: 9.0, category: '川菜', locationId: 1, locationName: '高新校区' },
+  //         { id:4 , dishName: '红烧肉',  description: '肥而不腻，入口即化。' , price: 15.0, category: '湘菜', locationId: 1, locationName: '高新校区' },
+  //       ]
+  //     },{
+  //       id: 2,
+  //       name: '东校区',
+  //       dishList: [
+  //         { id:1 , dishName: '宫保鸡丁',  description: '经典川菜，口味麻辣鲜香。' , price: 12.5, category: '川菜', locationId: 1, locationName: '高新校区' },
+  //         { id:2 , dishName: '鱼香肉丝',  description: '酸甜适口，风味独特。' , price: 10.0, category: '川菜', locationId: 1, locationName: '高新校区' },
+  //         { id:3 , dishName: '麻婆豆腐',  description: '麻辣鲜香，豆腐嫩滑。' , price: 9.0, category: '川菜', locationId: 1, locationName: '高新校区' },
+  //         { id:4 , dishName: '红烧肉',  description: '肥而不腻，入口即化。' , price: 15.0, category: '湘菜', locationId: 1, locationName: '高新校区' },
+  //       ]
+  //     },{
+  //       id: 3,
+  //       name: '西校区',
+  //       dishList: [
+  //         { id:1 , dishName: '宫保鸡丁',  description: '经典川菜，口味麻辣鲜香。' , price: 12.5, category: '川菜', locationId: 1, locationName: '高新校区' },
+  //         { id:2 , dishName: '鱼香肉丝',  description: '酸甜适口，风味独特。' , price: 10.0, category: '川菜', locationId: 1, locationName: '高新校区' },
+  //         { id:3 , dishName: '麻婆豆腐',  description: '麻辣鲜香，豆腐嫩滑。' , price: 9.0, category: '川菜', locationId: 1, locationName: '高新校区' },
+  //         { id:4 , dishName: '红烧肉',  description: '肥而不腻，入口即化。' , price: 15.0, category: '湘菜', locationId: 1, locationName: '高新校区' },
+  //       ]
+  //     }
+      
+  //   ]
+  // );
   useEffect(() => {
     const fetchDishList = async () => {
       const res = await getDishList();
@@ -130,7 +135,7 @@ function Canteen() {
                 {
                   loc.dishList.map((food:Dish, foodIndex:number) => (
                     <div className='canteen-right-food-card' key={foodIndex} >
-                          <div className='canteen-right-food-card-img'><img src={FoodImg} alt={food.dishName}></img></div>
+                          <div className='canteen-right-food-card-img'><img src={food.photo || FoodImg} alt={food.dishName}></img></div>
                           
                           <div className='detail'>
                             <div style={{width:'100%' , display:'flex', flexDirection:'row'}}>

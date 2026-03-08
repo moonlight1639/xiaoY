@@ -56,6 +56,12 @@ public class CourseCommentController {
         return Result.ok();
     }
 
+    @PostMapping("/commit-comment")
+    public Result commitComment(@RequestBody CourseComment courseComment){
+        courseCommentService.commitComment(courseComment);
+
+        return Result.ok();
+    }
     /**
      * 修改
      */

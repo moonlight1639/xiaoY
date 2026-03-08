@@ -42,3 +42,7 @@ export const getUpdateCoursesCommmentList = (pageNum?:number , pageSize?:number)
 export const updateCourseComment = (data: UpdateCourseComment): Promise<ResponseUpdateCourseComments> => {
   return http.put("/coursecomment/update" , data);
 }
+
+export const commitCourseComment = (data: InsertCourseComment): Promise<ResponseCourseComment> => {
+  return http.post("/coursecomment/commit-comment" , data);
+}

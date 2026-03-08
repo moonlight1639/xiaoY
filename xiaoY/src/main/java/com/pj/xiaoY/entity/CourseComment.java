@@ -33,7 +33,7 @@ public class CourseComment implements Serializable {
 	/**
 	 * 评论用户ID
 	 */
-	private Long userId;
+	private Integer userId;
 	/**
 	 * 评论用户名称
 	 */

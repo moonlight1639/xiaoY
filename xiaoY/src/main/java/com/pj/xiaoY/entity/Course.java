@@ -39,6 +39,12 @@ public class Course implements Serializable {
 	 */
 	private String description;
 
+		/*
+		* 课程内容*/
+	private String content;
+
+	/*
+	 * 课程头像*/
 	private String avatar;
 	/**
 	 * 阅读量，初始值0

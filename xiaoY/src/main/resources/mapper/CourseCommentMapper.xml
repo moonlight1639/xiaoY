@@ -17,6 +17,23 @@
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
+    <select id="queryPage" resultType="com.pj.xiaoY.entity.CourseComment">
+        select user_id as id ,
+               course_id,
+               user_id,
+               user_info.nickname as user_name,
+               user_info.avatar as user_avatar,
+               content ,
+               like_num,
+               dislike_num,
+               course_comment.is_deleted as is_deleted,
+               course_comment.create_time as create_time,
+               course_comment.update_time as update_time
+        from course_comment
+                 left join user_info on course_comment.user_id = user_info.id
+        where course_comment.is_deleted = 0
+
+    </select>
 
 
 </mapper>

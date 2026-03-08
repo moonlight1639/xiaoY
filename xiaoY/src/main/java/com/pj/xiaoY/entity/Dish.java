@@ -36,6 +36,10 @@ public class Dish implements Serializable {
 	 */
 	private String description;
 	/**
+	 * 菜品描述（可空，如：酸甜可口、肥瘦相间）
+	 */
+	private String photo;
+	/**
 	 * 菜品价格（单位：元，保留2位小数）
 	 */
 	private BigDecimal price;

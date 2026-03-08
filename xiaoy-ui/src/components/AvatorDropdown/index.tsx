@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useAuthStore } from "../../store";
-import stuImg from "@/assets/avator/stu.jpg";
+import defaultAvatar from '@/assets/avator/defaultAvator1.jpg'
 // import { getUserInfo } from "../../services/userInfo";
 import "./AvatorDropdown.css";
 import { useLoginStore } from "../../store/isLogin";
@@ -48,7 +48,7 @@ function AvatarDropdown() {
             {user?.avatar ? (
               <img src={user.avatar} alt="头像" />
             ) : (
-              <img src={stuImg} alt="头像" />
+              <img src={defaultAvatar} alt="头像" />
             )}
           </div>
           {open && (

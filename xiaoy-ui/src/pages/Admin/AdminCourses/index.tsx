@@ -3,6 +3,7 @@ import type { UpdateCourse , InsertCourse} from "@/types";
 import { Pagination } from 'antd';
 import "./AdminCourses.css";
 import {getUpdateCourses , updateCourse} from "@/services";
+import { UpLoad } from "@/components";
 const userInfoitem: UpdateCourse[] = [
   {
     id: 1001,
@@ -172,6 +173,18 @@ const AdminCourses: React.FC = () => {
     
   };
 
+  const handleAvatarChange = (src: string , item: UpdateCourse) => {
+      // console.log("新的头像URL：" , src);
+      // 可以在这里将新的头像URL更新到对应用户的信息中，或者直接调用接口更新用户信息
+      const updateuseInfo = async () => {
+          const res = await updateCourse({ ...item ,avatar: src});
+          if (res.success == true) {
+            // console.log("更新成功");
+            
+          }
+        };
+        updateuseInfo();
+    }
   const onDelete = (id: number) => {
     setItems((prev) => prev.filter((i) => i.id !== id));
   };
@@ -226,7 +239,7 @@ const AdminCourses: React.FC = () => {
                 <td>{item.courseName}</td>
                 <td>{item.teacher ? item.teacher : "null"}</td>
                 <td>{item.description ? item.description : "null"}</td>
-                <td>{item.avatar ? item.avatar : "null"}</td>
+                <td><UpLoad avatar={item.avatar} returnSrc={(src:string) => handleAvatarChange(src, item)} /></td>
                 <td>{item.readCount}</td>
                 <td>{item.likeCount}</td>
                 <td>{item.commentCount}</td>
@@ -296,14 +309,14 @@ const AdminCourses: React.FC = () => {
                   setForm((v) => ({ ...v, description: e.target.value }))
                 }
               />
-              <label>头像</label>
+              {/* <label>头像</label>
               <input
                 className="CourseAdmin-input"
                 value={form.avatar}
                 onChange={(e) =>
                   setForm((v) => ({ ...v, avatar: e.target.value }))
                 }
-              />
+              /> */}
               <label>点赞量</label>
               <input
                 className="CourseAdmin-input"
