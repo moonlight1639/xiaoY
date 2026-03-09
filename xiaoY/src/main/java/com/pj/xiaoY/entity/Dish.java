@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.pj.xiaoY.properties.MinioProperties;
 import lombok.Data;
 
 /**
@@ -39,6 +40,26 @@ public class Dish implements Serializable {
 	 * 菜品描述（可空，如：酸甜可口、肥瘦相间）
 	 */
 	private String photo;
+	public void setPhoto(String photo) {
+		if(photo==null){
+			this.photo = null;
+		}
+		if(photo.startsWith(MinioProperties.MINIO_BASE_URL)){
+			this.photo = photo.substring(MinioProperties.MINIO_BASE_URL.length());
+			return;
+		}
+		this.photo = photo;
+	}
+	public String getPhoto() {
+		if(photo==null){
+			return null;
+		}
+		if(photo.startsWith(MinioProperties.MINIO_BASE_URL) == false){
+			return MinioProperties.MINIO_BASE_URL + photo;
+
+		}
+		return photo;
+	}
 	/**
 	 * 菜品价格（单位：元，保留2位小数）
 	 */

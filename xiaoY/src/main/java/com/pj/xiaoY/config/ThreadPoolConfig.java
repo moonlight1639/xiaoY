@@ -3,11 +3,11 @@ package com.pj.xiaoY.config;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @Configuration
 public class ThreadPoolConfig {
@@ -25,4 +25,7 @@ public class ThreadPoolConfig {
                 new ThreadPoolExecutor.CallerRunsPolicy()
         );
     }
+
+
+
 }

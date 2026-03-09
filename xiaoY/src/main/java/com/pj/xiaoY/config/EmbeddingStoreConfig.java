@@ -30,4 +30,20 @@ public class EmbeddingStoreConfig {
                 .build();
         return embeddingStore;
     }
+
+    @Bean
+    public EmbeddingStore<TextSegment> courseReviewEmbeddingStore() {
+//创建向量存储
+        EmbeddingStore<TextSegment> embeddingStore = PineconeEmbeddingStore.builder()
+                .apiKey(System.getenv("PINECONE_API_KEY"))
+                .index("xiao-y-index")//如果指定的索引不存在，将创建一个新的索引
+                .nameSpace("course-review") //如果指定的名称空间不存在，将创建一个新的名称
+                .createIndex(PineconeServerlessIndexConfig.builder()
+                        .cloud("AWS") //指定索引部署在 AWS 云服务上。
+                        .region("ap-northeast-1") //指定索引所在的 AWS 区域为 us-east-1。
+                        .dimension(embeddingModel.dimension()) //指定索引的向量维度，该维度
+                        .build())
+                .build();
+        return embeddingStore;
+    }
 }

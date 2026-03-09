@@ -23,12 +23,12 @@ public class ModelConfig {
                 .build();
     }
 
-    @Bean
-    @Primary
-    public EmbeddingModel BgeSmallZhEmbeddingModel() {
-        return new BgeSmallZhEmbeddingModel();
-
-    }
+//    @Bean
+//    @Primary
+//    public EmbeddingModel BgeSmallZhEmbeddingModel() {
+//        return new BgeSmallZhEmbeddingModel();
+//
+//    }
 //    @Bean
 //    public String qwenV4EmbeddingModel() {
 //        OpenAiEmbeddingModel embeddingModel = OpenAiEmbeddingModel.builder()

@@ -29,7 +29,7 @@ public class CourseComment implements Serializable {
 	/**
 	 * 关联课程ID，对应course表的id
 	 */
-	private Long courseId;
+	private Integer courseId;
 	/**
 	 * 评论用户ID
 	 */

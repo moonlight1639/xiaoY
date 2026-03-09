@@ -14,11 +14,11 @@ import jdk.jfr.Description;
         chatModel = "qwenChatModel",
 //        embeddingModel = "qwenEmbeddingModel",
         chatMemoryProvider = "chatMemoryProvider"
-        ,contentRetriever = "contentRetrieverXiaoYPincone"
+        ,contentRetriever = "multicontentRetrieverXiaoYPincone"
 )
 public interface XiaoY {
 
-    @SystemMessage(fromResource = "xiao-y-prompt.txt")
+    @SystemMessage(fromResource = "prompt/xiao-y-prompt.txt")
     String chat(@MemoryId String memoryId, @UserMessage String userMessage);
 
     @SystemMessage(fromResource = "prompt/fill.txt")
@@ -26,4 +26,7 @@ public interface XiaoY {
 
     @SystemMessage("请根据以下文本填充对象：\\n\\n {{it}}")
     <T> T fill1( @UserMessage String userMessage);
+
+
+
 }

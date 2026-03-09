@@ -1,97 +1,36 @@
 import { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import type {
+  ChatMessage,
+  ChatForm,
+  ChatMessageList,
   ChatMessageTitle,
-  SingleChatMessage
 } from "@/types";
-import {getStreamingSend} from "@/services/streamingApi"
-import { xiaoY_chat, getList, getMessages , getNewMemoryId } from "@/services";
+import { xiaoY_chat, getList, getMessages } from "@/services";
 import "./ChatPage.css";
 import doubapImg from "@/assets/doubao1.jpg";
 import stuImg from "@/assets/avator/stu.jpg";
 import { useAuthStore } from "@/store";
-
-/**
- * 自动闭合流式输出中未完成的 Markdown 标记，
- * 避免 ReactMarkdown 在标记未闭合/闭合瞬间产生 DOM 重建导致的视觉闪烁。
- */
-function closeOpenMarkdownTokens(text: string): string {
-  if (!text) return text;
-  let result = text;
-
-  // 闭合未配对的代码块 ```
-  const codeBlockCount = (result.match(/```/g) || []).length;
-  if (codeBlockCount % 2 !== 0) {
-    result += '\n```';
-  }
-
-  // 闭合未配对的加粗 **
-  const boldCount = (result.match(/\*\*/g) || []).length;
-  if (boldCount % 2 !== 0) {
-    result += '**';
-  }
-
-  // 闭合未配对的行内代码 `
-  // 排除已被 ``` 匹配的反引号
-  const strippedCodeBlocks = result.replace(/```[\s\S]*?```/g, '');
-  const inlineCodeCount = (strippedCodeBlocks.match(/`/g) || []).length;
-  if (inlineCodeCount % 2 !== 0) {
-    result += '`';
-  }
-
-  // 闭合未配对的斜体 * (排除 ** 已处理的)
-  const strippedBold = result.replace(/\*\*/g, '');
-  const italicCount = (strippedBold.match(/\*/g) || []).length;
-  if (italicCount % 2 !== 0) {
-    result += '*';
-  }
-
-  return result;
-}
-
-
-export interface ChatMessages {
-  memoryId: string;
-  title: string;
-  createTime?: string;
-  isLoaded: boolean;
-  isLoading: boolean;
-  Messages: SingleChatMessage[]
-  AiResponse: string;
-}
 function ChatPage() {
-  const [conversations, setConversations] = useState<ChatMessages[]>([]);
+  const [conversations, setConversations] = useState<ChatMessageTitle[]>([]);
   const [activeConversationId, setActiveConversationId] = useState<
     string | null
   >(null);
   const [inputValue, setInputValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [isNewConversation, setIsNewConversation] = useState(true);
+  const [activeConversation, setActiveConversation] = useState<ChatMessageList>(
+    {
+      memoryId: "",
+      title: "",
+      messages: [],
+      createTime: "",
+    },
+  );
   const { token, user } = useAuthStore();
-  const [isNewPage , setIsNewPage] = useState(true);
-  useEffect(() => {
-    const fetchMessages = async () => {
-      const res = await getList();
-      if(res.success === true && res.data){
-        setConversations(res.data.map((item:ChatMessageTitle) => ({ 
-          ...item, 
-          Messages: [],
-          isLoaded: false,
-          isLoading: false,
-          AiResponse: ''
-        })));
-      }
-    }
-    fetchMessages().then(() => {
-      // scrollToBottom();
-      setConversations(prev =>{
-        console.log("运行到这了", prev);
-        return prev;
-      })
-    });
-  },[])
-  
   /*
 
 {
@@ -118,47 +57,48 @@ function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
 
-  // 对话内容变化后自动滚动到底部
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const res = await getList();
+      if (res.success === true && res.data) {
+        setConversations(res.data);
+      }
+    };
+    fetchMessages().then(() => {
+      scrollToBottom();
+    });
+    console.log("activeConversationId:", activeConversationId);
+  }, [activeConversationId]);
+
+  useEffect(() => {
+    if (
+      activeConversation.messages.length > 0 &&
+      activeConversation.messages[activeConversation.messages.length - 1]
+        .type === "user"
+    ) {
+      setIsLoading((prev) => true);
+    } else {
+      setIsLoading((prev) => false);
+    }
+    scrollToBottom();
+    console.log("activeConversation", activeConversation);
+  }, [activeConversation]);
+
   useEffect(() => {
     scrollToBottom();
-  }, [conversations , activeConversationId]);
-
-  // useEffect(() => {
-  //   const fetchMessages = async () => {
-  //     const res = await getList();
-  //     if (res.success === true && res.data) {
-  //       setConversations(res.data);
-  //     }
-  //   };
-  //   fetchMessages().then(() => {
-  //     scrollToBottom();
-  //   });
-  //   console.log("activeConversationId:", activeConversationId);
-  // }, [activeConversationId]);
-
-  // useEffect(() => {
-  //   if (
-  //     activeConversation.messages.length > 0 &&
-  //     activeConversation.messages[activeConversation.messages.length - 1]
-  //       .type === "user"
-  //   ) {
-  //     setIsLoading((prev) => true);
-  //   } else {
-  //     setIsLoading((prev) => false);
-  //   }
-  //   scrollToBottom();
-  //   console.log("activeConversation", activeConversation);
-  // }, [activeConversation]);
-
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, [isLoading]);
+  }, [isLoading]);
   // 创建新对话
   const handleNewChat = async () => {
-    setIsNewPage(true);
     setActiveConversationId(null);
+    setActiveConversation({
+      memoryId: "",
+      title: "",
+      messages: [],
+      createTime: "",
+    });
+    // setConversations([])
+    setIsNewConversation(true);
     setInputValue("");
-    console.log("新对话activeConversationId:", activeConversationId);
   };
 
   // 输入框回车发送
@@ -186,98 +126,103 @@ function ChatPage() {
   };
 
   //选中对话
-  const handleClickTitle = async (memoryId: string) => {
+  const handleClickTitle = (memoryId: string) => {
     setActiveConversationId(memoryId);
-    setIsNewPage(false);
     const fetchMessages = async () => {
       const res = await getMessages(memoryId);
       if (res.success === true && res.data) {
-        setConversations(prev => prev.map(c => (c.memoryId === memoryId && c.isLoaded == false) ? { ...c, isLoaded: true , Messages: res.data?.messages || [] } : c));
-        console.log("消息记录加载成功", res.data);
-        // console.log("选中activeConversationId:", activeConversationId);
-      } 
+        setActiveConversation(res.data);
+        setIsNewConversation(false);
+        console.log(activeConversation);
+      } else {
+        setActiveConversation({
+          memoryId: memoryId,
+          title:
+            conversations.find((c) => c.memoryId === memoryId)?.title ||
+            "新对话",
+          messages: [],
+          createTime:
+            conversations.find((c) => c.memoryId === memoryId)?.createTime ||
+            new Date().toISOString(),
+        });
+      }
     };
-    if (conversations.find((c) => c.memoryId === memoryId)?.isLoaded == false) {
-        await fetchMessages();
-    }
+    fetchMessages();
   };
 
   // 发送消息
   const handleSend = async () => {
-    if (!inputValue.trim()) return;
-    if(activeConversationId != null && conversations.find(c => c.memoryId === activeConversationId)?.isLoading == true) return;
-    if(token == null){
+    if (!inputValue.trim() || isLoading) return;
+    console.log("before setActiveConversation:", activeConversation);
+    if (token == null) {
       alert("请先登录！");
       return;
     }
-    let defaultMemoryId = activeConversationId
-    if(activeConversationId == null){
-      let flag = false;
-      const fetchMemoryId = async () => {
-          const res =  await getNewMemoryId({content: inputValue.trim()});
-          if(res.success == true && res.data){
-            console.log("获取新的memoryId成功", res.data);
-            setConversations(prev => [
-                // 新元素：如果 res.data 存在，就创建新会话对象；否则可能是 undefined
-                ...(res.data ? [{
-                  memoryId: res.data.memoryId,
-                  title: res.data.title,
-                  createTime: res.data.createTime,
-                  isLoaded: true,
-                  isLoading: false,
-                  Messages: [],
-                  AiResponse: ""
-                }] : []),
-                // 扩展运算符：把原数组 prev 的所有元素追加到新数组中
-                ...prev
-              ])
-            setConversations(prev =>{
-              console.log("获取新的memoryId后更新会话列表", prev);
-              return prev;
-            })
-            setActiveConversationId(res.data.memoryId);
-            setIsNewPage(false);
-            defaultMemoryId = res.data.memoryId;
-            flag = true;
-          }
-      }
-      await fetchMemoryId();
-      if(flag == false) return;
-    }
-    
-    console.log("获取新的activeConversationId:", activeConversationId);
-    // setIsNewPage(true);
-    setConversations(prev => prev.map(c => c.memoryId === defaultMemoryId ? { ...c, Messages:[...c.Messages , 
-      {
-        type:'user',
-        content: inputValue.trim(),
-        createTime: new Date().toISOString()
-      },
-      
-    ] , isLoading:true,} : c));
+    setIsNewConversation(false);
+    setActiveConversation(
+      (prev) =>
+        prev && {
+          ...prev,
+          messages: [
+            ...prev.messages,
+            {
+              type: "user",
+              content: inputValue.trim(),
+              createTime: new Date().toISOString(),
+            },
+          ],
+        },
+    );
+    console.log("after setActiveConversation:", activeConversation);
+    // setIsLoading(true)
+
+    const userMessage: ChatForm = {
+      memoryId: activeConversationId || undefined,
+      content: inputValue.trim(),
+    };
     setInputValue("");
-    const memoryId = defaultMemoryId || "";
-    await getStreamingSend(inputValue.trim(), memoryId, conversations  , setConversations , token).finally(
-      () => {
-        let aiContent = "";
-        setConversations(prev => {
-          aiContent = prev.find(c => c.memoryId === memoryId)?.AiResponse || "";
+    let assistantMessage: ChatMessage = {
+      memoryId: Date.now().toString(),
+      title: "新对话",
+      type: "assistant",
+      content: "好的欢迎您！",
+      createTime: new Date().toISOString(),
+    };
+    const fetchResponse = async () => {
+      const res = await xiaoY_chat(userMessage);
+      if (res.success === true && res.data) {
+        // console.log("ai的消息啊，西八.data:", res.data);
+        Object.assign(assistantMessage, res.data);
+        assistantMessage = res.data;
+        // console.log("ai的消息啊，西八.assistantMessage:", assistantMessage);
+        setActiveConversationId((prev) => assistantMessage.memoryId);
+        setActiveConversationId((prev) => {
+          // setActiveConversation((prev => {
+          //   console.log("memoryid" ,  prev.memoryId === assistantMessage.memoryId);
+          //   return prev
+          // }))
+          setActiveConversation((prev) =>
+            (prev.memoryId === assistantMessage.memoryId || !prev.memoryId)
+              ? {
+                  ...prev,
+                  messages: [
+                    ...prev.messages,
+                    {
+                      type: "assistant",
+                      content: assistantMessage.content,
+                      createTime: assistantMessage.createTime,
+                    },
+                  ],
+                }
+              : prev
+          );
           return prev;
-        })
-        setConversations(prev => prev.map(c => c.memoryId === memoryId ? { ...c, isLoading: false
-          ,
-          AiResponse: ''
-          ,Messages: [...c.Messages , {
-            type:'assistant',
-            content: aiContent,
-            createTime: new Date().toISOString()
-          }]
-
-          } : c));
-        
+        });
+        // console.log(activeConversationId, assistantMessage.memoryId);
       }
-    )
-
+    };
+    fetchResponse();
+    console.log("执行完毕" , activeConversation);
     // console.log("运行到这了", assistantMessage);
     // 如果没有活动对话，创建新对话
 
@@ -425,7 +370,7 @@ function ChatPage() {
         {/* 右侧主区域 */}
         <main className="chat-main">
           {/* 没有对话时的欢迎界面 */}
-          {isNewPage ? (
+          {isNewConversation ? (
             <div className="chat-welcome">
               <div className="welcome-content">
                 <img src={doubapImg} alt="科大小Y" />
@@ -475,15 +420,15 @@ function ChatPage() {
             <div className="chat-conversation">
               {/* 对话标题 */}
               <div className="conversation-header">
-                <h2>{conversations.find(c => c.memoryId === activeConversationId)?.title || "新对话"}</h2>
+                <h2>{activeConversation?.title || "新对话"}</h2>
               </div>
 
               {/* 消息列表 */}
               <div className="messages-container">
-                {activeConversationId && conversations.find(c => c.memoryId === activeConversationId) && conversations.find(c => c.memoryId === activeConversationId)?.Messages.map((msg, index) => (
+                {activeConversation?.messages.map((msg, index) => (
                   <div
                     className={`message ${msg.type === "user" ? "user" : "assistant"}`}
-                    key={ conversations.find(c => c.memoryId === activeConversationId)?.memoryId + index + 1}
+                    key={index}
                   >
                     <div className="message-avatar">
                       {msg.type === "user" ? (
@@ -506,7 +451,7 @@ function ChatPage() {
                   </div>
                 ))}
 
-                {conversations.find(c => c.memoryId === activeConversationId)?.isLoading && (
+                {isLoading && (
                   <div className="message assistant">
                     <div className="message-avatar">
                       <img src={doubapImg} alt="科大小Y" />
@@ -514,11 +459,6 @@ function ChatPage() {
                     <div className="message-body">
                       <div className="message-role">科大小Y</div>
                       <div className="message-content">
-                        <ReactMarkdown>
-                          {closeOpenMarkdownTokens(
-                            conversations.find(c => c.memoryId === activeConversationId)?.AiResponse || ''
-                          )}
-                        </ReactMarkdown>
                         <div className="typing-indicator">
                           <span></span>
                           <span></span>
@@ -540,13 +480,13 @@ function ChatPage() {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    disabled={conversations.find(c => c.memoryId === activeConversationId)?.isLoading}
+                    disabled={isLoading}
                     rows={1}
                   />
                   <button
                     className="send-btn"
                     onClick={handleSend}
-                    disabled={!inputValue.trim() || conversations.find(c => c.memoryId === activeConversationId)?.isLoading}
+                    disabled={!inputValue.trim() || isLoading}
                   >
                     发送
                   </button>

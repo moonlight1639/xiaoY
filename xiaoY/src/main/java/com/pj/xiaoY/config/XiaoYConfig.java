@@ -1,5 +1,7 @@
 package com.pj.xiaoY.config;
 
+
+import com.pj.xiaoY.assistant.UtilAssistant;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.chat.ChatMemoryProvider;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
@@ -15,11 +17,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class XiaoYConfig {
-    @Autowired
+    @Resource
     private EmbeddingStore<TextSegment> couresEmbeddingStore;
+    @Resource
+    private EmbeddingStore<TextSegment> courseReviewEmbeddingStore;
 
-    @Autowired
-    private EmbeddingModel embeddingModel;
 
     @Qualifier("qwenEmbeddingModel")
     @Autowired
@@ -31,7 +33,7 @@ public class XiaoYConfig {
     }
 
     @Bean
-    ContentRetriever contentRetrieverXiaoYPincone() {
+    ContentRetriever courseContentRetriever() {
 // 创建一个 EmbeddingStoreContentRetriever 对象，用于从嵌入存储中检索内容
         return EmbeddingStoreContentRetriever
                 .builder()
@@ -45,5 +47,44 @@ public class XiaoYConfig {
 //                .minScore(0.6)
 // 构建最终的 EmbeddingStoreContentRetriever 实例
                 .build();
+    }
+
+    @Bean
+    ContentRetriever courseReviewContentRetriever() {
+// 创建一个 EmbeddingStoreContentRetriever 对象，用于从嵌入存储中检索内容
+        return EmbeddingStoreContentRetriever
+                .builder()
+// 设置用于生成嵌入向量的嵌入模型
+                .embeddingModel(qwenEmbeddingModel)
+// 指定要使用的嵌入存储 - 也要输入模型
+                .embeddingStore(courseReviewEmbeddingStore)
+// 设置最大检索结果数量，这里表示最多返回 1 条匹配结果
+                .maxResults(4)
+// 设置最小得分阈值，只有得分大于等于 0.8 的结果才会被返回
+//                .minScore(0.6)
+// 构建最终的 EmbeddingStoreContentRetriever 实例
+                .build();
+    }
+    @Autowired
+    private UtilAssistant utilAssistant;
+    @Bean
+    ContentRetriever multicontentRetrieverXiaoYPincone() {
+// 创建一个 EmbeddingStoreContentRetriever 对象，用于从嵌入存储中检索内容
+        return query -> {
+            System.out.println(query.text());
+            String question = query.text();
+            String type = utilAssistant.select(question);
+            System.out.println(type);
+            ContentRetriever fianlContentRetriever = courseContentRetriever();
+            if(type == "course") {
+                System.out.println("ai选择了课程评价");
+                fianlContentRetriever = courseContentRetriever();
+            }
+            else if(type == "course-review") {
+                System.out.println("ai选择了课程评价");
+                fianlContentRetriever = courseReviewContentRetriever();
+            }
+            return fianlContentRetriever.retrieve(query);
+        };
     }
 }

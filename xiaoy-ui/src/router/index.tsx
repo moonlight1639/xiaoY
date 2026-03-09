@@ -7,6 +7,7 @@ import Admin from '../pages/Admin/Admin'
 import Container from '../components/Container'
 import SchoolBus from '../pages/SchoolBus'
 import AdminUsers from '../pages/Admin/AdminUsers'
+import AiChat from '@/pages/AiTest/AiChat'
 // ...existing code...
 import { useAuthStore } from '@/store'
 function AppRouter() {
@@ -28,6 +29,7 @@ function AppRouter() {
         <Route path="/bus" element={<SchoolBus />} />
         {/* <Route path="/reviews" element={<Reviews />} /> */}
         <Route path="/userinfo" element={<UserInfoPage key={`userinfo${token}`} />} />
+        <Route path="/aitest" element={<AiChat />} />
       </Route>
       {/* 管理员管理系统路由 */}
       <Route path="/admin" element={<Admin />}>

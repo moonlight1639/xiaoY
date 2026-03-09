@@ -21,6 +21,8 @@ export interface ResponseSingleChatMessageTitle{
   data?: ChatMessageTitle[];
   total?: number;
 }
+
+
 const baseUrl = '/chatmessagebyuser';
 export const xiaoY_chat = (chatForm: ChatForm):Promise<ResponseSingleChatMessage> =>
     http.post(`${baseUrl}/xiaoY_chat`, chatForm)
@@ -31,5 +33,8 @@ export const getList =  ():Promise<ResponseSingleChatMessageTitle> =>
 
 export const getMessages = (memoryId: string):Promise<ResponseSingleChatMessageList> =>
     http.get(`${baseUrl}/getmessages/${memoryId}`)
+
+export const getNewMemoryId = (chatForm: ChatForm):Promise<ResponseSingleChatMessage> =>
+    http.post(`${baseUrl}/get-new-memoryid`, chatForm)
 
 

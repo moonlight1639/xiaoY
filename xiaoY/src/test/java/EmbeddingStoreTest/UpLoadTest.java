@@ -7,6 +7,7 @@ import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
+import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 
 import dev.langchain4j.store.embedding.EmbeddingStore;
@@ -29,6 +30,8 @@ public class UpLoadTest {
     @Autowired
     private EmbeddingModel embeddingModel;
 
+    @Autowired
+    private StreamingChatLanguageModel streamingChatLanguageModel;
     @Test
     public void test() {
         EmbeddingStore<TextSegment> embeddingStore = PineconeEmbeddingStore.builder()

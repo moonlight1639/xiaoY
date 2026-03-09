@@ -29,7 +29,17 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-
+    <repositories>
+        <!-- Spring AI 仓库（稳定版可省略，中央仓库已同步） -->
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 
     <dependencies>
@@ -72,6 +82,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <version>3.4.0</version>
         </dependency>
         <dependency>
             <groupId>com.mysql</groupId>
@@ -103,6 +114,9 @@
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-reactor</artifactId>
         </dependency>
+<!-- spring-ai    阿里通义千问   -->
+
+
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
@@ -140,7 +154,11 @@
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-embeddings-bge-small-zh</artifactId>
         </dependency>
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-document-parser-apache-pdfbox</artifactId>
 
+        </dependency>
 
 
 
@@ -177,14 +195,53 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
             <!-- 引入 DJL BOM，统一管理所有 ai.djl 开头的依赖版本 -->
 
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.ai</groupId>-->
+<!--                <artifactId>spring-ai-bom</artifactId>-->
+<!--                &lt;!&ndash; 版本号：建议使用最新稳定版。-->
+<!--                     如果是 Spring Boot 3.3+，通常使用 1.0.0-M4 或更高，甚至 1.0.0 GA (如果已发布)-->
+<!--                     此处以 1.0.0-M4 为例，请根据实际仓库最新版本调整 &ndash;&gt;-->
+<!--                <version>1.0.0-M1</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
+
+
+            <!-- 1. 强制指定 Apache PDFBox 版本 (必须 >= 2.0.30 或 3.x) -->
+            <!-- 报错通常是因为这里版本太低，建议直接升级到 2.0.32+ 或 3.0.0+ -->
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>pdfbox</artifactId>
+                <version>2.0.32</version>
+            </dependency>
+
+            <!-- 如果用的是 PDFBox 3.x (Tika 2.9+ 可能需要)，则用下面这个，二选一 -->
+            <!--
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>pdfbox</artifactId>
+                <version>3.0.0</version>
+            </dependency>
+            -->
+
+            <!-- 2. 强制指定 Apache Tika 版本 (保持与 langchain4j 内部一致) -->
+            <!-- LangChain4j 0.3x/1.0 通常依赖 Tika 2.9.1 左右 -->
+            <dependency>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-core</artifactId>
+                <version>2.9.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-parsers-standard-package</artifactId>
+                <version>2.9.1</version>
+            </dependency>
+
+
         </dependencies>
-
-
-
-
-
     </dependencyManagement>
     <build>
         <plugins>

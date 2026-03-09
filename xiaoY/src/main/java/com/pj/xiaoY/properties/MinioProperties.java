@@ -1,4 +1,5 @@
 package com.pj.xiaoY.properties;
+import jakarta.annotation.PostConstruct;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Configuration
 @ConfigurationProperties(prefix = "minio")
 public class MinioProperties {
+    public static String MINIO_BASE_URL;
     /**
      * MinIO服务地址（如：http://127.0.0.1:9000）
      */
@@ -39,4 +41,13 @@ public class MinioProperties {
      * 默认链接有效期（秒），默认7天
      */
     private Integer expireSeconds  = 60 * 60 * 24 * 7;
+
+    @PostConstruct
+    public void initUserStaticConfig() {
+        // 3. 拼接 MinIO 基础路径，赋值给 User 类的静态变量
+        MINIO_BASE_URL = url + "/";
+        // 打印日志验证（可选）
+        System.out.println("初始化 User.MINIO_BASE_URL：" + MINIO_BASE_URL);
+    }
+
 }
