@@ -224,6 +224,7 @@ const AdminCourses: React.FC = () => {
                   style={{
                     ...(col.dataIndex === "description" && { width: "320px" }),
                     ...(col.dataIndex === "courseName" && { width: "200px" }),
+                    ...(col.dataIndex === "teacher" && { width: "120px" }),
                   }}
                 >
                   {col.title}

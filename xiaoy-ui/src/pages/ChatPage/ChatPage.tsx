@@ -221,7 +221,7 @@ function ChatPage() {
         // console.log(activeConversationId, assistantMessage.memoryId);
       }
     };
-    await fetchResponse();
+    fetchResponse();
     console.log("执行完毕" , activeConversation);
     // console.log("运行到这了", assistantMessage);
     // 如果没有活动对话，创建新对话
