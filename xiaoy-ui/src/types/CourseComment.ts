@@ -14,8 +14,7 @@ export interface CourseComment {
 
 export interface UpdateCourseComment {
  id: number;
- courseId: number;
- userId: number;
+ courseName: string;
  userName: string;
  userAvatar?: string;
  content: string;

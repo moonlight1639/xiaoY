@@ -4,7 +4,10 @@ import { Pagination } from "antd";
 import "./AdminCourses.css";
 import { getUpdateCourses, updateCourse } from "@/services";
 import { UpLoad } from "@/components";
-const userInfoitem: UpdateCourse[] = [
+
+type CourseWithVDB = UpdateCourse & { inVectorDB?: boolean };
+
+const userInfoitem: CourseWithVDB[] = [
   {
     id: 1001,
     courseName: "前端入门",
@@ -18,6 +21,7 @@ const userInfoitem: UpdateCourse[] = [
     isDeleted: 0,
     createTime: "2023-01-01 10:00:00",
     updateTime: "2023-01-05 12:00:00",
+    inVectorDB: true,
   },
   {
     id: 1002,
@@ -32,6 +36,7 @@ const userInfoitem: UpdateCourse[] = [
     isDeleted: 0,
     createTime: "2023-02-01 11:00:00",
     updateTime: "2023-02-06 13:00:00",
+    inVectorDB: false,
   },
   {
     id: 1003,
@@ -46,8 +51,9 @@ const userInfoitem: UpdateCourse[] = [
     isDeleted: 0,
     createTime: "2023-03-01 09:30:00",
     updateTime: "2023-03-05 14:00:00",
+    inVectorDB: false,
   },
-];
+  ];
 
 const isDeletedItems = [
   {
@@ -63,7 +69,14 @@ const isDeletedItems = [
 ];
 
 const AdminCourses: React.FC = () => {
-  const [items, setItems] = useState<UpdateCourse[]>(userInfoitem);
+  const [items, setItems] = useState<CourseWithVDB[]>(userInfoitem);
+
+  // 根据批量模式判断某行 checkbox 是否禁用
+  const isRowDisabled = (item: CourseWithVDB) => {
+    if (batchMode === 'add') return !!item.inVectorDB;
+    if (batchMode === 'delete') return !item.inVectorDB;
+    return false;
+  };
   const [columns] = useState([
     { title: "课程名称", dataIndex: "courseName" },
     { title: "指导老师", dataIndex: "teacher" },
@@ -212,10 +225,10 @@ const AdminCourses: React.FC = () => {
         <div className="CourseAdmin-actions">
           {batchMode === 'none' && (
             <>
-              <button className="CourseAdmin-btn primary" style={{ marginRight: 12 }} onClick={() => setBatchMode('add')}>
+              <button className="CourseAdmin-btn primary" style={{ marginRight: 12 }} onClick={() => { setBatchMode('add'); setSelectedIds([]); }}>
                 批量增加
               </button>
-              <button className="CourseAdmin-btn danger" style={{ marginRight: 12 }} onClick={() => setBatchMode('delete')}>
+              <button className="CourseAdmin-btn danger" style={{ marginRight: 12 }} onClick={() => { setBatchMode('delete'); setSelectedIds([]); }}>
                 批量删除
               </button>
               <button className="CourseAdmin-btn primary" onClick={openCreate}>
@@ -231,19 +244,27 @@ const AdminCourses: React.FC = () => {
           <table className="CourseAdmin-table">
             <thead>
               <tr>
-                <th style={{ width: 40, textAlign: 'center' }}>
-                  <input
-                    type="checkbox"
-                    style={{ cursor: 'pointer', width: 16, height: 16 }}
-                    checked={items.length > 0 && selectedIds.length === items.length}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedIds(items.map(item => item.id));
-                      } else {
-                        setSelectedIds([]);
-                      }
-                    }}
-                  />
+                <th style={{ width: 40, textAlign: 'center', fontSize: '0.72rem', color: '#9aa5b1', fontWeight: 700 }}>
+                  {batchMode === 'none' ? (
+                    <span title="☑ 已入知识库 / ☐ 未入">是否加到知识库</span>
+                  ) : (
+                    <input
+                      type="checkbox"
+                      style={{ cursor: 'pointer', width: 16, height: 16 }}
+                      checked={(() => {
+                        const eligible = items.filter(item => !isRowDisabled(item));
+                        return eligible.length > 0 && eligible.every(item => selectedIds.includes(item.id));
+                      })()}
+                      onChange={(e) => {
+                        const eligible = items.filter(item => !isRowDisabled(item)).map(item => item.id);
+                        if (e.target.checked) {
+                          setSelectedIds(prev => Array.from(new Set([...prev, ...eligible])));
+                        } else {
+                          setSelectedIds(prev => prev.filter(id => !eligible.includes(id)));
+                        }
+                      }}
+                    />
+                  )}
                 </th>
                 {columns.map((col) => (
                   <th
@@ -267,18 +288,38 @@ const AdminCourses: React.FC = () => {
               {items.map((item) => (
                 <tr key={item.id} style={{ backgroundColor: selectedIds.includes(item.id) ? '#f4f6ff' : '' }}>
                   <td style={{ textAlign: 'center' }}>
-                    <input
-                      type="checkbox"
-                      style={{ cursor: 'pointer', width: 16, height: 16 }}
-                      checked={selectedIds.includes(item.id)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setSelectedIds([...selectedIds, item.id]);
-                        } else {
-                          setSelectedIds(selectedIds.filter(id => id !== item.id));
-                        }
-                      }}
-                    />
+                    {batchMode === 'none' ? (
+                      <input
+                        type="checkbox"
+                        readOnly
+                        checked={!!item.inVectorDB}
+                        style={{
+                          width: 16, height: 16,
+                          cursor: 'default',
+                          pointerEvents: 'none',
+                          accentColor: '#0369a1',
+                        }}
+                      />
+                    ) : (
+                      <input
+                        type="checkbox"
+                        disabled={isRowDisabled(item)}
+                        style={{
+                          width: 16, height: 16,
+                          cursor: isRowDisabled(item) ? 'not-allowed' : 'pointer',
+                          accentColor: isRowDisabled(item) ? '#ccc' : undefined,
+                          filter: isRowDisabled(item) ? 'grayscale(1) opacity(0.45)' : 'none',
+                        }}
+                        checked={selectedIds.includes(item.id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedIds([...selectedIds, item.id]);
+                          } else {
+                            setSelectedIds(selectedIds.filter(id => id !== item.id));
+                          }
+                        }}
+                      />
+                    )}
                   </td>
                   <td>{item.courseName}</td>
                   <td>{item.teacher ? item.teacher : "null"}</td>
@@ -385,16 +426,72 @@ const AdminCourses: React.FC = () => {
 
       {batchModalOpen && (
         <div className="CourseAdmin-modal-mask" onClick={() => setBatchModalOpen(false)}>
-          <div className="CourseAdmin-modal" style={{ width: 400 }} onClick={e => e.stopPropagation()}>
+          <div className="CourseAdmin-modal" style={{ width: 600 }} onClick={e => e.stopPropagation()}>
             <div className="CourseAdmin-modal-header">
-              <h3>提示</h3>
+              <h3>确认批量{batchMode === 'delete' ? '删除' : '增加'}</h3>
               <button className="CourseAdmin-modal-close" onClick={() => setBatchModalOpen(false)}>✕</button>
             </div>
-            <div className="CourseAdmin-modal-body" style={{ minHeight: '60px', display: 'flex', alignItems: 'center' }}>
-              <p style={{ fontSize: '1.05rem', color: '#333', margin: 0 }}>
-                确定要执行批量<strong style={{ color: batchMode === 'delete' ? '#e63946' : '#4361ee', margin: '0 4px' }}>{batchMode === 'delete' ? '删除' : '增加'}</strong>操作吗？<br/>
-                <span style={{ fontSize: '0.9rem', color: '#888', marginTop: '12px', display: 'inline-block' }}>共选中 {selectedIds.length} 项</span>
+            <div className="CourseAdmin-modal-body">
+              <p style={{ fontSize: '1rem', color: '#333', margin: '0 0 12px 0' }}>
+                确定要执行批量
+                <strong style={{ color: batchMode === 'delete' ? '#e63946' : '#4361ee', margin: '0 4px' }}>
+                  {batchMode === 'delete' ? '删除' : '增加'}
+                </strong>
+                操作吗？共选中
+                <strong style={{ color: '#4361ee', margin: '0 4px' }}>{selectedIds.length}</strong>
+                项
               </p>
+              <div style={{ border: '1px solid #e8ecf0', borderRadius: 8, overflow: 'hidden' }}>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 80px 1fr 60px',
+                  padding: '8px 12px',
+                  background: '#f9fafb',
+                  borderBottom: '1px solid #e8ecf0',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  color: '#9aa5b1',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                }}>
+                  <span>课程名称</span>
+                  <span>指导老师</span>
+                  <span>描述</span>
+                  <span style={{ textAlign: 'center' }}>状态</span>
+                </div>
+                <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                  {items.filter(item => selectedIds.includes(item.id)).map((item, idx) => (
+                    <div
+                      key={item.id}
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 80px 1fr 60px',
+                        padding: '9px 12px',
+                        borderBottom: '1px solid #f1f5f9',
+                        fontSize: '0.85rem',
+                        color: '#334155',
+                        background: idx % 2 === 1 ? '#fafbfc' : '#fff',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {item.courseName}
+                      </span>
+                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {item.teacher || '-'}
+                      </span>
+                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: '#64748b' }}>
+                        {item.description || '-'}
+                      </span>
+                      <span style={{ textAlign: 'center' }}>
+                        <span className="CourseAdmin-tag" style={isDeletedItems[item.isDeleted]?.style}>
+                          {isDeletedItems[item.isDeleted]?.label}
+                        </span>
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
             <div className="CourseAdmin-modal-footer">
               <button className="CourseAdmin-btn ghost" onClick={() => setBatchModalOpen(false)}>取消</button>
