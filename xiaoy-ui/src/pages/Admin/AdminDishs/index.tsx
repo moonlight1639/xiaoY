@@ -110,6 +110,11 @@ const AdminDishs: React.FC = () => {
   const [pageSize , setPageSize] = useState(10);
   const [modalOpen, setModalOpen] = useState(false);
 
+  // 批量操作状态
+  const [batchMode, setBatchMode] = useState<'none' | 'add' | 'delete'>('none');
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [batchModalOpen, setBatchModalOpen] = useState(false);
+
   //提交表单
   const [editing, setEditing] = useState<number | null>(null);
   const [form, setForm] = useState<InsertDish>(
@@ -229,7 +234,8 @@ const AdminDishs: React.FC = () => {
   return (
     <div className="dishAdmin-page">
       <div className="dishAdmin-page-header">
-        <h1>菜名管理</h1>
+        <h1>🍽️ 菜品管理</h1>
+        <p>管理和维护各个食堂及地点的菜单菜品信息</p>
       </div>
 
       <div className="dishAdmin-toolbar">
@@ -245,16 +251,41 @@ const AdminDishs: React.FC = () => {
           />
         </div>
         <div className="dishAdmin-actions">
-          <button className="dishAdmin-btn primary" onClick={openCreate}>
-            + 新增菜名
-          </button>
+          {batchMode === 'none' && (
+            <>
+              <button className="dishAdmin-btn primary" style={{ marginRight: 12 }} onClick={() => setBatchMode('add')}>
+                批量增加
+              </button>
+              <button className="dishAdmin-btn danger" style={{ marginRight: 12 }} onClick={() => setBatchMode('delete')}>
+                批量删除
+              </button>
+              <button className="dishAdmin-btn primary" onClick={openCreate}>
+                + 新增菜名
+              </button>
+            </>
+          )}
         </div>
       </div>
 
       <div className="dishAdmin-card">
+        <div className="dishAdmin-table-wrap">
         <table className="dishAdmin-table">
           <thead>
             <tr>
+              <th style={{ width: 40, textAlign: 'center' }}>
+                <input
+                  type="checkbox"
+                  style={{ cursor: 'pointer', width: 16, height: 16 }}
+                  checked={items.length > 0 && selectedIds.length === items.length}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedIds(items.map(item => item.id));
+                    } else {
+                      setSelectedIds([]);
+                    }
+                  }}
+                />
+              </th>
               {columns.map((col) => (
                 <th
                   key={col.dataIndex}
@@ -272,7 +303,21 @@ const AdminDishs: React.FC = () => {
           </thead>
           <tbody>
             {items.map((item) => (
-              <tr key={item.id}>
+              <tr key={item.id} style={{ backgroundColor: selectedIds.includes(item.id) ? '#f4f6ff' : '' }}>
+                <td style={{ textAlign: 'center' }}>
+                  <input
+                    type="checkbox"
+                    style={{ cursor: 'pointer', width: 16, height: 16 }}
+                    checked={selectedIds.includes(item.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedIds([...selectedIds, item.id]);
+                      } else {
+                        setSelectedIds(selectedIds.filter(id => id !== item.id));
+                      }
+                    }}
+                  />
+                </td>
                 <td>{item.dishName}</td>
                 <td>{item.description ? item.description : "null"}</td>
                 <td><UpLoad avatar={item.photo} returnSrc={(src:string) => handleAvatarChange(src, item)}></UpLoad></td>
@@ -296,24 +341,27 @@ const AdminDishs: React.FC = () => {
                 <td>{item.createTime}</td>
                 <td>{item.updateTime}</td>
                 <td>
-                  <button
-                    className="dishAdmin-btn ghost"
-                    onClick={() => openEdit(item)}
-                  >
-                    编辑
-                  </button>
-                  <button
-                    className="dishAdmin-btn danger"
-                    onClick={() => onDelete(item.id)}
-                  >
-                    删除
-                  </button>
+                  <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'nowrap' }}>
+                    <button
+                      className="dishAdmin-btn ghost"
+                      onClick={() => openEdit(item)}
+                    >
+                      编辑
+                    </button>
+                    <button
+                      className="dishAdmin-btn danger"
+                      onClick={() => onDelete(item.id)}
+                    >
+                      删除
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
 
           </tbody>
         </table>
+        </div>
         <div className="dishAdmin-pagination">
           <span>共 {total} 条</span>
           <Pagination defaultCurrent={1} total={total} pageSize={pageSize} current={page} onChange={(page, pageSize) => {
@@ -323,107 +371,172 @@ const AdminDishs: React.FC = () => {
         </div>
       </div>
 
+      {/* 固定在页面左下角的批量操作面板 */}
+      {batchMode !== 'none' && (
+        <div style={{
+          position: 'fixed',
+          left: '260px',
+          bottom: '40px',
+          background: '#fff',
+          padding: '12px 24px',
+          borderRadius: '8px',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '16px',
+          zIndex: 90,
+          animation: 'maskIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+        }}>
+          <span style={{ fontSize: '0.95rem', color: '#555', fontWeight: 500 }}>
+            已选择 <strong style={{ color: '#4361ee', fontSize: '1.1rem' }}>{selectedIds.length}</strong> 项
+          </span>
+          <div style={{ width: '1px', height: '24px', background: '#eee' }}></div>
+          <button
+            className={`dishAdmin-btn ${batchMode === 'delete' ? 'danger' : 'primary'}`}
+            disabled={selectedIds.length === 0}
+            style={{ opacity: selectedIds.length === 0 ? 0.5 : 1, cursor: selectedIds.length === 0 ? 'not-allowed' : 'pointer' }}
+            onClick={() => setBatchModalOpen(true)}
+          >
+            确定{batchMode === 'delete' ? '删除' : '增加'}
+          </button>
+          <button
+            className="dishAdmin-btn ghost"
+            onClick={() => { setBatchMode('none'); setSelectedIds([]); }}
+          >
+            退出选择
+          </button>
+        </div>
+      )}
+
+      {batchModalOpen && (
+        <div className="dishAdmin-modal-mask" onClick={() => setBatchModalOpen(false)}>
+          <div className="dishAdmin-modal" style={{ width: 400 }} onClick={e => e.stopPropagation()}>
+            <div className="dishAdmin-modal-header">
+              <h3>提示</h3>
+              <button className="dishAdmin-modal-close" onClick={() => setBatchModalOpen(false)}>✕</button>
+            </div>
+            <div className="dishAdmin-modal-body" style={{ minHeight: '60px', display: 'flex', alignItems: 'center' }}>
+              <p style={{ fontSize: '1.05rem', color: '#333', margin: 0 }}>
+                确定要执行批量<strong style={{ color: batchMode === 'delete' ? '#e63946' : '#4361ee', margin: '0 4px' }}>{batchMode === 'delete' ? '删除' : '增加'}</strong>操作吗？<br/>
+                <span style={{ fontSize: '0.9rem', color: '#888', marginTop: '12px', display: 'inline-block' }}>共选中 {selectedIds.length} 项</span>
+              </p>
+            </div>
+            <div className="dishAdmin-modal-footer">
+              <button className="dishAdmin-btn ghost" onClick={() => setBatchModalOpen(false)}>取消</button>
+              <button
+                className={`dishAdmin-btn ${batchMode === 'delete' ? 'danger' : 'primary'}`}
+                onClick={() => {
+                  console.log(`执行批量${batchMode}，IDs: `, selectedIds);
+                  setBatchModalOpen(false);
+                  setBatchMode('none');
+                  setSelectedIds([]);
+                }}
+              >
+                确认
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {modalOpen && (
-        <div className="dishAdmin-modal-mask">
-          <div className="dishAdmin-modal">
-            <h4>{editing ? "编辑菜名" : "新增菜名"}</h4>
-            <div className="dishAdmin-form">
-              <label>菜名</label>
-              <input
-                className="dishAdmin-input"
-                value={form.dishName}
-                onChange={(e) =>
-                  setForm((v) => ({ ...v, dishName: e.target.value }))
-                }
-              />
-              <label>描述</label>
-              <input
-                className="dishAdmin-input"
-                value={form.description}
-                onChange={(e) =>
-                  setForm((v) => ({ ...v, description: e.target.value }))
-                }
-              />
-              <label>价格</label>
-              <input
-                className="dishAdmin-input"
-                value={form.price}
-                onChange={(e) =>
-                  setForm((v) => ({ ...v, price: e.target.value ? Number(e.target.value) : 0 }))
-                }
-              />
-              <label>类别</label>
-              <input
-                className="dishAdmin-input"
-                value={form.category}
-                onChange={(e) =>
-                  setForm((v) => ({ ...v, category: e.target.value }))
-                }
-              />
-              
-              <label>地点</label>
-              <select
-                className="dishAdmin-select"
-                value={form.locationId}
-                onChange={(e) =>
-                  setForm((v) => ({
-                    ...v,
-                    locationId: Number(e.target.value) as UpdateLocation["id"],
-                    locationName: locationItems.find(item => item.id === Number(e.target.value))?.name || "",
-                  }))
-                }
-              >
-                {locationItems.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-              <label>菜品状态</label>
-              <select
-                className="dishAdmin-select"
-                value={form.status}
-                onChange={(e) =>
-                  setForm((v) => ({
-                    ...v,
-                    status: Number(e.target.value) as UpdateDish["status"],
-                  }))
-                }
-              >
-                {statusItems.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-                <label>删除状态</label>
+        <div className="dishAdmin-modal-mask" onClick={() => setModalOpen(false)}>
+          <div className="dishAdmin-modal" onClick={e => e.stopPropagation()}>
+            <div className="dishAdmin-modal-header">
+              <h3>{editing ? "编辑菜品" : "新增菜品"}</h3>
+              <button className="dishAdmin-modal-close" onClick={() => setModalOpen(false)}>✕</button>
+            </div>
+
+            <div className="dishAdmin-modal-body">
+              <div className="dishAdmin-form-group">
+                <label className="dishAdmin-form-label">菜品名称 *</label>
+                <input
+                  className="dishAdmin-input"
+                  placeholder="请输入菜品名称"
+                  value={form.dishName}
+                  onChange={(e) => setForm((v) => ({ ...v, dishName: e.target.value }))}
+                />
+              </div>
+              <div className="dishAdmin-form-group">
+                <label className="dishAdmin-form-label">描述</label>
+                <textarea
+                  className="dishAdmin-form-textarea"
+                  placeholder="请输入菜品描述..."
+                  value={form.description}
+                  onChange={(e) => setForm((v) => ({ ...v, description: e.target.value }))}
+                />
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                <div className="dishAdmin-form-group">
+                  <label className="dishAdmin-form-label">价格 (元)</label>
+                  <input
+                    className="dishAdmin-input"
+                    type="number"
+                    min={0}
+                    step={0.5}
+                    placeholder="0.00"
+                    value={form.price}
+                    onChange={(e) => setForm((v) => ({ ...v, price: e.target.value ? Number(e.target.value) : 0 }))}
+                  />
+                </div>
+                <div className="dishAdmin-form-group">
+                  <label className="dishAdmin-form-label">类别</label>
+                  <input
+                    className="dishAdmin-input"
+                    placeholder="如：川菜、粤菜..."
+                    value={form.category}
+                    onChange={(e) => setForm((v) => ({ ...v, category: e.target.value }))}
+                  />
+                </div>
+              </div>
+              <div className="dishAdmin-form-group">
+                <label className="dishAdmin-form-label">所属地点</label>
                 <select
                   className="dishAdmin-select"
-                  value={form.isDeleted}
-                  onChange={(e) =>
-                    setForm((v) => ({
-                      ...v,
-                      isDeleted: Number(e.target.value) as UpdateDish["isDeleted"],
-                    }))
-                  }
+                  value={form.locationId}
+                  onChange={(e) => setForm((v) => ({
+                    ...v,
+                    locationId: Number(e.target.value),
+                    locationName: locationItems.find(item => item.id === Number(e.target.value))?.name || "",
+                  }))}
                 >
-                  {isDeletedItems.map((item) => (
-                    <option key={item.value} value={item.value}>
-                      {item.label}
-                    </option>
+                  <option value={0}>请选择地点</option>
+                  {locationItems.map((item) => (
+                    <option key={item.id} value={item.id}>{item.name}</option>
                   ))}
-                </select> 
+                </select>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                <div className="dishAdmin-form-group">
+                  <label className="dishAdmin-form-label">菜品状态</label>
+                  <select
+                    className="dishAdmin-select"
+                    value={form.status}
+                    onChange={(e) => setForm((v) => ({ ...v, status: Number(e.target.value) as UpdateDish["status"] }))}
+                  >
+                    {statusItems.map((item) => (
+                      <option key={item.value} value={item.value}>{item.label}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="dishAdmin-form-group">
+                  <label className="dishAdmin-form-label">删除状态</label>
+                  <select
+                    className="dishAdmin-select"
+                    value={form.isDeleted}
+                    onChange={(e) => setForm((v) => ({ ...v, isDeleted: Number(e.target.value) as UpdateDish["isDeleted"] }))}
+                  >
+                    {isDeletedItems.map((item) => (
+                      <option key={item.value} value={item.value}>{item.label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
             </div>
-            <div className="dishAdmin-modal-actions">
-              <button
-                className="dishAdmin-btn ghost"
-                onClick={() => setModalOpen(false)}
-              >
-                取消
-              </button>
-              <button className="dishAdmin-btn primary" onClick={onSave}>
-                保存
-              </button>
+
+            <div className="dishAdmin-modal-footer">
+              <button className="dishAdmin-btn ghost" onClick={() => setModalOpen(false)}>取消</button>
+              <button className="dishAdmin-btn primary" onClick={onSave}>保存</button>
             </div>
           </div>
         </div>

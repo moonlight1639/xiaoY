@@ -24,6 +24,9 @@ const Admin: React.FC = () => {
             <NavLink to="/admin/dishs" className={({ isActive }) => `admin-link-button${isActive ? " active" : ""}`}>
               <li>🍜 食物管理</li>
             </NavLink>
+            <NavLink to="/admin/vectordb" className={({ isActive }) => `admin-link-button${isActive ? " active" : ""}`}>
+              <li>🗄️ 向量数据库</li>
+            </NavLink>
           </ul>
         </nav>
         <div className="sidebar-footer">v1.0 · 科大小Y</div>

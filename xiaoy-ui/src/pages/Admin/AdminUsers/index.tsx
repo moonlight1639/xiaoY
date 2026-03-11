@@ -8,6 +8,7 @@ import { Input } from 'antd';
 import {fillClassApi} from "@/services";
 const { TextArea } = Input;
 import { UpLoad } from "@/components";
+import defaultImg from "@/assets/avator/defaultAvator1.jpg";
 const userInfoitem: UserInfo[] = [
   {
     id: 1001,
@@ -215,7 +216,8 @@ const AdminUsers: React.FC = () => {
   return (
     <div className="userAdmin-page">
       <div className="userAdmin-page-header">
-        <h1>用户管理</h1>
+        <h1>👥 用户管理</h1>
+        <p>管理系统内的所有用户，查看状态或修改角色权限</p>
       </div>
 
       <div className="userAdmin-toolbar">
@@ -238,6 +240,7 @@ const AdminUsers: React.FC = () => {
       </div>
 
       <div className="userAdmin-card">
+        <div className="userAdmin-table-wrap">
         <table className="userAdmin-table">
           <thead>
             <tr>
@@ -262,7 +265,7 @@ const AdminUsers: React.FC = () => {
                 <td>{item.phone ? item.phone : "null"}</td>
                 <td>{item.email ? item.email : "null"}</td>
                 
-                <td><UpLoad avatar={item.avatar} returnSrc={(src:string) => {handleAvatarChange(src , item.id)}}/></td>
+                <td><UpLoad avatar={item.avatar || defaultImg} returnSrc={(src:string) => {handleAvatarChange(src , item.id)}}/></td>
                 <td>
                   <span className="userAdmin-tag" style={userGenderItems[item.gender]?.style}>
                     {userGenderItems[item.gender]?.label || item.gender}
@@ -281,24 +284,27 @@ const AdminUsers: React.FC = () => {
                 <td>{item.createTime}</td>
                 <td>{item.updateTime}</td>
                 <td>
-                  <button
-                    className="userAdmin-btn ghost"
-                    onClick={() => openEdit(item)}
-                  >
-                    编辑
-                  </button>
-                  <button
-                    className="userAdmin-btn danger"
-                    onClick={() => onDelete(item.id)}
-                  >
-                    删除
-                  </button>
+                  <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'nowrap' }}>
+                    <button
+                      className="userAdmin-btn ghost"
+                      onClick={() => openEdit(item)}
+                    >
+                      编辑
+                    </button>
+                    <button
+                      className="userAdmin-btn danger"
+                      onClick={() => onDelete(item.id)}
+                    >
+                      删除
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
 
           </tbody>
         </table>
+        </div>
         <div className="userAdmin-pagination">
           <span>共 {total} 条</span>
           <Pagination defaultCurrent={1} total={total} pageSize={pageSize} current={page} onChange={(page, pageSize) => {
@@ -309,100 +315,85 @@ const AdminUsers: React.FC = () => {
       </div>
 
       {modalOpen && (
-        <div className="userAdmin-modal-mask">
-          <div className="userAdmin-modal">
-            <div style={{display:'flex', justifyContent:'space-between', gap:'10px' , alignContent:'center'}}>
-              <h4>{editing ? "编辑用户" : "新增用户"}</h4>
-              <Button onClick={() => setFillModalOpen(true)} type="primary">ai自动填充</Button>
+        <div className="userAdmin-modal-mask" onClick={() => { setModalOpen(false); setUserContext(""); setConfirmLoading(false); }}>
+          <div className="userAdmin-modal" onClick={e => e.stopPropagation()}>
+            <div className="userAdmin-modal-header">
+              <h3>{editing ? "编辑用户" : "新增用户"}</h3>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Button size="small" onClick={() => setFillModalOpen(true)} type="primary">AI 自动填充</Button>
+                <button className="userAdmin-modal-close" onClick={() => { setModalOpen(false); setUserContext(""); setConfirmLoading(false); }}>✕</button>
+              </div>
             </div>
-            
-            <div className="userAdmin-form">
-              <label>姓名</label>
-              <input
-                className="userAdmin-input"
-                value={form.nickname}
-                onChange={(e) =>
-                  setForm((v) => ({ ...v, nickname: e.target.value }))
-                }
-              />
-              <label>电话</label>
-              <input
-                className="userAdmin-input"
-                value={form.phone}
-                onChange={(e) =>
-                  setForm((v) => ({ ...v, phone: e.target.value }))
-                }
-              />
-              <label>邮箱</label>
-              <input
-                className="userAdmin-input"
-                value={form.email}
-                onChange={(e) =>
-                  setForm((v) => ({ ...v, email: e.target.value }))
-                }
-              />
-              <label>性别</label>
-              <select
-                className="userAdmin-select"
-                value={form.gender}
-                onChange={(e) =>
-                  setForm((v) => ({
-                    ...v,
-                    gender: Number(e.target.value) as UserInfo["gender"],
-                  }))
-                }
-              >
-                {userGenderItems.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-              <label>角色</label>
-              <select
-                className="userAdmin-select"
-                value={form.userType}
-                onChange={(e) =>
-                  setForm((v) => ({
-                    ...v,
-                    userType: Number(e.target.value) as UserInfo["userType"],
-                  }))
-                }
-              >
-                {userTypeItems.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-              <label>状态</label>
-              <select
-                className="userAdmin-select"
-                value={form.userStatus}
-                onChange={(e) =>
-                  setForm((v) => ({
-                    ...v,
-                    userStatus: Number(e.target.value) as UserInfo["userStatus"],
-                  }))
-                }
-              >
-                {userStatusItems.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select> 
+
+            <div className="userAdmin-modal-body">
+              <div className="userAdmin-form-group">
+                <label className="userAdmin-form-label">姓名</label>
+                <input
+                  className="userAdmin-input"
+                  placeholder="请输入姓名"
+                  value={form.nickname ?? ""}
+                  onChange={(e) => setForm((v) => ({ ...v, nickname: e.target.value }))}
+                />
+              </div>
+              <div className="userAdmin-form-group">
+                <label className="userAdmin-form-label">电话</label>
+                <input
+                  className="userAdmin-input"
+                  placeholder="请输入电话"
+                  value={form.phone ?? ""}
+                  onChange={(e) => setForm((v) => ({ ...v, phone: e.target.value }))}
+                />
+              </div>
+              <div className="userAdmin-form-group">
+                <label className="userAdmin-form-label">邮箱</label>
+                <input
+                  className="userAdmin-input"
+                  placeholder="请输入邮箱"
+                  value={form.email ?? ""}
+                  onChange={(e) => setForm((v) => ({ ...v, email: e.target.value }))}
+                />
+              </div>
+              <div className="userAdmin-form-group">
+                <label className="userAdmin-form-label">性别</label>
+                <select
+                  className="userAdmin-select"
+                  value={form.gender}
+                  onChange={(e) => setForm((v) => ({ ...v, gender: Number(e.target.value) as UserInfo["gender"] }))}
+                >
+                  {userGenderItems.map((item) => (
+                    <option key={item.value} value={item.value}>{item.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="userAdmin-form-group">
+                <label className="userAdmin-form-label">角色</label>
+                <select
+                  className="userAdmin-select"
+                  value={form.userType}
+                  onChange={(e) => setForm((v) => ({ ...v, userType: Number(e.target.value) as UserInfo["userType"] }))}
+                >
+                  {userTypeItems.map((item) => (
+                    <option key={item.value} value={item.value}>{item.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="userAdmin-form-group">
+                <label className="userAdmin-form-label">状态</label>
+                <select
+                  className="userAdmin-select"
+                  value={form.userStatus}
+                  onChange={(e) => setForm((v) => ({ ...v, userStatus: Number(e.target.value) as UserInfo["userStatus"] }))}
+                >
+                  {userStatusItems.map((item) => (
+                    <option key={item.value} value={item.value}>{item.label}</option>
+                  ))}
+                </select>
+              </div>
             </div>
-            <div className="userAdmin-modal-actions">
-              <button
-                className="userAdmin-btn ghost"
-                onClick={() => {setModalOpen(false); setUserContext("");setConfirmLoading(false);}}
-              >
-                取消
-              </button>
-              <button className="userAdmin-btn primary" onClick={onSave}>
-                保存
-              </button>
+
+            <div className="userAdmin-modal-footer">
+              <button className="userAdmin-btn ghost" onClick={() => { setModalOpen(false); setUserContext(""); setConfirmLoading(false); }}>取消</button>
+              <button className="userAdmin-btn primary" onClick={onSave}>保存</button>
             </div>
           </div>
         </div>

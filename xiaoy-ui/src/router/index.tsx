@@ -8,6 +8,8 @@ import Container from '../components/Container'
 import SchoolBus from '../pages/SchoolBus'
 import AdminUsers from '../pages/Admin/AdminUsers'
 import AiChat from '@/pages/AiTest/AiChat'
+import AdminVectorDB from '@/pages/Admin/AdminVectorDB'
+import AdminVectorDBDetail from '@/pages/Admin/AdminVectorDB/AdminVectorDBDetail'
 // ...existing code...
 import { useAuthStore } from '@/store'
 function AppRouter() {
@@ -39,6 +41,8 @@ function AppRouter() {
         <Route path="courses" element={<AdminCourses />} />
         <Route path="dishs" element={<AdminDishs />} /> {/* 这里需要替换成 AdminDishs 组件 */}
         <Route path="coursecomments" element={<AdminCourseComments />} />
+        <Route path="vectordb" element={<AdminVectorDB />} />
+        <Route path="vectordb/:namespace" element={<AdminVectorDBDetail />} />
       </Route>
       
       <Route path="*" element={<NotFound />} />

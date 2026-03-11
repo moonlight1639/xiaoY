@@ -1,164 +1,187 @@
+:root {
+  --CourseCommentsAdmin-accent: #6366f1;
+  --CourseCommentsAdmin-accent-light: #e0e7ff;
+  --CourseCommentsAdmin-accent-dark: #4338ca;
+  --CourseCommentsAdmin-success: #1a9e47;
+  --CourseCommentsAdmin-success-bg: #eafaf1;
+  --CourseCommentsAdmin-danger: #d93025;
+  --CourseCommentsAdmin-text-primary: #1d2b3a;
+  --CourseCommentsAdmin-text-secondary: #5f6b7a;
+  --CourseCommentsAdmin-text-muted: #9aa5b1;
+  --CourseCommentsAdmin-border: #e8ecf0;
+  --CourseCommentsAdmin-bg-page: #f6f8fa;
+  --CourseCommentsAdmin-bg-card: #ffffff;
+  --CourseCommentsAdmin-bg-header: #f9fafb;
+  --CourseCommentsAdmin-radius: 10px;
+  --CourseCommentsAdmin-shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
+}
+
 .CourseCommentsAdmin-page {
   width: 100%;
 }
+@keyframes pageIn {
+  from { opacity: 0; translate: 0 8px; }
+  to   { opacity: 1; translate: 0 0px; }
+}
 
+/* ===== 页头 ===== */
 .CourseCommentsAdmin-page-header {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 .CourseCommentsAdmin-page-header h1 {
-  margin: 0 0 4px 0;
-  font-size: 1.4rem;
+  margin: 0 0 4px;
+  font-size: 1.45rem;
   font-weight: 700;
-  color: #1d2b3a;
+  color: var(--CourseCommentsAdmin-text-primary);
+  letter-spacing: -0.3px;
 }
 .CourseCommentsAdmin-page-header p {
-  margin: 0 0 14px 0;
-  color: #888;
-  font-size: .9rem;
+  margin: 0;
+  color: var(--CourseCommentsAdmin-text-muted);
+  font-size: 0.88rem;
 }
 
+/* ===== 工具栏 ===== */
 .CourseCommentsAdmin-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 14px;
 }
-.CourseCommentsAdmin-filters {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.CourseCommentsAdmin-actions {
-  display: flex;
-  gap: 8px;
-}
+.CourseCommentsAdmin-filters { display: flex; gap: 10px; flex-wrap: wrap; }
+.CourseCommentsAdmin-actions  { display: flex; gap: 8px; }
 
-.CourseCommentsAdmin-card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.06);
-  padding: 16px 20px 8px;
-  overflow-x: auto;
-  animation: pageIn .35s ease-out both;
-}
-
-.CourseCommentsAdmin-input,
-.CourseCommentsAdmin-select {
-  width: 280px;
+/* ===== 搜索框 ===== */
+.CourseCommentsAdmin-input {
   height: 36px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  min-width: 240px;
+  border: 1.5px solid var(--CourseCommentsAdmin-border);
+  border-radius: 8px;
+  padding: 0 12px 0 36px;
+  outline: none;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239aa5b1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 11px center;
+  color: var(--CourseCommentsAdmin-text-primary);
+  font-size: 0.88rem;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  box-sizing: border-box;
+}
+.CourseCommentsAdmin-input:focus {
+  border-color: var(--CourseCommentsAdmin-accent);
+  box-shadow: 0 0 0 3px rgba(66,133,244,0.13);
+}
+
+.CourseCommentsAdmin-select {
+  height: 36px;
+  border: 1.5px solid var(--CourseCommentsAdmin-border);
+  border-radius: 8px;
   padding: 0 12px;
   outline: none;
+  font-size: 0.88rem;
+  color: var(--CourseCommentsAdmin-text-primary);
+  transition: border-color .18s;
   background: #fff;
-  color: #333;
-  font-size: .9rem;
-  transition: border-color .2s, box-shadow .2s;
+  box-sizing: border-box;
 }
-.CourseCommentsAdmin-input:focus,
-.CourseCommentsAdmin-select:focus {
-  border-color: #4096ff;
-  box-shadow: 0 0 0 2px rgba(64,150,255,.12);
+.CourseCommentsAdmin-select:focus { border-color: var(--CourseCommentsAdmin-accent); box-shadow: 0 0 0 3px rgba(66,133,244,0.13); }
+
+/* ===== 卡片容器 ===== */
+.CourseCommentsAdmin-card {
+  /* background: var(--CourseCommentsAdmin-bg-card);
+  border-radius: var(--CourseCommentsAdmin-radius); */
+  border: 1.5px solid var(--CourseCommentsAdmin-border);
+  box-shadow: var(--CourseCommentsAdmin-shadow);
+  padding: 0;
+  overflow: hidden;
+  animation: pageIn .35s ease-out both;
+}
+.CourseCommentsAdmin-table-wrap {
+  overflow-x: auto;
+  transform: rotateX(180deg);
 }
 
+/* ===== 下面的表格 ===== */
 .CourseCommentsAdmin-table {
   width: max-content;
   min-width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 0.9rem;
+  transform: rotateX(180deg);
+  border-radius: 12px;
+  overflow: hidden;
+  margin:5px 0px;
+  box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.1), 0 2px 4px -2px rgba(99, 102, 241, 0.05);
 }
-.CourseCommentsAdmin-table th,
-.CourseCommentsAdmin-table td {
-  text-align: left;
-  padding: 11px 10px;
-  border-bottom: 1px solid #f0f0f0;
-}
+
 .CourseCommentsAdmin-table thead th {
-  color: #666;
-  font-weight: 600;
-  font-size: .85rem;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  background: #fafafa;
-  border-bottom: 2px solid #eee;
-}
-.CourseCommentsAdmin-table tbody tr {
-  transition: background .15s;
-}
-.CourseCommentsAdmin-table tbody tr:hover {
-  background: #f7f9fc;
-}
-
-.CourseCommentsAdmin-btn {
-  height: 32px;
-  padding: 0 14px;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  cursor: pointer;
+  padding: 14px 18px;
+  text-align: left;
+  background: #f5f6ff;
+  color: #4f46e5;
   font-size: 0.85rem;
-  margin-right: 6px;
-  transition: all .2s ease;
-}
-.CourseCommentsAdmin-btn:active {
-  transform: scale(.97);
-}
-.CourseCommentsAdmin-btn.primary {
-  background: #4096ff;
-  color: #fff;
-}
-.CourseCommentsAdmin-btn.primary:hover {
-  background: #2b7de9;
-}
-.CourseCommentsAdmin-btn.ghost {
-  background: #fff;
-  border-color: #d9d9d9;
-  color: #333;
-}
-.CourseCommentsAdmin-btn.ghost:hover {
-  border-color: #4096ff;
-  color: #4096ff;
-}
-.CourseCommentsAdmin-btn.danger {
-  background: #fff2f0;
-  color: #d4380d;
-  border-color: #ffccc7;
-}
-.CourseCommentsAdmin-btn.danger:hover {
-  background: #ff4d4f;
-  color: #fff;
-  border-color: #ff4d4f;
+  font-weight: 600;
+  border-bottom: 2px solid #eef2ff;
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
-.CourseCommentsAdmin-tag {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  font-weight: 500;
+.CourseCommentsAdmin-table tbody td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+  vertical-align: middle;
+  background: #ffffff;
+  transition: all 0.2s;
 }
 
+.CourseCommentsAdmin-table tbody tr {
+  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.CourseCommentsAdmin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.CourseCommentsAdmin-table tbody tr:hover td {
+  background: #f8faff;
+  color: #1e1b4b;
+}
+
+.CourseCommentsAdmin-table tbody tr:hover td:first-child {
+  border-left: 3px solid #6366f1;
+  padding-left: 15px;
+}
 .CourseCommentsAdmin-pagination {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 0 6px;
-  color: #888;
-  font-size: .85rem;
+  padding: 16px 20px;
+  background: #fff;
+  border-top: 1px solid var(--CourseCommentsAdmin-border);
 }
-.CourseCommentsAdmin-pagination .pager {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+.CourseCommentsAdmin-pagination .ant-pagination { margin: 0; }
 
 .empty {
   text-align: center;
-  color: #bbb;
-  padding: 32px 0;
-  font-size: .95rem;
+  color: var(--CourseCommentsAdmin-text-muted);
+  padding: 48px 0;
+  font-size: 0.92rem;
 }
 
+
+.CourseCommentsAdmin-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--CourseCommentsAdmin-border);
+}
+
+.CourseCommentsAdmin-modal .CourseCommentsAdmin-input { padding: 0 12px; background: #fff; }
 .CourseCommentsAdmin-modal-mask {
   position: fixed;
   inset: 0;
@@ -176,32 +199,147 @@
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 .CourseCommentsAdmin-modal {
-  width: 440px;
+  width: 520px;
   background: #fff;
-  border-radius: 12px;
-  padding: 24px 32px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, .15);
-  animation: CourseCommentsAdmin-modalShow .3s ease-out;
+  border-radius: 14px;
+  padding: 0;
+  box-shadow: 0 16px 48px rgba(0,0,0,.18);
+  animation: CourseCommentsAdmin-modalShow .28s cubic-bezier(.34,1.4,.64,1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
-.CourseCommentsAdmin-form {
-  display: grid;
-  gap: 10px;
-  margin: 14px 0 18px;
+.CourseCommentsAdmin-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px 16px;
+  border-bottom: 1px solid #f0f0f0;
 }
-.CourseCommentsAdmin-form label {
-  color: #555;
-  font-size: 0.88rem;
-  font-weight: 500;
+.CourseCommentsAdmin-modal-header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1a1a2e;
 }
-.CourseCommentsAdmin-modal-actions {
+.CourseCommentsAdmin-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #999;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background .15s, color .15s;
+  line-height: 1;
+}
+.CourseCommentsAdmin-modal-close:hover { background: #f5f5f5; color: #333; }
+.CourseCommentsAdmin-modal-body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 58vh;
+  overflow-y: auto;
+}
+.CourseCommentsAdmin-modal-footer {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  padding-top: 4px;
+  padding: 14px 24px;
+  border-top: 1px solid #f0f0f0;
 }
+.CourseCommentsAdmin-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.CourseCommentsAdmin-form-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #444;
+}
+.CourseCommentsAdmin-form-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 8px 12px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color .2s;
+  outline: none;
+}
+.CourseCommentsAdmin-form-textarea:focus { border-color: #6366f1; }
 .CourseCommentsAdmin-avatar {
   width: 70px;
   height: 70px;
   /* border-radius: 50%; */
   object-fit: cover;
+}
+.CourseCommentsAdmin-scroll-cell { max-height: 200px; overflow-y: auto; padding-right: 4px; }
+.CourseCommentsAdmin-scroll-cell::-webkit-scrollbar, .CourseCommentsAdmin-form-textarea::-webkit-scrollbar { width: 8px; background-color: transparent; }
+.CourseCommentsAdmin-scroll-cell::-webkit-scrollbar-thumb, .CourseCommentsAdmin-form-textarea::-webkit-scrollbar-thumb { border-radius: 8px; background-color: rgba(0, 0, 0, 0.15); }
+.CourseCommentsAdmin-scroll-cell::-webkit-scrollbar-thumb:hover, .CourseCommentsAdmin-form-textarea::-webkit-scrollbar-thumb:hover { background-color: rgba(0, 0, 0, 0.3); }
+
+/* ===== 按钮 ===== */
+@keyframes maskIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.CourseCommentsAdmin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: 1.5px solid transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .18s ease;
+  white-space: nowrap;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+.CourseCommentsAdmin-btn.primary {
+  background: var(--CourseCommentsAdmin-accent);
+  color: #fff;
+  border-color: var(--CourseCommentsAdmin-accent);
+}
+.CourseCommentsAdmin-btn.primary:hover {
+  background: var(--CourseCommentsAdmin-accent-dark);
+  border-color: var(--CourseCommentsAdmin-accent-dark);
+}
+.CourseCommentsAdmin-btn.danger {
+  background: var(--CourseCommentsAdmin-danger);
+  color: #fff;
+  border-color: var(--CourseCommentsAdmin-danger);
+}
+.CourseCommentsAdmin-btn.danger:hover {
+  background: #b02020;
+  border-color: #b02020;
+}
+.CourseCommentsAdmin-btn.ghost {
+  background: transparent;
+  color: var(--CourseCommentsAdmin-text-primary);
+  border-color: var(--CourseCommentsAdmin-border);
+}
+.CourseCommentsAdmin-btn.ghost:hover {
+  background: #f5f5f5;
+  border-color: #ccc;
+}
+
+/* ===== 标签 ===== */
+.CourseCommentsAdmin-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
 }

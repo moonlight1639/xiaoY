@@ -89,18 +89,18 @@
   border-left: 3px solid transparent;
   margin-bottom: 2px;
   transition: all .2s ease;
-  font-size: 0.93rem;
+  font-size: 0.95rem;
   letter-spacing: .5px;
   position: relative;
   display: flex;
   align-items: center;
-  gap: 2px;
-  color: #9fb3c1;
+  gap: 8px;
+  color: #94a3b8;
 }
 
 .sidebar-nav li:hover {
   background: rgba(255, 255, 255, .06);
-  color: #e0e8ef;
+  color: #f1f5f9;
 }
 
 /* NavLink 激活态 */
@@ -112,7 +112,7 @@
 
 .admin-link-button.active li {
   background: rgba(64, 150, 255, .12);
-  color: #5aadff;
+  color: #818cf8;
   border-left-color: var(--admin-accent);
   font-weight: 600;
 }
@@ -187,6 +187,22 @@
   background: #a0aab3;
 }
 
+/* 美化所有页面的表格上方滚动条 (通过 rotateX(180deg) 实现) */
+div[class$="-table-wrap"]::-webkit-scrollbar {
+  height: 8px; /* 由于表格上下翻转了，这里控制的实际上是原来滚动条的宽度(水平方向的高度) */
+}
+div[class$="-table-wrap"]::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+div[class$="-table-wrap"]::-webkit-scrollbar-thumb {
+  background: #b0b0b0;
+  border-radius: 4px;
+}
+div[class$="-table-wrap"]::-webkit-scrollbar-thumb:hover {
+  background: #909090;
+}
+
 .content-placeholder {
   font-size: 1.4rem;
   color: var(--admin-accent);
@@ -230,7 +246,7 @@
 .admin-link-main:hover {
   color: var(--admin-accent);
   background: var(--admin-accent-light);
-  border-color: #d0e2ff;
+  border-color: #c7d2fe;
 }
 
 /* ---- 辅助动画 ---- */

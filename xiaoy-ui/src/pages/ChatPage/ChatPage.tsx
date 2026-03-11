@@ -20,10 +20,10 @@ function closeOpenMarkdownTokens(text: string): string {
   let result = text;
 
   // 闭合未配对的代码块 ```
-  const codeBlockCount = (result.match(/```/g) || []).length;
-  if (codeBlockCount % 2 !== 0) {
-    result += '\n```';
-  }
+  // const codeBlockCount = (result.match(/```/g) || []).length;
+  // if (codeBlockCount % 2 !== 0) {
+  //   result += '\n```';
+  // }
 
   // 闭合未配对的加粗 **
   const boldCount = (result.match(/\*\*/g) || []).length;
