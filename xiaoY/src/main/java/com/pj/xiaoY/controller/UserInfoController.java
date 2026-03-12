@@ -67,7 +67,10 @@ public class UserInfoController {
      */
     @PutMapping("/update")
     public Result update(@RequestBody UserInfo userInfo){
-		userInfoService.updateById(userInfo);
+        System.out.println(userInfo.getAvatar() + "2");
+        userInfo.setAvatar(userInfo.getAvatar());
+        System.out.println(userInfo.getAvatar() + "3");
+        userInfoService.updateById(userInfo);
 
         return Result.ok();
     }

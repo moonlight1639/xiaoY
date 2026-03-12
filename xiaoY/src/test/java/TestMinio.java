@@ -1,4 +1,7 @@
 package com.pj.xiaoY;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pj.xiaoY.entity.Course;
 import com.pj.xiaoY.utils.MinioUtil;
 import io.minio.MinioClient;
 import org.junit.jupiter.api.Test;
@@ -15,6 +18,18 @@ import java.io.FileInputStream;
 public class TestMinio {
     @Autowired
     private MinioClient minioClient;
+
+    @Test
+    void test23(){
+        String jsonString = "{\"avatar\":\"http://192.168.88.130:9001/my-bucket/avatar/8a3592113a7045f9b4cceb25e005b801.png\"}";
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Course course = mapper.readValue(jsonString, Course.class);
+            System.out.println(course.getAvatar());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     void test(){

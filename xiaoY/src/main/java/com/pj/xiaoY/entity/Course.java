@@ -51,9 +51,13 @@ public class Course implements Serializable {
 	public void setAvatar(String avatar) {
 		if(avatar==null){
 			this.avatar = null;
+			return;
 		}
+		System.out.println(MinioProperties.MINIO_BASE_URL);
 		if(avatar.startsWith(MinioProperties.MINIO_BASE_URL)){
+
 			this.avatar = avatar.substring(MinioProperties.MINIO_BASE_URL.length());
+			System.out.println(this.avatar);
 			return;
 		}
 		this.avatar = avatar;
@@ -85,6 +89,10 @@ public class Course implements Serializable {
 	 * 收藏量，初始值0
 	 */
 	private Integer collectCount;
+	/*
+	是否加入到知识库
+	* */
+	private Boolean isVectorDb;
 	/**
 	 * 软删除 0-未删除 1-已删除
 	 */

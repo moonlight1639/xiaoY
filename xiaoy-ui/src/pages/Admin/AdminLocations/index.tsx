@@ -41,6 +41,7 @@ const isDeletedItems = [
 ];
 
 const AdminLocations: React.FC = () => {
+  const [pageLoading, setPageLoading] = useState(true);
   const [items, setItems] = useState<UpdateLocation[]>(userInfoitem);
   const [columns] = useState([
     { title: "名称", dataIndex: "name" },
@@ -71,7 +72,12 @@ const AdminLocations: React.FC = () => {
         setItems(res.data);
       }
     };
-    fetchUpdateLocationList();
+    fetchUpdateLocationList().then(()=>
+      setItems(prev =>{
+          setPageLoading(false);
+        return prev;
+      })
+    );
   }, [page, pageSize]);
 
   const openCreate = () => {
@@ -123,7 +129,7 @@ const AdminLocations: React.FC = () => {
   };
 
   return (
-    <div className="LocationAdmin-page">
+    <div className="LocationAdmin-page" style={{...(pageLoading && {display:'none'})}}>
       <div className="LocationAdmin-page-header">
         <h1>📍 食堂地点管理</h1>
         <p>管理校园内的就餐及相关营业地点信息</p>

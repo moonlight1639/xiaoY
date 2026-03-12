@@ -13,6 +13,7 @@ import { commitCourseComment } from "@/services";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 function ReviewInfo() {
+  const [pageLoading, setPageLoading] = useState(true);
   const [CourseInfo, setCourseInfo] = useState<Course | null>({
     id: 1,
     courseName: "组合数学",
@@ -72,7 +73,13 @@ function ReviewInfo() {
     // 这里可以替换为实际的API调用
     // console.log('课程ID:', id);
 
-    fetchCourses();
+    fetchCourses().then(() =>
+      setComment(prev => {
+        setPageLoading(false);
+        return prev;
+      })
+    )
+      ;
   }, []);
 
   const handleCommitComment = () => {
@@ -97,7 +104,7 @@ function ReviewInfo() {
   };
 
   return (
-    <div className="review-info-page">
+    <div className="review-info-page" style={{...(pageLoading && {display:'none'})}} >
       <div className="review-info-container">
         <div className="review-info-left-out">
           <div className="review-info-left">

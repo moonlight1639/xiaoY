@@ -269,7 +269,7 @@ public class ChatMessageByUserServiceImpl implements ChatMessageByUserService {
         Query query_assistant = Query.query(Criteria.where("memoryId").is(chatform.getMemoryId()));
         mongoTemplate.updateFirst(query_assistant, update_assitant, "chat_messages_by_user");
 //        mongoTemplate.updateFirst(query_user, update_user, "chat_messages_by_user");
-        return xiaoYStreaming.test("你好呀")
+        return xiaoYStreaming.test(chatform.getContent())
                 .flatMap(chunk ->
                         saveToDb(chunk, chatform.getMemoryId())
                                 .thenReturn(chunk) // 保存完成后，把原始数据放回流中，继续传给前端

@@ -6,7 +6,7 @@ import {getUpdateDishes , updateDish , getUpdateLocations} from "@/services";
 import defaultImg from "@/assets/avator/defaultAvator1.jpg";
 import { UpLoad } from "@/components";
 
-type DishWithVDB = UpdateDish & { inVectorDB?: boolean };
+type DishWithVDB = UpdateDish ;
 
 const userInfoitem: DishWithVDB[] = [
   {
@@ -23,7 +23,7 @@ const userInfoitem: DishWithVDB[] = [
     isDeleted: 0,
     createTime: "2023-10-01 12:00:00",
     updateTime: "2023-10-10 15:30:00",
-    inVectorDB: true,
+    isVectorDb: true,
   },{
     id: 1002,
     dishName: "鱼香肉丝",
@@ -38,7 +38,7 @@ const userInfoitem: DishWithVDB[] = [
     isDeleted: 0,
     createTime: "2023-09-15 11:20:00",
     updateTime: "2023-10-05 14:10:00",
-    inVectorDB: false,
+    isVectorDb: false,
   },{
     id: 1003,
     dishName: "麻婆豆腐",
@@ -53,7 +53,7 @@ const userInfoitem: DishWithVDB[] = [
     isDeleted: 0,
     createTime: "2023-08-20 10:30:00",
     updateTime: "2023-09-25 13:45:00",
-    inVectorDB: false,
+    isVectorDb: false,
   }
 ];
 
@@ -71,12 +71,13 @@ const statusItems = [
 
 
 const AdminDishs: React.FC = () => {
+  const [pageLoading, setPageLoading] = useState(true);
   const [items, setItems] = useState<DishWithVDB[]>(userInfoitem);
 
   // 根据批量模式判断某行 checkbox 是否禁用
   const isRowDisabled = (item: DishWithVDB) => {
-    if (batchMode === 'add') return !!item.inVectorDB;
-    if (batchMode === 'delete') return !item.inVectorDB;
+    if (batchMode === 'add') return !!item.isVectorDb;
+    if (batchMode === 'delete') return !item.isVectorDb;
     return false;
   };
   const [columns] = useState([
@@ -156,7 +157,13 @@ const AdminDishs: React.FC = () => {
         setLocationItems(locationRes.data);
       }
     };
-    fetchUserInfoList();
+    fetchUserInfoList().then(()=>{
+      setLocationItems(prev => {
+
+        setPageLoading(false);
+        return prev;
+      })
+    });
   }, [page, pageSize]);
 
 
@@ -243,7 +250,7 @@ const AdminDishs: React.FC = () => {
   };
 
   return (
-    <div className="dishAdmin-page">
+    <div className="dishAdmin-page" style={{...(pageLoading && {display:'none'})}}>
       <div className="dishAdmin-page-header">
         <h1>🍽️ 菜品管理</h1>
         <p>管理和维护各个食堂及地点的菜单菜品信息</p>
@@ -328,7 +335,7 @@ const AdminDishs: React.FC = () => {
                     <input
                       type="checkbox"
                       readOnly
-                      checked={!!item.inVectorDB}
+                      checked={!!item.isVectorDb}
                       style={{
                         width: 16, height: 16,
                         cursor: 'default',

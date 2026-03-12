@@ -3,14 +3,18 @@ package com.pj.xiaoY.service.impl;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.pj.xiaoY.common.Result;
+import com.pj.xiaoY.entity.Course;
 import com.pj.xiaoY.entity.UserInfo;
+import com.pj.xiaoY.entity.vo.CourseCommentVo;
+import com.pj.xiaoY.mapper.CourseMapper;
+import com.pj.xiaoY.service.CourseService;
 import com.pj.xiaoY.service.UserInfoService;
 import com.pj.xiaoY.utils.UserInfoThreadPoolUtil;
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -26,7 +30,8 @@ public class CourseCommentServiceImpl extends ServiceImpl<CourseCommentMapper, C
 
     @Autowired
     private  CourseCommentMapper courseCommentMapper;
-
+    @Autowired
+    private CourseMapper courseMapper;
     @Autowired
     private UserInfoService userInfoService;
 
@@ -34,11 +39,11 @@ public class CourseCommentServiceImpl extends ServiceImpl<CourseCommentMapper, C
     private UserInfoThreadPoolUtil userInfoThreadPoolUtil;
 
     @Override
-    public List<CourseComment> queryPage(int pageNum, int pageSize) {
+    public List<CourseCommentVo> queryPage(int pageNum, int pageSize) {
         Page<CourseComment> page = new Page<>(pageNum, pageSize);
-        page.addOrder(OrderItem.desc("createTime"));
-//        IPage<CourseComment> result = courseCommentMapper.selectPage(page, null);
-        IPage<CourseComment> result = courseCommentMapper.queryPage(page);
+        page.addOrder(OrderItem.desc("create_time"));
+        IPage<CourseComment> result = courseCommentMapper.selectPage(page, null);
+//        IPage<CourseComment> result = courseCommentMapper.queryPage(page);
         List<CourseComment> comments = result.getRecords();
 
         comments.forEach(item -> {
@@ -47,7 +52,22 @@ public class CourseCommentServiceImpl extends ServiceImpl<CourseCommentMapper, C
             item.setUserName(userInfo.getNickname());
             item.setUserAvatar(userInfo.getAvatar());
         });
-        return comments;
+        List<CourseCommentVo> courseCommentVos = comments.stream().map(item -> {
+            CourseCommentVo courseCommentVo = new CourseCommentVo();
+            courseCommentVo.setId(item.getId());
+            Course course = courseMapper.selectById(item.getCourseId());
+            courseCommentVo.setCourseName(course.getCourseName());
+            courseCommentVo.setUserName(item.getUserName());
+            courseCommentVo.setUserAvatar(item.getUserAvatar());
+            courseCommentVo.setContent(item.getContent());
+            courseCommentVo.setLikeNum(item.getLikeNum());
+            courseCommentVo.setDislikeNum(item.getDislikeNum());
+            courseCommentVo.setIsDeleted(item.getIsDeleted());
+            courseCommentVo.setCreateTime(item.getCreateTime());
+            courseCommentVo.setIsVectorDb(item.getIsVectorDb());
+            return courseCommentVo;
+        }).toList();
+        return courseCommentVos;
     }
 
     @Override

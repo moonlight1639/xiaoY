@@ -16,7 +16,7 @@ langchain4j:
       # 通义千问 流式聊天模型
       streaming-chat-model:
         api-key: ${DASH_SCOPE_API_KEY}
-        model-name: qwen-plus
+        model-name: qwen-plus-latest
       # 通义千问 嵌入模型
       embedding-model:
         api-key: ${DASH_SCOPE_API_KEY}
@@ -74,7 +74,7 @@ mybatis-plus:
 # MinIO 配置
 minio:
   #url: http://${custom.api.host}:9001
-  url: http://${custom.api.host}:9001  # MinIO服务地址（注意：Spring Boot 3.x需加http/https）
+  url: http://192.168.88.130:9001  # MinIO服务地址（注意：Spring Boot 3.x需加http/https）
   access-key: minioadmin           # 访问密钥（AK）
   secret-key: minioadmin           # 秘钥（SK）
   bucket-name: my-bucket        # 默认存储桶

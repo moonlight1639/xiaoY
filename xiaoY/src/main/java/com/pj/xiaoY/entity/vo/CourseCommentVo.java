@@ -1,13 +1,12 @@
-package com.pj.xiaoY.entity;
+package com.pj.xiaoY.entity.vo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
 
 /**
  * 课程评论信息表
@@ -18,7 +17,7 @@ import lombok.Data;
  */
 @Data
 @TableName("course_comment")
-public class CourseComment implements Serializable {
+public class CourseCommentVo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -29,11 +28,10 @@ public class CourseComment implements Serializable {
 	/**
 	 * 关联课程ID，对应course表的id
 	 */
-	private Integer courseId;
+	private String courseName;
 	/**
 	 * 评论用户ID
 	 */
-	private Integer userId;
 	/**
 	 * 评论用户名称
 	 */
@@ -54,7 +52,7 @@ public class CourseComment implements Serializable {
 	 * 不喜欢数，初始值0
 	 */
 	private Integer dislikeNum;
-		/*
+	/*
 	是否加入到知识库
 	* */
 	private Boolean isVectorDb;

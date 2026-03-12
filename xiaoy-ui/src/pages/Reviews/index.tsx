@@ -9,7 +9,7 @@ import { ChatView } from "@/components";
 // import stuImg from '@/assets/avator/stu.jpg'
 function Reviews() {
   const [courses, setCourses] = useState<Course[]>([]);
-
+  const [pageLoading, setPageLoading] = useState(true);
   // const [courses , setCourses] = useState<Course[]>([
   //   { id: 1, courseName: '计算机导论' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
   //   { id: 2, courseName: '数据结构与算法' , readCount:0 , likeCount:0 , commentCount:0 , collectCount:0},
@@ -43,7 +43,10 @@ function Reviews() {
         setCourses(res.data);
       }
     };
-    fetchCourses();
+    fetchCourses().then(() => setCourses(prev => {
+      setPageLoading(false);
+      return prev;
+    }));
   }, []);
 
   useEffect(() => {
@@ -76,7 +79,8 @@ function Reviews() {
     timerId.current = setTimeout(() => setHighLightRef(-1), 1000);
   }
   return (
-    <div className="review-page" ref={container}>
+    <div className="review-page" ref={container} style={{...(pageLoading && {display:'none'})}}
+    >
       {/* 左侧 */}
       <div
         id="left"

@@ -42,7 +42,7 @@ function AppRouter() {
         <Route path="dishs" element={<AdminDishs />} /> {/* 这里需要替换成 AdminDishs 组件 */}
         <Route path="coursecomments" element={<AdminCourseComments />} />
         <Route path="vectordb" element={<AdminVectorDB />} />
-        <Route path="vectordb/:namespace" element={<AdminVectorDBDetail />} />
+        <Route path="vectordb/:id" element={<AdminVectorDBDetail />} />
       </Route>
       
       <Route path="*" element={<NotFound />} />

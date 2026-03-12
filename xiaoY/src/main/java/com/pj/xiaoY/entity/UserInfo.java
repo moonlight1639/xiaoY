@@ -48,16 +48,17 @@ public class UserInfo implements Serializable {
 	 * 用户头像（URL地址）
 	 */
 	private String avatar;
-	public void setAvatar(String avatar) {
-		if(avatar==null){
+	public void setAvatar(String _avatar) {
+		if(_avatar==null){
 			this.avatar = null;
 			return;
 		}
-		if(avatar.startsWith(MinioProperties.MINIO_BASE_URL)){
-			this.avatar = avatar.substring(MinioProperties.MINIO_BASE_URL.length());
+		System.out.println(MinioProperties.MINIO_BASE_URL + "1");
+		if(_avatar.startsWith(MinioProperties.MINIO_BASE_URL)){
+			this.avatar = _avatar.substring(MinioProperties.MINIO_BASE_URL.length());
 			return;
 		}
-		this.avatar = avatar;
+		this.avatar = _avatar;
 	}
 	public String getAvatar() {
 		if(avatar==null){

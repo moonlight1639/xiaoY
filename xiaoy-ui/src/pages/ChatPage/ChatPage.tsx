@@ -39,13 +39,6 @@ function closeOpenMarkdownTokens(text: string): string {
     result += '`';
   }
 
-  // 闭合未配对的斜体 * (排除 ** 已处理的)
-  const strippedBold = result.replace(/\*\*/g, '');
-  const italicCount = (strippedBold.match(/\*/g) || []).length;
-  if (italicCount % 2 !== 0) {
-    result += '*';
-  }
-
   return result;
 }
 
@@ -64,6 +57,7 @@ function ChatPage() {
   const [activeConversationId, setActiveConversationId] = useState<
     string | null
   >(null);
+  const [pageLoading, setPageLoading] = useState(true);
   const [inputValue, setInputValue] = useState("");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -87,6 +81,7 @@ function ChatPage() {
       // scrollToBottom();
       setConversations(prev =>{
         console.log("运行到这了", prev);
+        setPageLoading(false);
         return prev;
       })
     });
@@ -312,7 +307,7 @@ function ChatPage() {
   //  }
 
   return (
-    <div className="chat-page-outer">
+    <div className="chat-page-outer" style={{...(pageLoading && {display:'none'})}}>
       <div className="chat-page">
         {/* 左侧边栏 */}
         <aside

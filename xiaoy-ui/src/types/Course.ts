@@ -25,6 +25,7 @@ export interface UpdateCourse {
  likeCount?: number;
  commentCount?: number;
  collectCount?: number;
+ isVectorDb?: boolean
  isDeleted: number;
  createTime?: string;
  updateTime?: string;

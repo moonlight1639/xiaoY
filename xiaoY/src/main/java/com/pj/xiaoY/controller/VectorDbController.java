@@ -1,0 +1,46 @@
+package com.pj.xiaoY.controller;
+
+import com.pj.xiaoY.common.Result;
+import com.pj.xiaoY.entity.vectorDb.Namespace;
+import com.pj.xiaoY.entity.vectorDb.vo.BathUpdateRecordsVo;
+import com.pj.xiaoY.service.VectorDbService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import com.pj.xiaoY.entity.vectorDb.VectorRecord;
+@RestController
+@RequestMapping("xiaoY/vector-db")
+public class VectorDbController {
+    @Autowired
+    private VectorDbService vectorDbService;
+
+    @PostMapping("/batch-insert-records")
+    public Result batchInsertRecords(@RequestBody BathUpdateRecordsVo bathUpdateRecordsVo) {
+        vectorDbService.batchInsertRecords(bathUpdateRecordsVo);
+        return Result.ok();
+    }
+    @DeleteMapping("/batch-delete-records")
+    public Result batchDeleteRecords(@RequestBody BathUpdateRecordsVo bathUpdateRecordsVo) {
+        vectorDbService.bathDeleteRecords(bathUpdateRecordsVo);
+        return Result.ok();
+    }
+    @PostMapping("/insert-record")
+    public Result insertRecord(@RequestBody VectorRecord vectorRecord) {
+        vectorDbService.insertRecord(vectorRecord);
+        return Result.ok();
+    }
+    @DeleteMapping("/delete-record")
+    public Result deleteRecord(@RequestBody VectorRecord vectorRecord) {
+        vectorDbService.deleteRecord(vectorRecord);
+        return Result.ok();
+    }
+    @PostMapping("/insert-namespace")
+    public Result insertNamespace(@RequestBody Namespace namespace) {
+        vectorDbService.insertNamespace(namespace);
+        return Result.ok();
+    }
+    @PutMapping("/delete-namespace")
+    public Result deleteNamespace(@RequestBody Namespace namespace) {
+        vectorDbService.deleteNamespace(namespace);
+        return Result.ok();
+    }
+}

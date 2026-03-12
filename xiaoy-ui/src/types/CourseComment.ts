@@ -20,6 +20,7 @@ export interface UpdateCourseComment {
  content: string;
  likeNum?: number;
  dislikeNum?: number;
+ isVectorDb?: boolean
  isDeleted: number;
  createTime?: string;
  updateTime?: string;
@@ -27,8 +28,7 @@ export interface UpdateCourseComment {
 
 
 export interface InsertCourseComment {
- courseId: number;
- userId?: number;
+ courseName: string;
  userName?: string;
  userAvatar?: string;
  content: string;

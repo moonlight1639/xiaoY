@@ -80,10 +80,17 @@ public class Dish implements Serializable {
 	 * 菜品状态 1-在售 2-下架 3-售罄
 	 */
 	private Integer status;
+	/*
+	是否加入到知识库
+	* */
+	private Boolean isVectorDb;
+
 	/**
 	 * 软删除 0-未删除 1-已删除
 	 */
 	private Integer isDeleted;
+
+
 
 	private Integer likeCount;
 	/**

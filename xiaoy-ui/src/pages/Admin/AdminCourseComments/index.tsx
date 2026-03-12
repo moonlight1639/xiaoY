@@ -5,7 +5,7 @@ import defaultAvatar from "@/assets/avator/defaultAvator1.jpg";
 import "./AdminCourseComments.css";
 import {getUpdateCoursesCommmentList , updateCourseComment} from "@/services";
 // 扩展类型，后续后端字段对齐后可移至 @/types
-type CourseCommentWithVDB = UpdateCourseComment & { inVectorDB?: boolean; courseName?: string };
+type CourseCommentWithVDB = UpdateCourseComment;
 
 const userInfoitem: CourseCommentWithVDB[] = [
   {
@@ -18,7 +18,7 @@ const userInfoitem: CourseCommentWithVDB[] = [
     isDeleted: 0,
     likeNum:10,
     dislikeNum:2,
-    inVectorDB: true,  // 已加入向量库
+    isVectorDb: true,  // 已加入向量库
   },
   {
     id: 2,
@@ -30,7 +30,7 @@ const userInfoitem: CourseCommentWithVDB[] = [
     isDeleted: 0,
     likeNum:10,
     dislikeNum:2,
-    inVectorDB: false, // 未加入向量库
+    isVectorDb: false, // 未加入向量库
   },
   {
     id: 3,
@@ -41,7 +41,7 @@ const userInfoitem: CourseCommentWithVDB[] = [
     isDeleted: 0,
     likeNum:10,
     dislikeNum:2,
-    inVectorDB: false, // 未加入向量库
+    isVectorDb: false, // 未加入向量库
   },
 ];
 
@@ -53,11 +53,11 @@ const isDeletedItems = [
 
 const AdminCourseComments: React.FC = () => {
   const [items, setItems] = useState<CourseCommentWithVDB[]>(userInfoitem);
-
+  const [pageLoading, setPageLoading] = useState(true);
   // 根据当前批量模式判断某行 checkbox 是否禁用
   const isRowDisabled = (item: CourseCommentWithVDB) => {
-    if (batchMode === 'add') return !!item.inVectorDB;    // 已加入 → 禁用
-    if (batchMode === 'delete') return !item.inVectorDB;  // 未加入 → 禁用
+    if (batchMode === 'add') return !!item.isVectorDb;    // 已加入 → 禁用
+    if (batchMode === 'delete') return !item.isVectorDb;  // 未加入 → 禁用
     return false;
   };
   const [columns] = useState([
@@ -87,8 +87,7 @@ const AdminCourseComments: React.FC = () => {
   const [editing, setEditing] = useState<number | null>(null);
   const [form, setForm] = useState<InsertCourseComment>(
     {
-      courseId: 0,
-      userId: 0,
+      courseName: "",
       userName: "",
       userAvatar: "",
       content: "",
@@ -109,7 +108,12 @@ const AdminCourseComments: React.FC = () => {
         // setTotal(res.total || 100);
       }
     };
-    fetchUserInfoList();
+    fetchUserInfoList().then(()=>
+      setItems(prev => {
+        setPageLoading(false);
+        return prev;
+      })
+    );
   }, [page, pageSize]);
 
 
@@ -132,8 +136,7 @@ const AdminCourseComments: React.FC = () => {
   const openEdit = (item: UpdateCourseComment) => {
     setEditing(item.id);
     setForm({
-      courseId: item.courseId,
-      userId: item.userId,
+      courseName: item.courseName,
       userName: item.userName,
       userAvatar: item.userAvatar,
       content: item.content,
@@ -183,7 +186,7 @@ const AdminCourseComments: React.FC = () => {
   };
 
   return (
-    <div className="CourseCommentsAdmin-page">
+    <div className="CourseCommentsAdmin-page" style={{...(pageLoading && {display:'none'})}} >
       <div className="CourseCommentsAdmin-page-header">
         <h1>💬 评论管理</h1>
       </div>
@@ -264,7 +267,7 @@ const AdminCourseComments: React.FC = () => {
                     <input
                       type="checkbox"
                       readOnly
-                      checked={!!item.inVectorDB}
+                      checked={!!item.isVectorDb}
                       style={{
                         width: 16,
                         height: 16,
@@ -498,21 +501,11 @@ const AdminCourseComments: React.FC = () => {
                   type="number"
                   min={0}
                   placeholder="关联的课程ID"
-                  value={form.courseId}
+                  value={form.courseName}
                   onChange={(e) => setForm((v) => ({ ...v, courseId: e.target.value ? Number(e.target.value) : 0 }))}
                 />
               </div>
-              <div className="CourseCommentsAdmin-form-group">
-                <label className="CourseCommentsAdmin-form-label">用户 ID</label>
-                <input
-                  className="CourseCommentsAdmin-input"
-                  type="number"
-                  min={0}
-                  placeholder="评论用户ID"
-                  value={form.userId}
-                  onChange={(e) => setForm((v) => ({ ...v, userId: e.target.value ? Number(e.target.value) : 0 }))}
-                />
-              </div>
+
               <div className="CourseCommentsAdmin-form-group">
                 <label className="CourseCommentsAdmin-form-label">用户名</label>
                 <input

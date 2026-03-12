@@ -26,6 +26,7 @@ export interface UpdateDish {
  locationName: string;
  status: number;
  likeCount?: number;
+ isVectorDb?: boolean
  isDeleted: number;
  createTime?: string;
  updateTime?: string;

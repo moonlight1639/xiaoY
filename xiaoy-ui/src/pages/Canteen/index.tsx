@@ -6,6 +6,7 @@ import type { Dish } from '../../types/Dish';
 import { ChatView } from '@/components';
 import { getDishList } from '../../services';
 function Canteen() {
+  const [pageLoading, setPageLoading] = useState(true);
   const [Rank ] = useState([
     {id : 1 , name: '宫保鸡丁', sales: 150},
     {id : 2 , name: '鱼香肉丝', sales: 120},
@@ -63,7 +64,12 @@ function Canteen() {
         // console.error('获取菜品列表失败：', res.errorMsg);
       }
     }
-    fetchDishList();
+    fetchDishList().then(()=>
+      setLocation(prev =>{
+          setPageLoading(false);
+        return prev;
+      })
+    );
   }, []);
 
   const LocationRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -72,7 +78,8 @@ function Canteen() {
     target?.scrollIntoView({ behavior: 'smooth' , block: 'start' }); 
   }
   return (
-    <div className='canteen-page'>
+    <div className='canteen-page' style={{...(pageLoading && {display:'none'})}}
+    >
       {/* <div className='canteen-header'>
         <h1>🍜 食堂信息</h1>
         <p style={{ color: 'var(--color-text-secondary)', marginBottom: '2rem' }}>

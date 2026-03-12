@@ -3,6 +3,7 @@ package com.pj.xiaoY.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pj.xiaoY.common.Result;
 import com.pj.xiaoY.entity.CourseComment;
+import com.pj.xiaoY.entity.vo.CourseCommentVo;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public interface CourseCommentService extends IService<CourseComment> {
 
-    List<CourseComment> queryPage(int pageNum, int pageSize);
+    List<CourseCommentVo> queryPage(int pageNum, int pageSize);
 
     Result getByCourseId(Long id);
 

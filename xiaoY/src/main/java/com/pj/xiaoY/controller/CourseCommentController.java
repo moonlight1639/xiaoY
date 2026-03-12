@@ -3,6 +3,7 @@ package com.pj.xiaoY.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import com.pj.xiaoY.entity.vo.CourseCommentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class CourseCommentController {
      */
     @GetMapping("/list")
     public Result list(@RequestParam(name = "pageNum",defaultValue = "1") int pageNum, @RequestParam(name = "pageSize" , defaultValue = "10")int pageSize){
-        List<CourseComment> page = courseCommentService.queryPage(pageNum , pageSize);
+        List<CourseCommentVo> page = courseCommentService.queryPage(pageNum , pageSize);
 
         return Result.ok(page , page.size());
     }

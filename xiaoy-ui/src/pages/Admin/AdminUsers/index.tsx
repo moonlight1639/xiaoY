@@ -63,6 +63,7 @@ const userGenderItems = [
 
 
 const AdminUsers: React.FC = () => {
+  const [pageLoading, setPageLoading] = useState(true);
   const [items, setItems] = useState<UserInfo[]>(userInfoitem);
   const [columns] = useState([
     { title: "姓名", dataIndex: "nickname" },
@@ -106,7 +107,12 @@ const AdminUsers: React.FC = () => {
         // setTotal(res.total || 100);
       }
     };
-    fetchUserInfoList();
+    fetchUserInfoList().then(()=>
+      setItems(prev =>{
+          setPageLoading(false);
+        return prev;
+      })
+    ) ;
   }, [page, pageSize]);
 
 
@@ -214,7 +220,7 @@ const AdminUsers: React.FC = () => {
       updateuseInfo();
   }
   return (
-    <div className="userAdmin-page">
+    <div className="userAdmin-page" style={{...(pageLoading && {display:'none'})}}>
       <div className="userAdmin-page-header">
         <h1>👥 用户管理</h1>
         <p>管理系统内的所有用户，查看状态或修改角色权限</p>

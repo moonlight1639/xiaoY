@@ -29,7 +29,7 @@ public class CourseController {
      * 列表
      */
     @GetMapping("/list")
-    public Result list(@RequestParam(name = "pageNum",defaultValue = "1") int pageNum, @RequestParam(name = "pageSize" , defaultValue = "30")int pageSize){
+    public Result list(@RequestParam(name = "pageNum",defaultValue = "1") int pageNum, @RequestParam(name = "pageSize" , defaultValue = "100")int pageSize){
         List<Course> page = courseService.queryPage(pageNum , pageSize);
 
         return Result.ok(page , page.size());
