@@ -14,7 +14,7 @@ public interface VectorDbService {
 
     void deleteRecord(String id);
 
-    void insertRecord(InsertVectorRecord vectorRecord);
+    void insertRecord(VectorRecord vectorRecord);
 
     void bathDeleteRecords(BathUpdateRecordsVo bathUpdateRecordsVo);
 
@@ -27,4 +27,6 @@ public interface VectorDbService {
     void updateNamespace(Namespace namespace);
 
     List<VectorRecord> splitPreview(InsertVectorRecord vectorRecord);
+
+    void insertRecords(List<VectorRecord> vectorRecords);
 }

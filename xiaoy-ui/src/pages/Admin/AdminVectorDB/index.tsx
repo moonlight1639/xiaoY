@@ -55,6 +55,32 @@ const INIT_NAMESPACES: Namespace[] = [
   },
 ];
 
+const normalizeNamespace = (raw: Partial<Namespace>): Namespace => {
+  const countNumber = Number(raw.recordCount);
+  return {
+    id: String(raw.id ?? ""),
+    name: String(raw.name ?? ""),
+    description: String(raw.description ?? ""),
+    recordCount: Number.isFinite(countNumber) ? countNumber : 0,
+    createTime: String(raw.createTime ?? ""),
+    updateTime: String(raw.updateTime ?? ""),
+  };
+};
+
+const formatDateTimeMinute = (value?: string): string => {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  const hh = String(date.getHours()).padStart(2, "0");
+  const mm = String(date.getMinutes()).padStart(2, "0");
+  return `${y}-${m}-${d} ${hh}:${mm}`;
+};
+
 const AdminVectorDB: React.FC = () => {
   const navigate = useNavigate();
   const [namespaces, setNamespaces] = useState<Namespace[]>(INIT_NAMESPACES);
@@ -81,14 +107,22 @@ const AdminVectorDB: React.FC = () => {
 
   const fetchNamespaces = async () => {
     try {
-      const data = await getNamespaces();
-      if (data.success && data.data) {
-        setNamespaces(data.data);
+      const resp = await getNamespaces();
+      if (!resp || typeof resp === "string" || !resp.success) {
+        message.error(
+          (resp && typeof resp !== "string" && resp.errorMsg) ||
+            "获取命名空间列表失败",
+        );
+        setNamespaces([]);
         return;
       }
-      message.error(data.errorMsg || "获取命名空间列表失败");
+      const list = Array.isArray(resp.data)
+        ? resp.data.map((item) => normalizeNamespace(item as Partial<Namespace>))
+        : [];
+      setNamespaces(list);
     } catch {
       message.error("获取命名空间列表失败");
+      setNamespaces([]);
     }
   };
 
@@ -113,8 +147,11 @@ const AdminVectorDB: React.FC = () => {
         name: trimmed,
         description: formDesc.trim(),
       });
-      if (!resp.success) {
-        setNsError(resp.errorMsg || "创建命名空间失败");
+      if (!resp || typeof resp === "string" || !resp.success) {
+        setNsError(
+          (resp && typeof resp !== "string" && resp.errorMsg) ||
+            "创建命名空间失败",
+        );
         return;
       }
       message.success("创建命名空间成功");
@@ -139,8 +176,11 @@ const AdminVectorDB: React.FC = () => {
     setSubmitting(true);
     try {
       const resp = await deleteNamespace(id);
-      if (!resp.success) {
-        message.error(resp.errorMsg || "删除命名空间失败");
+      if (!resp || typeof resp === "string" || !resp.success) {
+        message.error(
+          (resp && typeof resp !== "string" && resp.errorMsg) ||
+            "删除命名空间失败",
+        );
         return;
       }
       message.success("删除命名空间成功");
@@ -171,8 +211,11 @@ const AdminVectorDB: React.FC = () => {
         ...namespaces.find((n) => n.id === editingNsId),
         description: trimmed,
       } as Namespace);
-      if (!resp.success) {
-        message.error(resp.errorMsg || "更新命名空间描述失败");
+      if (!resp || typeof resp === "string" || !resp.success) {
+        message.error(
+          (resp && typeof resp !== "string" && resp.errorMsg) ||
+            "更新命名空间描述失败",
+        );
         return;
       }
 
@@ -190,7 +233,7 @@ const AdminVectorDB: React.FC = () => {
 
   const filtered = namespaces.filter(
     (ns) =>
-      ns.name.toLowerCase().includes(keyword.toLowerCase()) ||
+      (ns.name || "").toLowerCase().includes(keyword.toLowerCase()) ||
       (ns.description ?? "").includes(keyword),
   );
   const total = filtered.length;
@@ -248,7 +291,7 @@ const AdminVectorDB: React.FC = () => {
                   </tr>
                 ) : (
                   filtered.map((ns) => (
-                    <tr key={ns.id} onClick={() => handleRowClick(ns)}>
+                    <tr key={ns.id || ns.name} onClick={() => handleRowClick(ns)}>
                       <td>
                         <span className="vdb-ns-tag">{ns.name}</span>
                       </td>
@@ -278,8 +321,8 @@ const AdminVectorDB: React.FC = () => {
                           {(ns.recordCount ?? 0).toLocaleString()}
                         </span>
                       </td>
-                      <td className="vdb-time">{ns.createTime}</td>
-                      <td className="vdb-time">{ns.updateTime}</td>
+                      <td className="vdb-time">{formatDateTimeMinute(ns.createTime)}</td>
+                      <td className="vdb-time">{formatDateTimeMinute(ns.updateTime)}</td>
                       <td onClick={(e) => e.stopPropagation()}>
                         <div
                           style={{

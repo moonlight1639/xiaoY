@@ -2,6 +2,7 @@ package com.pj.xiaoY.assistant;
 
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
+import dev.langchain4j.service.V;
 import dev.langchain4j.service.spring.AiService;
 import dev.langchain4j.service.spring.AiServiceWiringMode;
 
@@ -11,9 +12,10 @@ import dev.langchain4j.service.spring.AiServiceWiringMode;
         chatModel = "qwenChatModel"
 )
 public interface UtilAssistant {
+    @SystemMessage(fromResource = "prompt/select-prompt-example.txt")
+    String selectExample(@UserMessage String userMessage);
+
+
     @SystemMessage(fromResource = "prompt/select-prompt.txt")
-    String select(@UserMessage String userMessage);
-
-    
-
+    String select(@V("systemPrompt")String SystemMessgae ,@UserMessage String userMessage);
 }

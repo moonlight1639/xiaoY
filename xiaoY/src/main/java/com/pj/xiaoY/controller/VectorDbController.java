@@ -4,12 +4,15 @@ import com.pj.xiaoY.common.Result;
 import com.pj.xiaoY.entity.vectorDb.Namespace;
 import com.pj.xiaoY.entity.vectorDb.vo.BathUpdateRecordsVo;
 import com.pj.xiaoY.entity.vectorDb.vo.InsertVectorRecord;
+import com.pj.xiaoY.entity.vectorDb.VectorRecord;
 import com.pj.xiaoY.service.VectorDbService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("xiaoY/vector-db")
@@ -34,8 +37,15 @@ public class VectorDbController {
 
     @PostMapping("/insert-record")
     @Operation(summary = "插入记录", description = "插入单条向量记录到数据库和向量库")
-    public Result insertRecord(@RequestBody InsertVectorRecord vectorRecord) {
+    public Result insertRecord(@RequestBody VectorRecord vectorRecord) {
         vectorDbService.insertRecord(vectorRecord);
+        return Result.ok();
+    }
+
+    @PostMapping("/insert-records")
+    @Operation(summary = "批量插入记录(新)", description = "接收 List<VectorRecord>，由业务层执行批量写入")
+    public Result insertRecords(@RequestBody List<VectorRecord> vectorRecords) {
+        vectorDbService.insertRecords(vectorRecords);
         return Result.ok();
     }
 
@@ -45,6 +55,7 @@ public class VectorDbController {
         vectorDbService.deleteRecord(id);
         return Result.ok();
     }
+
 
     @PostMapping("/insert-namespace")
     @Operation(summary = "插入命名空间", description = "创建一个新的向量命名空间")

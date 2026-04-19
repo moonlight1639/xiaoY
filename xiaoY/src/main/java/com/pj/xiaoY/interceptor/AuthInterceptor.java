@@ -38,6 +38,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
         String userInfoJson = stringRedisTemplate.opsForValue().get(token);
+//        System.out.println(token);
         if(userInfoJson == null){
             returnError(response, Result.fail("token无效或已过期，请重新登录"));
             return false;

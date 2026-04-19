@@ -1,12 +1,17 @@
-// package com.pj.xiaoY;
+ package com.pj.xiaoY;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pj.xiaoY.common.SystemContentRetriever;
 import com.pj.xiaoY.entity.Course;
+import com.pj.xiaoY.entity.vectorDb.Namespace;
 import com.pj.xiaoY.utils.MinioUtil;
+import dev.langchain4j.service.spring.AiService;
 import io.minio.MinioClient;
+import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,6 +47,18 @@ public class TestMinio {
         System.out.println("当前程序的工作路径：" + workingDir);
     }
 
+//    @Autowired
+//    private MongoTemplate mongoTemplate;
+//    @Test
+//    void testmongodb(){
+//        Namespace namespace = new Namespace();
+//        namespace.setId("123");
+//        namespace.setName("<UNK>");
+//        namespace.setDescription("这是一个测试命名空间");
+////        namespace.setCreateTime();
+//        mongoTemplate.insert(namespace);
+//    }
+
     @Autowired
     private MinioUtil minioUtil;
     @Test
@@ -55,6 +72,16 @@ public class TestMinio {
         }
         System.out.println(multipartFile.getOriginalFilename());
         System.out.println(minioUtil.uploadFile(multipartFile,"test/"));
+    }
+
+    @Autowired
+    private SystemContentRetriever systemContentRetriever;
+    @Resource
+    private ObjectMapper objectMapper;
+    @Test
+    void test_prompt() throws JsonProcessingException {
+        System.out.println(systemContentRetriever.systemPrompt);
+//        System.out.println(objectMapper.writeValueAsString(systemContentRetriever));
     }
 
     private MultipartFile createMockFile(String filaName) throws Exception {

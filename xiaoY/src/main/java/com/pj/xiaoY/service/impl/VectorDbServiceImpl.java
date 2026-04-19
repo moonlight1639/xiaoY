@@ -34,7 +34,6 @@ import org.springframework.stereotype.Service;
 import com.pj.xiaoY.entity.vectorDb.VectorRecord;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentSplitter;
-import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.segment.TextSegment;
 
@@ -109,6 +108,7 @@ public class VectorDbServiceImpl implements VectorDbService {
 
         if(StringUtils.isBlank(namespace.getDescription()))
             namespace.setDescription("请认真填写,否则会影响AI检索效果");
+        namespace.setDescription(namespace.getDescription().trim());
 //            namespace.setDescription(xiaoY.getNewDescription(namespace.getName()));
 //        addEmptyRecordToNamespace(embeddingStore , namespace.getName() , namespace.getDescription());
         try {
@@ -280,7 +280,7 @@ public class VectorDbServiceImpl implements VectorDbService {
     }
 
     @Override
-    public void insertRecord(InsertVectorRecord vectorRecord) {
+    public void insertRecord(VectorRecord vectorRecord) {
         if (vectorRecord == null) {
             throw new GlobalException("vectorRecord 不能为空");
         }
@@ -314,11 +314,13 @@ public class VectorDbServiceImpl implements VectorDbService {
 
         Struct.Builder structBuilder = Struct.newBuilder();
         if (vectorRecord.getMetadata() != null) {
-            for (InsertVectorRecord.Pair pair : vectorRecord.getMetadata()) {
+            for (VectorRecord.Pair pair : vectorRecord.getMetadata()) {
                 structBuilder.putFields(pair.getKey(),
                         Value.newBuilder().setStringValue(pair.getValue()).build());
             }
         }
+        structBuilder.putFields("text_segment", Value.newBuilder().setStringValue(vectorRecord.getContent()).build());
+
         UpsertResponse upsertResponse = connectedIndex.upsert(
                 vectorRecord.getId(), // Vector ID
                 embedding.vectorAsList(), // Embedding values as List<Float>
@@ -335,22 +337,26 @@ public class VectorDbServiceImpl implements VectorDbService {
 // 2. 构建更新语句
         Update update = new Update().set("content" , vectorRecord.getContent())
                 .set("metadata", vectorRecord.getMetadata())
-                .set("updateTime", new Date());;
+                .set("namespace", vectorRecord.getNamespace())
+                .set("updateTime", new Date())
+                .set("content" , vectorRecord.getContent())
+                .set("_class" , VectorRecord.class.getName());
 
 // 3. 配置upsert选项（核心：开启upsert）
 
 // 4. 执行更新（支持upsert）
         UpdateResult updateResult = mongoTemplate.upsert(query, update, VectorRecord.class);
 
-        if(updateResult.getMatchedCount() == 0){
-            throw new GlobalException("没有任何记录背修改");
+        if(updateResult.getMatchedCount() == 0 && updateResult.getUpsertedId() == null){
+            throw new GlobalException("没有任何记录被修改");
         }
 
         queryNamespace = new Query(Criteria.where("name").is(vectorRecord.getNamespace()));
         Update updateNamespace = new Update();
-        if(isInsert)
+        if(isInsert == false) {
             updateNamespace.inc("recordCount", 1);
-        mongoTemplate.updateFirst(queryNamespace, updateNamespace, Namespace.class);
+            mongoTemplate.updateFirst(queryNamespace, updateNamespace, Namespace.class);
+        }
     }
 
     @Override
@@ -424,6 +430,17 @@ public class VectorDbServiceImpl implements VectorDbService {
         return result;
     }
 
+    @Override
+    public void insertRecords(List<VectorRecord> vectorRecords) {
+        if (vectorRecords == null || vectorRecords.isEmpty()) {
+            return;
+        }
+
+        for (VectorRecord record : vectorRecords) {
+            insertRecord(record);
+        }
+
+    }
 
     private List<VectorRecord.Pair> convertMetadata(List<InsertVectorRecord.Pair> source) {
         if (source == null) {

@@ -2,6 +2,7 @@ package com.pj.xiaoY.config;
 
 
 import com.pj.xiaoY.assistant.UtilAssistant;
+import com.pj.xiaoY.common.SystemContentRetriever;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.chat.ChatMemoryProvider;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
@@ -67,22 +68,41 @@ public class XiaoYConfig {
     }
     @Autowired
     private UtilAssistant utilAssistant;
+//    @Bean
+//    ContentRetriever multicontentRetrieverXiaoYPincone() {
+//// 创建一个 EmbeddingStoreContentRetriever 对象，用于从嵌入存储中检索内容
+//        return query -> {
+//            System.out.println(query.text());
+//            String question = query.text();
+//            String type = utilAssistant.selectExample(question);
+//            System.out.println(type);
+//            ContentRetriever fianlContentRetriever = courseContentRetriever();
+//            if(type == "course") {
+//                System.out.println("ai选择了课程评价");
+//                fianlContentRetriever = courseContentRetriever();
+//            }
+//            else if(type == "course-review") {
+//                System.out.println("ai选择了课程评价");
+//                fianlContentRetriever = courseReviewContentRetriever();
+//            }
+//            return fianlContentRetriever.retrieve(query);
+//        };
+//    }
+
+    @Autowired SystemContentRetriever systemContentRetriever;
     @Bean
     ContentRetriever multicontentRetrieverXiaoYPincone() {
 // 创建一个 EmbeddingStoreContentRetriever 对象，用于从嵌入存储中检索内容
         return query -> {
             System.out.println(query.text());
             String question = query.text();
-            String type = utilAssistant.select(question);
+            String type = utilAssistant.select(systemContentRetriever.systemPrompt , question);
             System.out.println(type);
             ContentRetriever fianlContentRetriever = courseContentRetriever();
-            if(type == "course") {
-                System.out.println("ai选择了课程评价");
-                fianlContentRetriever = courseContentRetriever();
-            }
-            else if(type == "course-review") {
-                System.out.println("ai选择了课程评价");
-                fianlContentRetriever = courseReviewContentRetriever();
+            if (systemContentRetriever.contentRetrieverMap.get(type) != null) {
+                fianlContentRetriever = systemContentRetriever.contentRetrieverMap.get(type);
+            }else{
+                fianlContentRetriever = systemContentRetriever.contentRetrieverMap.values().iterator().next();
             }
             return fianlContentRetriever.retrieve(query);
         };
