@@ -39,44 +39,44 @@ public class UpLoadTest {
 
     @Autowired
     private VectorDbService vectorDbService;
-    @Test
-    public void test() {
-
-        String fileUrl = "C:\\Users\\zzxcl\\Pictures\\素材\\科大小y\\course-info1.txt";
-        String namespace = "course-info";
-        try {
-            // 核心代码：读取整个文件为字符串（指定编码，避免中文乱码）
-            String contents = Files.readString(Paths.get(fileUrl), java.nio.charset.StandardCharsets.UTF_8);
-//            System.out.println("文件内容：\n" + contents);
-            contents = contents.trim();
-            String[] split = contents.split("\\R{4}");
-            System.out.println(split.length);
-            for (String courseContent : split){
-                courseContent = courseContent.trim();
-                String[] courseLines = courseContent.split("\\R{1}");
-//                System.out.println(courseLines[0]);
-//                System.out.println(courseLines[1]);
-//                System.out.println(String.join("\n", Arrays.copyOfRange(courseLines, 2, courseLines.length)));
-                String text ="课程名称:" + courseLines[0] + "\n"
-                        + "授课老师:" + courseLines[1] + "\n"
-                        + String.join("\n", Arrays.copyOfRange(courseLines, 2, courseLines.length));
-//                Metadata metadata = new Metadata();
-//                metadata.put("课程名称", courseLines[0]);
-//                metadata.put("授课老师", courseLines[1]);
-                VectorRecord vectorRecord = new VectorRecord();
-                vectorRecord.setContent(text);
-                vectorRecord.setNamespace(namespace);
-                List<VectorRecord.Pair> pairs = new ArrayList<>();
-                pairs.add(new VectorRecord.Pair("课程名称", courseLines[0]));
-                pairs.add(new VectorRecord.Pair("授课老师", courseLines[1]));
-                vectorRecord.setMetadata(pairs);
-                vectorDbService.insertRecord(vectorRecord);
-            }
-        } catch (IOException e) {
-            e.printStackTrace(); // 捕获文件不存在/权限不足等异常
-        }
-
-    }
+//    @Test
+//    public void test() {
+//
+//        String fileUrl = "C:\\Users\\zzxcl\\Pictures\\素材\\科大小y\\course-info1.txt";
+//        String namespace = "course-info";
+//        try {
+//            // 核心代码：读取整个文件为字符串（指定编码，避免中文乱码）
+//            String contents = Files.readString(Paths.get(fileUrl), java.nio.charset.StandardCharsets.UTF_8);
+////            System.out.println("文件内容：\n" + contents);
+//            contents = contents.trim();
+//            String[] split = contents.split("\\R{4}");
+//            System.out.println(split.length);
+//            for (String courseContent : split){
+//                courseContent = courseContent.trim();
+//                String[] courseLines = courseContent.split("\\R{1}");
+////                System.out.println(courseLines[0]);
+////                System.out.println(courseLines[1]);
+////                System.out.println(String.join("\n", Arrays.copyOfRange(courseLines, 2, courseLines.length)));
+//                String text ="课程名称:" + courseLines[0] + "\n"
+//                        + "授课老师:" + courseLines[1] + "\n"
+//                        + String.join("\n", Arrays.copyOfRange(courseLines, 2, courseLines.length));
+////                Metadata metadata = new Metadata();
+////                metadata.put("课程名称", courseLines[0]);
+////                metadata.put("授课老师", courseLines[1]);
+//                VectorRecord vectorRecord = new VectorRecord();
+//                vectorRecord.setContent(text);
+//                vectorRecord.setNamespace(namespace);
+//                List<VectorRecord.Pair> pairs = new ArrayList<>();
+//                pairs.add(new VectorRecord.Pair("课程名称", courseLines[0]));
+//                pairs.add(new VectorRecord.Pair("授课老师", courseLines[1]));
+//                vectorRecord.setMetadata(pairs);
+//                vectorDbService.insertRecord(vectorRecord);
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace(); // 捕获文件不存在/权限不足等异常
+//        }
+//
+//    }
     @Test
     public void test2() {
             EmbeddingStore<TextSegment> embeddingStore = PineconeEmbeddingStore.builder()

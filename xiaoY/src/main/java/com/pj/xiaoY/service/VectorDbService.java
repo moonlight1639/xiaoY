@@ -3,6 +3,7 @@ package com.pj.xiaoY.service;
 import com.pj.xiaoY.entity.vectorDb.Namespace;
 import com.pj.xiaoY.entity.vectorDb.vo.BathUpdateRecordsVo;
 import com.pj.xiaoY.entity.vectorDb.VectorRecord;
+import com.pj.xiaoY.entity.vectorDb.vo.InsertVectorRecord;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface VectorDbService {
 
     void deleteRecord(String id);
 
-    void insertRecord(VectorRecord vectorRecord);
+    void insertRecord(InsertVectorRecord vectorRecord);
 
     void bathDeleteRecords(BathUpdateRecordsVo bathUpdateRecordsVo);
 
@@ -24,4 +25,6 @@ public interface VectorDbService {
     List<Namespace> getNamespaces();
 
     void updateNamespace(Namespace namespace);
+
+    List<VectorRecord> splitPreview(InsertVectorRecord vectorRecord);
 }

@@ -3,6 +3,7 @@ package com.pj.xiaoY.controller;
 import com.pj.xiaoY.common.Result;
 import com.pj.xiaoY.entity.vectorDb.Namespace;
 import com.pj.xiaoY.entity.vectorDb.vo.BathUpdateRecordsVo;
+import com.pj.xiaoY.entity.vectorDb.vo.InsertVectorRecord;
 import com.pj.xiaoY.service.VectorDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class VectorDbController {
         return Result.ok();
     }
     @PostMapping("/insert-record")
-    public Result insertRecord(@RequestBody VectorRecord vectorRecord) {
+    public Result insertRecord(@RequestBody InsertVectorRecord vectorRecord) {
         vectorDbService.insertRecord(vectorRecord);
         return Result.ok();
     }
@@ -58,5 +59,10 @@ public class VectorDbController {
     public Result updateNamespace(@RequestBody Namespace namespace) {
         vectorDbService.updateNamespace(namespace);
         return Result.ok();
+    }
+
+    @PostMapping("/split-preview")
+    public Result splitPreview(@RequestBody InsertVectorRecord vectorRecord) {
+        return Result.ok(vectorDbService.splitPreview(vectorRecord));
     }
 }

@@ -5,30 +5,24 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.Struct;
 import com.google.protobuf.Value;
-import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.UpdateResult;
 import com.pj.xiaoY.assistant.XiaoY;
 import com.pj.xiaoY.common.DbConst;
 import com.pj.xiaoY.common.exception.GlobalException;
 import com.pj.xiaoY.entity.vectorDb.Namespace;
 import com.pj.xiaoY.entity.vectorDb.vo.BathUpdateRecordsVo;
+import com.pj.xiaoY.entity.vectorDb.vo.InsertVectorRecord;
 import com.pj.xiaoY.service.VectorDbService;
-import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.store.embedding.EmbeddingStore;
-import dev.langchain4j.store.embedding.pinecone.PineconeEmbeddingStore;
-import dev.langchain4j.store.embedding.pinecone.PineconeServerlessIndexConfig;
 import io.pinecone.clients.Index;
 import io.pinecone.configs.PineconeConfig;
 import io.pinecone.clients.Pinecone;
 import io.pinecone.configs.PineconeConnection;
-import io.pinecone.proto.UpdateResponse;
 import io.pinecone.proto.UpsertResponse;
-import io.pinecone.proto.Vector;
 import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.openapitools.db_control.client.model.IndexModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +32,16 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import com.pj.xiaoY.entity.vectorDb.VectorRecord;
-import java.io.IOException;
+import dev.langchain4j.data.document.Document;
+import dev.langchain4j.data.document.DocumentSplitter;
+import dev.langchain4j.data.document.Metadata;
+import dev.langchain4j.data.document.splitter.DocumentSplitters;
+import dev.langchain4j.data.segment.TextSegment;
+
 import java.net.URI;
-import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
 
@@ -69,6 +66,7 @@ public class VectorDbServiceImpl implements VectorDbService {
     static ObjectMapper objectMapper = new ObjectMapper();
     static IndexModel indexModel;
     static String apiKey = System.getenv("PINECONE_API_KEY");
+
     @PostConstruct
     public void init() {
         // 初始化向量数据库，创建索引和名称空间等
@@ -282,7 +280,7 @@ public class VectorDbServiceImpl implements VectorDbService {
     }
 
     @Override
-    public void insertRecord(VectorRecord vectorRecord) {
+    public void insertRecord(InsertVectorRecord vectorRecord) {
         if (vectorRecord == null) {
             throw new GlobalException("vectorRecord 不能为空");
         }
@@ -316,7 +314,7 @@ public class VectorDbServiceImpl implements VectorDbService {
 
         Struct.Builder structBuilder = Struct.newBuilder();
         if (vectorRecord.getMetadata() != null) {
-            for (VectorRecord.Pair pair : vectorRecord.getMetadata()) {
+            for (InsertVectorRecord.Pair pair : vectorRecord.getMetadata()) {
                 structBuilder.putFields(pair.getKey(),
                         Value.newBuilder().setStringValue(pair.getValue()).build());
             }
@@ -377,5 +375,67 @@ public class VectorDbServiceImpl implements VectorDbService {
         Query query = new Query();
         List<Namespace> namespaces = mongoTemplate.find(query, Namespace.class);
         return namespaces;
+    }
+
+    @Override
+    public List<VectorRecord> splitPreview(InsertVectorRecord vectorRecord) {
+        if (vectorRecord == null) {
+            throw new GlobalException("vectorRecord 不能为空");
+        }
+        if (StringUtils.isBlank(vectorRecord.getContent())) {
+            throw new GlobalException("content不能为空");
+        }
+
+        Integer isSplit = vectorRecord.getIsSplit();
+        List<String> chunks = new ArrayList<>();
+
+        // isSplit: 0/null 不切割；1 递归切割；其他值视为非法
+        if (isSplit == null || isSplit == 0) {
+            chunks.add(vectorRecord.getContent().trim());
+        } else if (isSplit == 1) {
+            // 使用 LangChain4j 的 DocumentSplitters.recursive 实现带重叠的递归切割
+            // maxSegmentSize=500, overlapSize=50
+            DocumentSplitter splitter = DocumentSplitters.recursive(500, 50);
+            Document doc = Document.from(vectorRecord.getContent());
+            List<TextSegment> splitSegments = splitter.splitAll(Collections.singletonList(doc));
+            for (TextSegment segment : splitSegments) {
+                String text = segment.text();
+                if (StringUtils.isNotBlank(text)) {
+                    chunks.add(text);
+                }
+            }
+        } else {
+            throw new GlobalException("isSplit 仅支持 0 或 1");
+        }
+
+        List<VectorRecord> result = new ArrayList<>();
+        for (String chunk : chunks) {
+            if (StringUtils.isBlank(chunk)) {
+                continue;
+            }
+
+            VectorRecord record = new VectorRecord();
+            record.setId(DbConst.PREFIX_VECTOR + UUID.randomUUID().toString());
+            record.setNamespace(vectorRecord.getNamespace());
+            record.setContent(chunk.trim());
+            record.setMetadata(convertMetadata(vectorRecord.getMetadata()));
+            result.add(record);
+        }
+        return result;
+    }
+
+
+    private List<VectorRecord.Pair> convertMetadata(List<InsertVectorRecord.Pair> source) {
+        if (source == null) {
+            return null;
+        }
+        List<VectorRecord.Pair> target = new ArrayList<>(source.size());
+        for (InsertVectorRecord.Pair pair : source) {
+            if (pair == null) {
+                continue;
+            }
+            target.add(new VectorRecord.Pair(pair.getKey(), pair.getValue()));
+        }
+        return target;
     }
 }
