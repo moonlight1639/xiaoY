@@ -29,8 +29,8 @@ public class VectorDbController {
         return Result.ok();
     }
     @DeleteMapping("/delete-record")
-    public Result deleteRecord(@RequestBody VectorRecord vectorRecord) {
-        vectorDbService.deleteRecord(vectorRecord);
+    public Result deleteRecord(@RequestParam String id) {
+        vectorDbService.deleteRecord(id);
         return Result.ok();
     }
     @PostMapping("/insert-namespace")
@@ -38,9 +38,25 @@ public class VectorDbController {
         vectorDbService.insertNamespace(namespace);
         return Result.ok();
     }
-    @PutMapping("/delete-namespace")
-    public Result deleteNamespace(@RequestBody Namespace namespace) {
-        vectorDbService.deleteNamespace(namespace);
+    @DeleteMapping("/delete-namespace")
+    public Result deleteNamespace(@RequestParam String id) {
+        vectorDbService.deleteNamespace(id);
+        return Result.ok();
+    }
+
+    @GetMapping("/get-records")
+    public Result getRecords() {
+        return Result.ok(vectorDbService.getRecords());
+    }
+
+    @GetMapping("/get-namespaces")
+    public Result getNamespaces() {
+        return Result.ok(vectorDbService.getNamespaces());
+    }
+
+    @PutMapping("/update-namespace")
+    public Result updateNamespace(@RequestBody Namespace namespace) {
+        vectorDbService.updateNamespace(namespace);
         return Result.ok();
     }
 }

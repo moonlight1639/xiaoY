@@ -1,14 +1,42 @@
 import './Home.css'
 import { Link} from 'react-router-dom'
+import { useState, useEffect } from 'react'
+
 function Home() {
+  const fullTitle = '欢迎来到科大小Y ！'
+  const fullSubtitle = '一个基于 Agent 构建的校园智能体'
+  const [displayedTitle, setDisplayedTitle] = useState('')
+  const [displayedSubtitle, setDisplayedSubtitle] = useState('')
+
+  useEffect(() => {
+    let titleIndex = 0
+    const titleInterval = setInterval(() => {
+      if (titleIndex <= fullTitle.length) {
+        setDisplayedTitle(fullTitle.slice(0, titleIndex))
+        titleIndex++
+      } else {
+        clearInterval(titleInterval)
+        // 标题完成后，开始加载副标题
+        let subtitleIndex = 0
+        const subtitleInterval = setInterval(() => {
+          if (subtitleIndex <= fullSubtitle.length) {
+            setDisplayedSubtitle(fullSubtitle.slice(0, subtitleIndex))
+            subtitleIndex++
+          } else {
+            clearInterval(subtitleInterval)
+          }
+        }, 50)
+      }
+    }, 100)
+
+    return () => clearInterval(titleInterval)
+  }, [])
   return (
     <div className="home-page">
       {/* 欢迎区域 */}
       <section className="hero-section">
-        <h1 className="hero-title">欢迎来到科大小Y ！</h1>
-        <p className="hero-subtitle">
-          一个基于 Agent 构建的校园智能体
-        </p>
+        <h1 className="hero-title">{displayedTitle}</h1>
+        <p className="hero-subtitle">{displayedSubtitle}</p>
         <div className="hero-actions">
           <Link to="/chat">
             <button className="btn btn-primary">开始使用</button>

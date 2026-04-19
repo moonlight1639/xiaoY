@@ -315,7 +315,7 @@ const AdminCourses: React.FC = () => {
                         width: "320px",
                       }),
                       ...(col.dataIndex === "courseName" && { width: "200px" }),
-                      ...(col.dataIndex === "teacher" && { width: "120px" }),
+                      ...(col.dataIndex === "teacher" && { width: "120px", maxWidth: "200px" }),
                     }}
                   >
                     {col.title}
@@ -377,8 +377,10 @@ const AdminCourses: React.FC = () => {
                       />
                     )}
                   </td>
-                  <td>{item.courseName}</td>
-                  <td>{item.teacher ? item.teacher : "null"}</td>
+                  <td><span className="admin-name-chip">{item.courseName}</span></td>
+                  <td className="CourseAdmin-teacher-cell" style={{ maxWidth: "200px", overflow: "auto", whiteSpace: "nowrap" }}>
+                    {item.teacher ? item.teacher : "null"}
+                  </td>
                   <td>
                     <div className="CourseAdmin-scroll-cell">
                       {item.description ? item.description : "null"}

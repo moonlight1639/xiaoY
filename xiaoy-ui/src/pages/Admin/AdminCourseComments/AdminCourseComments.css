@@ -12,7 +12,7 @@
   --CourseCommentsAdmin-bg-page: #f6f8fa;
   --CourseCommentsAdmin-bg-card: #ffffff;
   --CourseCommentsAdmin-bg-header: #f9fafb;
-  --CourseCommentsAdmin-radius: 10px;
+  --CourseCommentsAdmin-radius: 0;
   --CourseCommentsAdmin-shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
 }
 
@@ -57,7 +57,7 @@
   height: 36px;
   min-width: 240px;
   border: 1.5px solid var(--CourseCommentsAdmin-border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 0 12px 0 36px;
   outline: none;
   background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239aa5b1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 11px center;
@@ -74,7 +74,7 @@
 .CourseCommentsAdmin-select {
   height: 36px;
   border: 1.5px solid var(--CourseCommentsAdmin-border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 0 12px;
   outline: none;
   font-size: 0.88rem;
@@ -87,8 +87,8 @@
 
 /* ===== 卡片容器 ===== */
 .CourseCommentsAdmin-card {
-  /* background: var(--CourseCommentsAdmin-bg-card);
-  border-radius: var(--CourseCommentsAdmin-radius); */
+  background: var(--CourseCommentsAdmin-bg-card);
+  border-radius: var(--CourseCommentsAdmin-radius);
   border: 1.5px solid var(--CourseCommentsAdmin-border);
   box-shadow: var(--CourseCommentsAdmin-shadow);
   padding: 0;
@@ -107,34 +107,35 @@
   border-collapse: separate;
   border-spacing: 0;
   font-size: 0.9rem;
+  line-height: 1.6;
   transform: rotateX(180deg);
-  border-radius: 12px;
+  border-radius: 0;
   overflow: hidden;
   margin:5px 0px;
-  box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.1), 0 2px 4px -2px rgba(99, 102, 241, 0.05);
 }
 
 .CourseCommentsAdmin-table thead th {
   padding: 14px 18px;
   text-align: left;
-  background: #f5f6ff;
+  background: linear-gradient(135deg, #f9fafb 0%, #f0f4f8 100%);
   color: #4f46e5;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border-bottom: 2px solid #eef2ff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-bottom: 2px solid #e8ecf0;
   white-space: nowrap;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
 }
 
 .CourseCommentsAdmin-table tbody td {
   padding: 14px 18px;
   text-align: left;
-  border-bottom: 1px solid #f1f5f9;
-  color: #334155;
+  border-bottom: 1px solid #e8ecf0;
+  color: #1f2937;
   vertical-align: middle;
   background: #ffffff;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  font-weight: 500;
 }
 
 .CourseCommentsAdmin-table tbody tr {
@@ -147,13 +148,19 @@
 }
 
 .CourseCommentsAdmin-table tbody tr:hover td {
-  background: #f8faff;
-  color: #1e1b4b;
+  background: #f0f5ff;
+  color: #0f172a;
+  text-shadow: 0 0 0 currentColor, 0.2px 0 0 currentColor;
+}
+
+.CourseCommentsAdmin-table tbody tr:hover td button,
+.CourseCommentsAdmin-table tbody tr:hover td a,
+.CourseCommentsAdmin-table tbody tr:hover td span {
+  text-shadow: inherit;
 }
 
 .CourseCommentsAdmin-table tbody tr:hover td:first-child {
-  border-left: 3px solid #6366f1;
-  padding-left: 15px;
+  box-shadow: inset 3px 0 0 var(--CourseCommentsAdmin-accent);
 }
 .CourseCommentsAdmin-pagination {
   display: flex;
@@ -162,6 +169,7 @@
   padding: 16px 20px;
   background: #fff;
   border-top: 1px solid var(--CourseCommentsAdmin-border);
+  border-radius: 0;
 }
 .CourseCommentsAdmin-pagination .ant-pagination { margin: 0; }
 
@@ -170,15 +178,6 @@
   color: var(--CourseCommentsAdmin-text-muted);
   padding: 48px 0;
   font-size: 0.92rem;
-}
-
-
-.CourseCommentsAdmin-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid var(--CourseCommentsAdmin-border);
 }
 
 .CourseCommentsAdmin-modal .CourseCommentsAdmin-input { padding: 0 12px; background: #fff; }
@@ -201,7 +200,7 @@
 .CourseCommentsAdmin-modal {
   width: 520px;
   background: #fff;
-  border-radius: 14px;
+  border-radius: 0;
   padding: 0;
   box-shadow: 0 16px 48px rgba(0,0,0,.18);
   animation: CourseCommentsAdmin-modalShow .28s cubic-bezier(.34,1.4,.64,1);
@@ -229,7 +228,7 @@
   cursor: pointer;
   color: #999;
   padding: 4px 8px;
-  border-radius: 6px;
+  border-radius: 0;
   transition: background .15s, color .15s;
   line-height: 1;
 }
@@ -264,7 +263,7 @@
   min-height: 80px;
   padding: 8px 12px;
   border: 1.5px solid #e2e8f0;
-  border-radius: 8px;
+  border-radius: 0;
   font-size: 0.9rem;
   font-family: inherit;
   resize: vertical;
@@ -273,12 +272,6 @@
   outline: none;
 }
 .CourseCommentsAdmin-form-textarea:focus { border-color: #6366f1; }
-.CourseCommentsAdmin-avatar {
-  width: 70px;
-  height: 70px;
-  /* border-radius: 50%; */
-  object-fit: cover;
-}
 .CourseCommentsAdmin-scroll-cell { max-height: 200px; overflow-y: auto; padding-right: 4px; }
 .CourseCommentsAdmin-scroll-cell::-webkit-scrollbar, .CourseCommentsAdmin-form-textarea::-webkit-scrollbar { width: 8px; background-color: transparent; }
 .CourseCommentsAdmin-scroll-cell::-webkit-scrollbar-thumb, .CourseCommentsAdmin-form-textarea::-webkit-scrollbar-thumb { border-radius: 8px; background-color: rgba(0, 0, 0, 0.15); }
@@ -292,33 +285,37 @@
 .CourseCommentsAdmin-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   height: 34px;
   padding: 0 16px;
-  border-radius: 8px;
+  border-radius: 0;
   border: 1.5px solid transparent;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all .18s ease;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
   white-space: nowrap;
   outline: none;
   box-sizing: border-box;
   font-family: inherit;
 }
+.CourseCommentsAdmin-btn:active { transform: scale(0.97); }
 .CourseCommentsAdmin-btn.primary {
   background: var(--CourseCommentsAdmin-accent);
   color: #fff;
   border-color: var(--CourseCommentsAdmin-accent);
+  box-shadow: 0 1px 4px rgba(66,133,244,.3);
 }
 .CourseCommentsAdmin-btn.primary:hover {
   background: var(--CourseCommentsAdmin-accent-dark);
   border-color: var(--CourseCommentsAdmin-accent-dark);
+  box-shadow: 0 2px 8px rgba(66,133,244,.35);
 }
 .CourseCommentsAdmin-btn.danger {
   background: var(--CourseCommentsAdmin-danger);
   color: #fff;
   border-color: var(--CourseCommentsAdmin-danger);
+  box-shadow: 0 1px 4px rgba(217,48,37,.25);
 }
 .CourseCommentsAdmin-btn.danger:hover {
   background: #b02020;
@@ -338,7 +335,7 @@
 .CourseCommentsAdmin-tag {
   display: inline-block;
   padding: 3px 10px;
-  border-radius: 999px;
+  border-radius: 0;
   font-size: 0.78rem;
   font-weight: 600;
   white-space: nowrap;

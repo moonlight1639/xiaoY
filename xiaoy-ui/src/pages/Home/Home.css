@@ -22,16 +22,19 @@
   padding: 4rem 1rem;
   background: linear-gradient(
     135deg, 
-    rgba(59, 130, 246, 0.15) 0%, 
-    rgba(96, 165, 250, 0.1) 25%,
-    rgba(147, 197, 253, 0.15) 50%,
-    rgba(59, 130, 246, 0.1) 75%,
-    rgba(37, 99, 235, 0.15) 100%
+    rgba(59, 130, 246, 0.08) 0%, 
+    rgba(139, 92, 246, 0.06) 25%,
+    rgba(236, 72, 153, 0.08) 50%,
+    rgba(245, 158, 11, 0.06) 75%,
+    rgba(59, 130, 246, 0.08) 100%
   );
   background-size: 400% 400%;
-  animation: gradientShift 8s ease infinite;
+  animation: gradientShift 10s ease infinite;
   border-radius: 1rem;
   margin-bottom: 3rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
 }
 
 @keyframes gradientShift {
@@ -49,8 +52,33 @@
 .hero-title {
   font-size: 2.7rem;
   font-weight: 700;
-  color: black;
+  background: linear-gradient(
+    90deg,
+    #3b82f6 0%,
+    #8b5cf6 25%,
+    #ec4899 50%,
+    #f59e0b 75%,
+    #3b82f6 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: colorShift 4s linear infinite;
   margin-bottom: 1rem;
+  min-height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes colorShift {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
 }
 
 .hero-subtitle {
@@ -60,6 +88,7 @@
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  min-height: 1.5rem;
 }
 
 .hero-actions {

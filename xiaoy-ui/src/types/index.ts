@@ -4,5 +4,6 @@ export type { Course , UpdateCourse , InsertCourse } from './Course';
 export type { CourseComment , UpdateCourseComment , InsertCourseComment } from './CourseComment';
 export type { Dish , UpdateDish , InsertDish } from './Dish';
 export type { Location } from './Location';
+export type { Namespace , VbRecord , Pair} from './VectorDb';
 export type { User } from './User';
 export type { ChatForm, ChatMessage , SingleChatMessage , ChatMessageList , ChatMessageTitle } from './ChatMessages';

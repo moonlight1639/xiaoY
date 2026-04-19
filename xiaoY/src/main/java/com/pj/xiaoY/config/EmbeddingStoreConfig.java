@@ -1,5 +1,6 @@
 package com.pj.xiaoY.config;
 
+
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.store.embedding.EmbeddingStore;
@@ -46,4 +47,6 @@ public class EmbeddingStoreConfig {
                 .build();
         return embeddingStore;
     }
+
+
 }

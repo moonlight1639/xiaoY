@@ -176,7 +176,7 @@ const AdminLocations: React.FC = () => {
             <tbody>
               {items.map((item) => (
                 <tr key={item.id}>
-                  <td>{item.name}</td>
+                  <td><span className="admin-name-chip">{item.name}</span></td>
                   <td>
                     <span
                       className="LocationAdmin-tag"

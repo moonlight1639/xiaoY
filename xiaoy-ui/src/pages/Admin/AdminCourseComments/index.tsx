@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import type { UpdateCourseComment , InsertCourseComment} from "@/types";
 import { Pagination } from 'antd';
-import defaultAvatar from "@/assets/avator/defaultAvator1.jpg";
 import "./AdminCourseComments.css";
 import {getUpdateCoursesCommmentList , updateCourseComment} from "@/services";
+import { UpLoad } from "@/components";
 // 扩展类型，后续后端字段对齐后可移至 @/types
 type CourseCommentWithVDB = UpdateCourseComment;
 
@@ -69,7 +69,6 @@ const AdminCourseComments: React.FC = () => {
     { title: "不喜欢量", dataIndex: "dislikeNum" },
     { title: "是否删除", dataIndex: "isDeleted" },
     { title: "创建时间", dataIndex: "createTime" },
-    { title: "更新时间", dataIndex: "updateTime" },
   ]);
   const [keyword, setKeyword] = useState("");
 
@@ -185,10 +184,28 @@ const AdminCourseComments: React.FC = () => {
     setItems((prev) => prev.filter((i) => i.id !== id));
   };
 
+  const handleAvatarChange = (src: string, item: UpdateCourseComment) => {
+    const updateUserAvatar = async () => {
+      const res = await updateCourseComment({ ...item, userAvatar: src });
+      if (res.success == true) {
+        console.log("头像更新成功");
+        const fetchUserInfoList = async () => {
+          const res = await getUpdateCoursesCommmentList(page, pageSize);
+          if (res.success == true && res.data) {
+            setItems(res.data);
+          }
+        };
+        fetchUserInfoList();
+      }
+    };
+    updateUserAvatar();
+  };
+
   return (
     <div className="CourseCommentsAdmin-page" style={{...(pageLoading && {display:'none'})}} >
       <div className="CourseCommentsAdmin-page-header">
         <h1>💬 评论管理</h1>
+        <p>管理课程评论内容，维护评论状态并同步向量库数据</p>
       </div>
 
       <div className="CourseCommentsAdmin-toolbar">
@@ -298,10 +315,15 @@ const AdminCourseComments: React.FC = () => {
                     />
                   )}
                 </td>
-                <td>{item.courseName}</td>
+                <td><span className="admin-name-chip">{item.courseName}</span></td>
                 {/* <td>{item.userId}</td> */}
-                <td>{item.userName}</td>
-                <td><img src={item.userAvatar || defaultAvatar} alt="用户头像" className="CourseCommentsAdmin-avatar" /></td>
+                <td><span className="admin-name-chip">{item.userName}</span></td>
+                <td>
+                  <UpLoad
+                    avatar={item.userAvatar}
+                    returnSrc={(src: string) => handleAvatarChange(src, item)}
+                  />
+                </td>
                 <td>
                   <div className="CourseCommentsAdmin-scroll-cell">
                     {item.content}
@@ -315,7 +337,6 @@ const AdminCourseComments: React.FC = () => {
                   </span>
                 </td>
                 <td>{item.createTime}</td>
-                <td>{item.updateTime}</td>
                 <td>
                   <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'nowrap' }}>
                     <button

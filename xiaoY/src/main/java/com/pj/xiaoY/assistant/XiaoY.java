@@ -27,6 +27,7 @@ public interface XiaoY {
     @SystemMessage("请根据以下文本填充对象：\\n\\n {{it}}")
     <T> T fill1( @UserMessage String userMessage);
 
-
+//    @SystemMessage("请根据数据库名称，仅生成该数据库的核心用途和对应的业务场景，语言简洁专业，无需多余内容")
+//    String getNewDescription( @UserMessage String userMessage);
 
 }

@@ -22,7 +22,7 @@ public class VectorRecord {
     @Id
     private String id;
     // 关联Namespace的ID，建立关系
-    private String namespaceName;
+    private String namespace;
 
     /**
      * 内容字段（支持长文本）

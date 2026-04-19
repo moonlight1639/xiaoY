@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.pj.xiaoY.properties.MinioProperties;
 import lombok.Data;
 
 /**
@@ -48,28 +47,6 @@ public class UserInfo implements Serializable {
 	 * 用户头像（URL地址）
 	 */
 	private String avatar;
-	public void setAvatar(String _avatar) {
-		if(_avatar==null){
-			this.avatar = null;
-			return;
-		}
-		System.out.println(MinioProperties.MINIO_BASE_URL + "1");
-		if(_avatar.startsWith(MinioProperties.MINIO_BASE_URL)){
-			this.avatar = _avatar.substring(MinioProperties.MINIO_BASE_URL.length());
-			return;
-		}
-		this.avatar = _avatar;
-	}
-	public String getAvatar() {
-		if(avatar==null){
-			return null;
-		}
-		if(avatar.startsWith(MinioProperties.MINIO_BASE_URL) == false){
-			return MinioProperties.MINIO_BASE_URL + avatar;
-
-		}
-		return avatar;
-	}
 	/**
 	 * 用户类型 0-普通用户 1-管理员 2-运营人员
 	 */

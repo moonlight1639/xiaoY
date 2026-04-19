@@ -83,28 +83,31 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9rem;
+  line-height: 1.6;
   /* 抵消容器翻转，内容保持正常方向 */
   transform: rotateX(180deg);
 }
 .vdb-table thead th {
-  padding: 11px 18px;
+  padding: 14px 18px;
   text-align: left;
-  background: var(--vdb-bg-header);
-  color: var(--vdb-text-muted);
-  font-size: 0.75rem;
+  background: linear-gradient(135deg, #f9fafb 0%, #f0f4f8 100%);
+  color: #4f46e5;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.7px;
-  border-bottom: 1.5px solid var(--vdb-border);
+  letter-spacing: 0.8px;
+  border-bottom: 2px solid #e8ecf0;
   white-space: nowrap;
 }
 .vdb-table tbody td {
-  padding: 13px 18px;
+  padding: 14px 18px;
   text-align: left;
-  border-bottom: 1px solid var(--vdb-border);
+  border-bottom: 1px solid #e8ecf0;
   /* white-space: nowrap; */
-  color: var(--vdb-text-primary);
+  color: #1f2937;
   vertical-align: middle;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 .vdb-table tbody tr {
   cursor: pointer;
@@ -117,9 +120,12 @@
 .vdb-table tbody tr:hover {
   background: #f0f5ff;
 }
+.vdb-table tbody tr:hover td {
+  color: #0f172a;
+  text-shadow: 0 0 0 currentColor, 0.2px 0 0 currentColor;
+}
 .vdb-table tbody tr:hover td:first-child {
-  border-left: 3px solid var(--vdb-accent);
-  padding-left: 15px;
+  box-shadow: inset 3px 0 0 var(--vdb-accent);
 }
 
 /* 命名空间 tag */
@@ -363,9 +369,11 @@
 .vdb-detail-table tbody tr:hover {
   background: #f6f9ff;
 }
+.vdb-detail-table tbody tr:hover td {
+  text-shadow: 0 0 0 currentColor, 0.2px 0 0 currentColor;
+}
 .vdb-detail-table tbody tr:hover td:first-child {
-  border-left: 3px solid var(--vdb-accent);
-  padding-left: 13px;
+  box-shadow: inset 3px 0 0 var(--vdb-accent);
 }
 
 /* 列宽 */

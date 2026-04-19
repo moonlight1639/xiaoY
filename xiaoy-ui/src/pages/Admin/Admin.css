@@ -218,6 +218,29 @@ div[class$="-table-wrap"]::-webkit-scrollbar-thumb:hover {
   animation: cardIn .4s ease-out both;
 }
 
+/* 统一后台子页按钮为圆角（含 antd 按钮/分页） */
+.admin-content button,
+.admin-content .ant-btn,
+.admin-content .ant-pagination-item,
+.admin-content .ant-pagination-prev .ant-pagination-item-link,
+.admin-content .ant-pagination-next .ant-pagination-item-link {
+  border-radius: 8px !important;
+}
+
+/* 统一姓名/名称列标签风格（类似向量库 namespace tag） */
+.admin-name-chip {
+  display: inline-block;
+  padding: 3px 11px;
+  border-radius: 6px;
+  background: #e0e7ff;
+  color: #4338ca;
+  border: 1px solid #c5d8fc;
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-family: "SFMono-Regular", "Consolas", monospace;
+  letter-spacing: 0.2px;
+}
+
 @keyframes cardIn {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -234,7 +257,7 @@ div[class$="-table-wrap"]::-webkit-scrollbar-thumb:hover {
   text-decoration: none;
   padding: 6px 14px;
   border-radius: 6px;
-  border: 1px solid transparent;
+  border: 1px solid #d7dee7;
   transition: all .2s ease;
 }
 

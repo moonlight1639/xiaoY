@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.pj.xiaoY.properties.MinioProperties;
 import lombok.Data;
 
 /**
@@ -46,32 +45,6 @@ public class Course implements Serializable {
 	/*
 	 * 课程头像*/
 	private String avatar;
-
-	/*图片要做以下操作*/
-	public void setAvatar(String avatar) {
-		if(avatar==null){
-			this.avatar = null;
-			return;
-		}
-		System.out.println(MinioProperties.MINIO_BASE_URL);
-		if(avatar.startsWith(MinioProperties.MINIO_BASE_URL)){
-
-			this.avatar = avatar.substring(MinioProperties.MINIO_BASE_URL.length());
-			System.out.println(this.avatar);
-			return;
-		}
-		this.avatar = avatar;
-	}
-	public String getAvatar() {
-		if(this.avatar==null){
-			return null;
-		}
-		if(this.avatar.startsWith(MinioProperties.MINIO_BASE_URL) == false){
-			return MinioProperties.MINIO_BASE_URL + this.avatar;
-
-		}
-		return this.avatar;
-	}
 
 	/**
 	 * 阅读量，初始值0

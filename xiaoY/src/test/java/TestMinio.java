@@ -1,4 +1,4 @@
-package com.pj.xiaoY;
+// package com.pj.xiaoY;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pj.xiaoY.entity.Course;

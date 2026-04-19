@@ -12,7 +12,7 @@
   --userAdmin-bg-page: #f6f8fa;
   --userAdmin-bg-card: #ffffff;
   --userAdmin-bg-header: #f9fafb;
-  --userAdmin-radius: 10px;
+  --userAdmin-radius: 0;
   --userAdmin-shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
 }
 
@@ -57,7 +57,7 @@
   height: 36px;
   min-width: 240px;
   border: 1.5px solid var(--userAdmin-border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 0 12px 0 36px;
   outline: none;
   background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239aa5b1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 11px center;
@@ -74,7 +74,7 @@
 .userAdmin-select {
   height: 36px;
   border: 1.5px solid var(--userAdmin-border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 0 12px;
   outline: none;
   font-size: 0.88rem;
@@ -87,8 +87,8 @@
 
 /* ===== 卡片容器 ===== */
 .userAdmin-card {
-  background: transparent ;
-  /* border-radius: var(--userAdmin-radius); */
+  background: var(--userAdmin-bg-card);
+  border-radius: var(--userAdmin-radius);
   border: 1.5px solid var(--userAdmin-border);
   box-shadow: var(--userAdmin-shadow);
   padding: 0;
@@ -108,35 +108,43 @@
   border-collapse: separate;
   border-spacing: 0;
   font-size: 0.9rem;
+  line-height: 1.6;
   margin: 5px 0px;
   transform: rotateX(180deg);
-  border-radius: 12px;
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.1), 0 2px 4px -2px rgba(99, 102, 241, 0.05);
 }
 
 .userAdmin-table thead th {
   padding: 14px 18px;
   text-align: left;
-  background: #f5f6ff;
+  background: linear-gradient(135deg, #f9fafb 0%, #f0f4f8 100%);
   color: #4f46e5;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border-bottom: 2px solid #eef2ff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-bottom: 2px solid #e8ecf0;
   white-space: nowrap;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
 }
+
+.userAdmin-table thead th:nth-child(1),
+.userAdmin-table tbody td:nth-child(1) {
+  text-align: center !important;
+}
+
+.userAdmin-nickname-cell { text-align: center !important; }
 
 .userAdmin-table tbody td {
   padding: 14px 18px;
   text-align: left;
-  border-bottom: 1px solid #f1f5f9;
-  color: #334155;
+  border-bottom: 1px solid #e8ecf0;
+  color: #1f2937;
   vertical-align: middle;
   background: #ffffff;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   white-space: nowrap;
+  font-weight: 500;
 }
 
 .userAdmin-table tbody tr {
@@ -149,13 +157,19 @@
 }
 
 .userAdmin-table tbody tr:hover td {
-  background: #f8faff;
-  color: #1e1b4b;
+  background: #f0f5ff;
+  color: #0f172a;
+  text-shadow: 0 0 0 currentColor, 0.2px 0 0 currentColor;
+}
+
+.userAdmin-table tbody tr:hover td button,
+.userAdmin-table tbody tr:hover td a,
+.userAdmin-table tbody tr:hover td span {
+  text-shadow: inherit;
 }
 
 .userAdmin-table tbody tr:hover td:first-child {
-  border-left: 3px solid #6366f1;
-  padding-left: 15px;
+  box-shadow: inset 3px 0 0 var(--userAdmin-accent);
 }
 .userAdmin-pagination {
   display: flex;
@@ -199,7 +213,7 @@
 .userAdmin-modal {
   width: 520px;
   background: #fff;
-  border-radius: 14px;
+  border-radius: 0;
   padding: 0;
   box-shadow: 0 16px 48px rgba(0,0,0,.18);
   animation: userAdmin-modalShow .28s cubic-bezier(.34,1.4,.64,1);
@@ -227,7 +241,7 @@
   cursor: pointer;
   color: #999;
   padding: 4px 8px;
-  border-radius: 6px;
+  border-radius: 0;
   transition: background .15s, color .15s;
   line-height: 1;
 }
@@ -262,7 +276,7 @@
   min-height: 80px;
   padding: 8px 12px;
   border: 1.5px solid #e2e8f0;
-  border-radius: 8px;
+  border-radius: 0;
   font-size: 0.9rem;
   font-family: inherit;
   resize: vertical;
@@ -276,33 +290,37 @@
 .userAdmin-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   height: 34px;
   padding: 0 16px;
-  border-radius: 8px;
+  border-radius: 0;
   border: 1.5px solid transparent;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all .18s ease;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
   white-space: nowrap;
   outline: none;
   box-sizing: border-box;
-  font-family: inherit;
+  font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
 }
+.userAdmin-btn:active { transform: scale(0.97); }
 .userAdmin-btn.primary {
-  background: #6366f1;
+  background: var(--userAdmin-accent);
   color: #fff;
-  border-color: #6366f1;
+  border-color: var(--userAdmin-accent);
+  box-shadow: 0 1px 4px rgba(66,133,244,.3);
 }
 .userAdmin-btn.primary:hover {
-  background: #4338ca;
-  border-color: #4338ca;
+  background: var(--userAdmin-accent-dark);
+  border-color: var(--userAdmin-accent-dark);
+  box-shadow: 0 2px 8px rgba(66,133,244,.35);
 }
 .userAdmin-btn.danger {
-  background: #d93025;
+  background: var(--userAdmin-danger);
   color: #fff;
-  border-color: #d93025;
+  border-color: var(--userAdmin-danger);
+  box-shadow: 0 1px 4px rgba(217,48,37,.25);
 }
 .userAdmin-btn.danger:hover {
   background: #b02020;
@@ -310,20 +328,37 @@
 }
 .userAdmin-btn.ghost {
   background: transparent;
-  color: #1d2b3a;
-  border-color: #e8ecf0;
+  color: var(--userAdmin-text-primary);
+  border-color: var(--userAdmin-border);
 }
 .userAdmin-btn.ghost:hover {
   background: #f5f5f5;
   border-color: #ccc;
 }
 
+/* antd controls also use square corners in this page */
+.userAdmin-page .ant-btn,
+.userAdmin-page .ant-pagination-item,
+.userAdmin-page .ant-pagination-prev .ant-pagination-item-link,
+.userAdmin-page .ant-pagination-next .ant-pagination-item-link,
+.userAdmin-ai-modal .ant-btn {
+  border-radius: 0 !important;
+}
+
+/* soften secondary content columns */
+.userAdmin-table tbody td:nth-child(2),
+.userAdmin-table tbody td:nth-child(3) {
+  color: #667588;
+}
+
 /* ===== 标签 ===== */
 .userAdmin-tag {
   display: inline-block;
   padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 0.78rem;
+  border-radius: 0;
+  font-size: 0.8rem;
   font-weight: 600;
+  letter-spacing: 0.15px;
+  font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
   white-space: nowrap;
 }

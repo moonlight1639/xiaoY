@@ -364,7 +364,7 @@ const AdminDishs: React.FC = () => {
                     />
                   )}
                 </td>
-                <td>{item.dishName}</td>
+                <td><span className="admin-name-chip">{item.dishName}</span></td>
                 <td>{item.description ? item.description : "null"}</td>
                 <td><UpLoad avatar={item.photo} returnSrc={(src:string) => handleAvatarChange(src, item)}></UpLoad></td>
                 <td>{item.price ? item.price : "null"}</td>

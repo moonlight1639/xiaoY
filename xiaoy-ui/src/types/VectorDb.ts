@@ -17,10 +17,10 @@ export type Namespace = {
   /** 修改时间（MongoDB自动填充，更新时自动更新） */
   updateTime?: string;
 };
-export interface Record  {
+export interface VbRecord  {
   /** 自定义主键ID（手动赋值，非MongoDB自动生成） */
   id: string,
-  namespaceName:string,
+  namespace:string,
   /** 内容字段（支持长文本） */
   content: string,
   /**

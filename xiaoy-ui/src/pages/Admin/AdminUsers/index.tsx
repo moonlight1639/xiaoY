@@ -254,7 +254,7 @@ const AdminUsers: React.FC = () => {
                 <th
                   key={col.dataIndex}
                   style={{
-                    width: col.dataIndex === "nickname" ? "200px" : undefined,
+                    ...(col.dataIndex === "nickname" && { width: "140px", maxWidth: "140px" }),
                   }}
                 >
                   {col.title}
@@ -267,7 +267,9 @@ const AdminUsers: React.FC = () => {
           <tbody>
             {items.map((item) => (
               <tr key={item.id}>
-                <td>{item.nickname}</td>
+                <td className="userAdmin-nickname-cell" style={{ maxWidth: "140px", overflow: "auto", whiteSpace: "nowrap" }}>
+                  <span className="admin-name-chip">{item.nickname}</span>
+                </td>
                 <td>{item.phone ? item.phone : "null"}</td>
                 <td>{item.email ? item.email : "null"}</td>
                 
@@ -407,6 +409,7 @@ const AdminUsers: React.FC = () => {
 
       {fillModalOpen && (
         <Modal
+          rootClassName="userAdmin-ai-modal"
           title="ai自动填充"
           open={fillModalOpen}
           onOk={() => {handleFill()}}

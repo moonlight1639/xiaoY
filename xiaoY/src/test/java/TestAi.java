@@ -1,4 +1,4 @@
-package com.pj.xiaoY;
+// package com.pj.xiaoY;
 import com.pj.xiaoY.assistant.XiaoY;
 import dev.langchain4j.community.model.dashscope.QwenStreamingChatModel;
 import org.junit.jupiter.api.Test;

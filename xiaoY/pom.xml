@@ -21,7 +21,12 @@
 <!--        <langchain4j.version>1.2.0</langchain4j.version>-->
 <!--        <langchain4j.version>1.0.0-beta18</langchain4j.version>-->
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
+<!--        <langchain4j.version>1.9.0</langchain4j.version>-->
+<!--        <langchain4j-community.version>1.9.0-beta16</langchain4j-community.version>-->
         <langchain4j.version>1.0.0-beta3</langchain4j.version>
+        <langchain4j-community.version>1.0.0-beta3</langchain4j-community.version>
+<!--        <langchain4j.version>0.32.0</langchain4j.version>-->
+        <pinecone.version>20230406.1.1</pinecone.version>
     </properties>
 
     <groupId>com.pj</groupId>
@@ -159,8 +164,16 @@
             <artifactId>langchain4j-document-parser-apache-pdfbox</artifactId>
 
         </dependency>
-
-
+<!--        <dependency>-->
+<!--            <groupId>com.sigpwned</groupId>-->
+<!--            <artifactId>pinecone-java-client</artifactId>-->
+<!--            <version>${pinecone.version}</version> &lt;!&ndash; 最新官方版本可查 Maven Central &ndash;&gt;-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>io.pinecone</groupId>
+            <artifactId>pinecone-client</artifactId>
+            <version>5.0.0</version>
+        </dependency>
 
     </dependencies>
 
@@ -191,7 +204,7 @@
             <dependency>
                 <groupId>dev.langchain4j</groupId>
                 <artifactId>langchain4j-community-bom</artifactId>
-                <version>${langchain4j.version}</version>
+                <version>${langchain4j-community.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

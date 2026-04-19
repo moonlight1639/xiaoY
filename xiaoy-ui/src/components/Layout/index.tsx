@@ -233,12 +233,20 @@ function Layout() {
             >
               {theme === "light" ? "🌙" : "☀️"}
             </button>
-            {
-              user?.userType === 0 && 
-              <NavLink to="/admin" className="admin-link">
-                🖥️ 后台管理
+            {user?.userType === 0 && (
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  `admin-link ${isActive ? "active" : ""}`
+                }
+                aria-label="进入后台管理"
+              >
+                <span className="admin-link-icon" aria-hidden="true">
+                  🖥️
+                </span>
+                <span className="admin-link-text">后台管理</span>
               </NavLink>
-            }
+            )}
             <AvatarDropdown />
           </div>
         </div>

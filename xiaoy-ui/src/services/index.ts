@@ -10,3 +10,4 @@ export { getCourseCommmentsByCourseId , getCoursesCommmentList , getUpdateCourse
 export { xiaoY_chat , getList , getMessages , getNewMemoryId } from './ChatMessagesApi'
 export { uploadAvatar } from './common'
 export { fillClassApi } from './fillApi'
+export { insertNamespace , deleteNamespace , insertRecord , deleteRecord , getNamespaces , getRecords , updateNamespace} from './vectorDbApi'

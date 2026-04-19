@@ -44,8 +44,8 @@ public class MinioProperties {
 
     @PostConstruct
     public void initUserStaticConfig() {
-        // 3. 拼接 MinIO 基础路径，赋值给 User 类的静态变量
-        MINIO_BASE_URL = url + "/";
+        // 拼接 MinIO 基础路径（包含 bucket），用于文件访问 URL 前缀
+        MINIO_BASE_URL = url + "/" + bucketName + "/";
         // 打印日志验证（可选）
         System.out.println("初始化 User.MINIO_BASE_URL：" + MINIO_BASE_URL);
     }

@@ -1,4 +1,4 @@
-package com.pj.xiaoY;
+// package com.pj.xiaoY;
 
 import com.pj.xiaoY.entity.Course;
 import com.pj.xiaoY.mapper.CourseMapper;

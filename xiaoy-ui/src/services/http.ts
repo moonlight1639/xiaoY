@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { message } from 'antd'
 
 /**
  * Axios 实例配置
@@ -39,8 +40,9 @@ http.interceptors.response.use(
   },
   (error) => {
     // 统一错误处理
-    const message = error.response?.data?.message || error.message || '请求失败'
-    console.error('请求错误:', message)
+    const errMsg = error.response?.data?.message || error.message || '请求失败'
+    console.error('请求错误:', errMsg)
+    message.error(errMsg)
     // return Promise.reject(error)
     return '服务器错误'
   }

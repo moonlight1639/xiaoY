@@ -1,4 +1,4 @@
-package com.pj.xiaoY;
+package EmbeddingStoreTest;
 
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;

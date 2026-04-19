@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //    exclude = DataSourceAutoConfiguration.class
 )
 public class XiaoYApplication {
-    public static  void  main(String[] args){
+    public static void  main(String[] args){
         SpringApplication.run(XiaoYApplication.class, args);
     }
 }
