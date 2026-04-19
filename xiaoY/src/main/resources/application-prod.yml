@@ -1,0 +1,68 @@
+app:
+  authentication: true
+  swagger-enabled: false
+
+custom:
+  api:
+    host: 192.168.88.130
+    out-host: 192.168.88.130
+    path-prefix: /api/v1
+
+langchain4j:
+  open-ai:
+    chat-model:
+      base-url: https://api.deepseek.com
+      api-key: ${DEEP_SEEK_API_KEY}
+      model-name: deepseek-chat
+      log-requests: false
+      log-responses: false
+  community:
+    dashscope:
+      chat-model:
+        api-key: ${DASH_SCOPE_API_KEY}
+        model-name: qwen-max
+      streaming-chat-model:
+        api-key: ${DASH_SCOPE_API_KEY}
+        model-name: qwen-plus-latest
+      embedding-model:
+        api-key: ${DASH_SCOPE_API_KEY}
+        model-name: text-embedding-v4
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://${custom.api.host}:27017/xiaoY_chat_memory_db
+    redis:
+      host: ${custom.api.host}
+      port: 6379
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${custom.api.host}:3306/xiaoY?useUnicode=true&characterEncoding=UTF-8&useSSL=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 1234
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 200MB
+      enabled: true
+  tomcat:
+    max-swallow-size: -1
+
+logging:
+  level:
+    com.pj.xiaoY: info
+  pattern:
+    dateformat: mm:ss.SSS
+
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+
+minio:
+  url: http://192.168.88.130:9001
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket-name: my-bucket
+  file-prefix: files/
+  expire-seconds: 604800

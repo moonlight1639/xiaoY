@@ -38,6 +38,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserInfoMapper userInfoMapper;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private GlobalConfigConst globalConfigConst;
 
     @Override
     public Result register(User user){
@@ -81,7 +83,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if(userInfo == null){
             return Result.fail("系统内部错误");
         }
-        if(GlobalConfigConst.isAuthentication) {
+        if(Boolean.TRUE.equals(globalConfigConst.getAuthentication())) {
             try {
                 String token = RedisKeyPrefixConst.PREFIX_LOGIN_USER_TOKEN + UUID.randomUUID().toString();
                 stringRedisTemplate.opsForValue().set(token, objectMapper.writeValueAsString(userInfo));
