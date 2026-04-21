@@ -59,8 +59,8 @@ function Home() {
           <Link to="/courses">
             <div className="feature-card">
               <div className="feature-icon">📚</div>
-              <h3>讲座查询</h3>
-              <p>一键查询讲座，方便快捷</p>
+              <h3>关于小Y</h3>
+              <p>了解小Y项目，体验AI问答能力</p>
             </div>
           </Link>
           <Link to="/life">

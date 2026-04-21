@@ -23,6 +23,7 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".", // 基础路径
     "paths": {
       "@/*": ["src/*"] // 匹配@/xxx 到 src/xxx

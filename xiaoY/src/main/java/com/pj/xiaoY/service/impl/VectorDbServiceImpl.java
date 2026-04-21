@@ -8,6 +8,7 @@ import com.google.protobuf.Value;
 import com.mongodb.client.result.UpdateResult;
 import com.pj.xiaoY.assistant.XiaoY;
 import com.pj.xiaoY.common.DbConst;
+import com.pj.xiaoY.common.SystemContentRetriever;
 import com.pj.xiaoY.common.exception.GlobalException;
 import com.pj.xiaoY.entity.vectorDb.Namespace;
 import com.pj.xiaoY.entity.vectorDb.vo.BathUpdateRecordsVo;
@@ -53,6 +54,8 @@ public class VectorDbServiceImpl implements VectorDbService {
     private EmbeddingModel embeddingModel;
     @Autowired
     private XiaoY xiaoY;
+    @Autowired
+    private SystemContentRetriever systemContentRetriever;
 
     static Pinecone pc;
     static String index = "xiao-y-index-2";
@@ -176,6 +179,9 @@ public class VectorDbServiceImpl implements VectorDbService {
 
 //        embeddingStoreMap.put(namespace.getName(), embeddingStore);
         System.out.println(namespace.getName() + " " + namespace.getDescription() +" 插入成功");
+        new Thread(()->{
+            systemContentRetriever.generate();
+        }).start();
     }
     @Override
     public void updateNamespace(Namespace namespace){
@@ -191,6 +197,9 @@ public class VectorDbServiceImpl implements VectorDbService {
         if(updateResult.getMatchedCount() != 1){
             throw new GlobalException("更新错误，更新了" + updateResult.getMatchedCount() + "条记录");
         }
+        new Thread(()->{
+            systemContentRetriever.generate();
+        }).start();
     }
     @Override
     public void deleteNamespace(String id) {
@@ -235,6 +244,10 @@ public class VectorDbServiceImpl implements VectorDbService {
 
         // Remove in-memory embedding store reference if present
 //        embeddingStoreMap.remove(namespace.getName());
+        new Thread(()->{
+            systemContentRetriever.generate();
+        }).start();
+
 
     }
 
@@ -278,6 +291,7 @@ public class VectorDbServiceImpl implements VectorDbService {
         // Remove from embedding store if present
 //        EmbeddingStore<TextSegment> store = embeddingStoreMap.get(namespaceName);
     }
+
 
     @Override
     public void insertRecord(VectorRecord vectorRecord) {
@@ -357,6 +371,7 @@ public class VectorDbServiceImpl implements VectorDbService {
             updateNamespace.inc("recordCount", 1);
             mongoTemplate.updateFirst(queryNamespace, updateNamespace, Namespace.class);
         }
+
     }
 
     @Override

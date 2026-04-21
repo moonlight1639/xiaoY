@@ -15,7 +15,7 @@ function Life() {
       }}>
         {[
           { icon: '🍜', title: '食堂信息', desc: '查看各食堂菜单和营业时间' , to: '/canteen'},
-          { icon: '📖', title: '图书馆', desc: '座位预约、开放时间' , to: '/library'},
+          { icon: '🎯', title: '面试模拟问答', desc: 'AI 出题、回答评估与改进建议' , to: '/interview'},
           { icon: '📦', title: '快递服务', desc: '快递点位置和取件' , to: '/express'},
           { icon: '🚌', title: '校车时刻', desc: '校园巴士线路和时间' , to: '/bus'},
         ].map(item => (

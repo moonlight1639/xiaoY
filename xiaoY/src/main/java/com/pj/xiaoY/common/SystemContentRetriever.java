@@ -31,17 +31,19 @@ public class SystemContentRetriever {
     void init(){
         generate();
     }
-    void generate(){
+    public synchronized void generate(){
         Query query = new Query();
         List<Namespace> namespaces = mongoTemplate.find(query, Namespace.class);
         if(namespaces==null || namespaces.isEmpty()){
             return;
         }
-        contentRetrieverMap = new HashMap<String , ContentRetriever>();
-        systemPrompt = "### 规则\n" +
+        String _systemPrompt;
+        Map<String , ContentRetriever> _contentRetrieverMap = new HashMap<>();
+        _contentRetrieverMap = new HashMap<String , ContentRetriever>();
+        _systemPrompt = "### 规则\n" +
                 "1. 可选namespace：{";
         for (Namespace namespace : namespaces) {
-            systemPrompt += namespace.getName() + ",";
+            _systemPrompt += namespace.getName() + ",";
             PineconeEmbeddingStore embeddingStore = PineconeEmbeddingStore.builder()
                     .apiKey(System.getenv("PINECONE_API_KEY"))
                     .index("xiao-y-index-2")//如果指定的索引不存在，将创建一个新的索引
@@ -53,7 +55,7 @@ public class SystemContentRetriever {
                             .build())
                     .build();
 
-            contentRetrieverMap.put(namespace.getName() , EmbeddingStoreContentRetriever
+            _contentRetrieverMap.put(namespace.getName() , EmbeddingStoreContentRetriever
                     .builder()
 // 设置用于生成嵌入向量的嵌入模型
                     .embeddingModel(qwenEmbeddingModel)
@@ -67,14 +69,16 @@ public class SystemContentRetriever {
                     .build());
 
         }
-        systemPrompt = systemPrompt.substring(0, systemPrompt.length() - 1);
-        systemPrompt += "}\n" +
+        _systemPrompt = _systemPrompt.substring(0, _systemPrompt.length() - 1);
+        _systemPrompt += "}\n" +
             "2. 匹配逻辑：\n" ;
 
         for (Namespace namespace : namespaces) {
-            systemPrompt += "   - " + namespace.getName() + ": " + namespace.getDescription() + "\n";
+            _systemPrompt += "   - " + namespace.getName() + ": " + namespace.getDescription() + "\n";
         }
-        systemPrompt += "3. 输出约束：仅返回上述namespace列表中的一个字符串，禁止任何其他字符（包括空格、换行、标点）\n";
+        _systemPrompt += "3. 输出约束：仅返回上述namespace列表中的一个字符串，禁止任何其他字符（包括空格、换行、标点）\n";
+        systemPrompt = _systemPrompt;
+        contentRetrieverMap = _contentRetrieverMap;
     }
 
 

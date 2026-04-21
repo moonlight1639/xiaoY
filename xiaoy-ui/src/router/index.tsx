@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import { UserInfoPage, Home, NotFound, Courses, Life, Reviews, ChatPage , AdminLocations , AdminCourses , AdminDishs , AdminCourseComments} from '../pages'
+import { UserInfoPage, Home, NotFound, Courses, Life, InterviewMock, Reviews, ChatPage , AdminLocations , AdminCourses , AdminDishs , AdminCourseComments} from '../pages'
 import ReviewInfo from '../pages/ReviewInfo'
 import { Layout } from '../components'
 import Canteen from '../pages/Canteen'
@@ -23,6 +23,7 @@ function AppRouter() {
         {/* <Route path="/about" element={<About />} /> */}
         <Route path="/courses" element={<Courses />} />
         <Route path="/life" element={<Life />} />
+        <Route path="/interview" element={<InterviewMock />} />
          <Route path="/reviews" element={<Container />} >
           <Route index element={<Reviews />} /> 
           <Route path="info/:id?" element={<ReviewInfo />} /> 
