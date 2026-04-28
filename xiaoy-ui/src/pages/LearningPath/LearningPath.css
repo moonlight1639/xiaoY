@@ -1,0 +1,424 @@
+.learning-path-page {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.lp-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.lp-header h1 {
+  font-size: 1.75rem;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.lp-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+}
+
+/* 主学习路线卡片 */
+.lp-main-path {
+  margin-bottom: 2rem;
+}
+
+.path-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.path-card.featured {
+  border-left: 4px solid #f89820;
+}
+
+.path-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f89820;
+}
+
+.path-icon {
+  font-size: 2.5rem;
+}
+
+.path-title-wrap h2 {
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin: 0 0 0.25rem 0;
+}
+
+.path-desc {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Java 阶段样式 */
+.java-stages {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.java-stage {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  position: relative;
+}
+
+.stage-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.stage-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #f89820, #e08000);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.stage-title h3 {
+  font-size: 1rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.stage-duration {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-card);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  margin-left: 0.5rem;
+}
+
+.stage-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.stage-items li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.stage-items li:last-child {
+  border-bottom: none;
+}
+
+.item-dot {
+  color: #f89820;
+  font-weight: bold;
+}
+
+.stage-arrow {
+  display: none;
+}
+
+/* 模拟面试入口 */
+.lp-interview {
+  margin-bottom: 2rem;
+}
+
+.interview-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.interview-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: white;
+}
+
+.interview-icon {
+  font-size: 2.5rem;
+}
+
+.interview-info h2 {
+  font-size: 1.25rem;
+  margin: 0 0 0.25rem 0;
+  color: white;
+}
+
+.interview-info p {
+  font-size: 0.9rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.interview-btn {
+  background: white;
+  color: #667eea;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.interview-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.interview-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.feature-item {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0.875rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.feature-item:hover {
+  border-color: #667eea;
+  background: linear-gradient(135deg, var(--color-bg-card), rgba(102, 126, 234, 0.05));
+}
+
+.feature-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* 推荐资源 */
+.lp-resources {
+  margin-bottom: 2rem;
+}
+
+.lp-resources h2 {
+  font-size: 1.25rem;
+  color: var(--color-text);
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+  border-left: 3px solid #1890ff;
+}
+
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.resource-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.resource-card:hover {
+  border-color: #1890ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.resource-card.highlight {
+  border-left: 3px solid #1890ff;
+  background: linear-gradient(135deg, var(--color-bg-card), rgba(24, 144, 255, 0.05));
+}
+
+.resource-icon {
+  font-size: 1.5rem;
+}
+
+.resource-info h3 {
+  font-size: 0.95rem;
+  color: var(--color-text);
+  margin: 0 0 0.25rem 0;
+}
+
+.resource-info p {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* 推荐书籍 */
+.lp-books {
+  margin-bottom: 2rem;
+}
+
+.lp-books h2 {
+  font-size: 1.25rem;
+  color: var(--color-text);
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+  border-left: 3px solid #52c41a;
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.book-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.book-card:hover {
+  border-color: #52c41a;
+}
+
+.book-info h3 {
+  font-size: 0.95rem;
+  color: var(--color-text);
+  margin: 0 0 0.25rem 0;
+}
+
+.book-info p {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.book-level {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.book-level.入门 {
+  background: #e6f7ff;
+  color: #1890ff;
+}
+
+.book-level.进阶 {
+  background: #fff7e6;
+  color: #fa8c16;
+}
+
+.book-level.高级 {
+  background: #fff1f0;
+  color: #f5222d;
+}
+
+/* 学习建议 */
+.lp-tips {
+  margin-bottom: 2rem;
+}
+
+.lp-tips h2 {
+  font-size: 1.25rem;
+  color: var(--color-text);
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+  border-left: 3px solid #722ed1;
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.tip-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.tip-card h3 {
+  font-size: 1rem;
+  color: var(--color-text);
+  margin: 0 0 0.5rem 0;
+}
+
+.tip-card p {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .learning-path-page {
+    padding: 1rem;
+  }
+
+  .java-stages {
+    grid-template-columns: 1fr;
+  }
+
+  .tips-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .resources-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .books-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .path-header {
+    flex-direction: column;
+    text-align: center;
+  }
+}

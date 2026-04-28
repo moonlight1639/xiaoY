@@ -1,11 +1,12 @@
 import { Routes, Route } from 'react-router-dom'
-import { UserInfoPage, Home, NotFound, Courses, Life, InterviewMock, Reviews, ChatPage , AdminLocations , AdminCourses , AdminDishs , AdminCourseComments} from '../pages'
+import { UserInfoPage, Home, NotFound, Courses, Life, InterviewMock, Reviews, ChatPage , AdminLocations , AdminCourses , AdminDishs , AdminCourseComments, LearningPath } from '../pages'
 import ReviewInfo from '../pages/ReviewInfo'
 import { Layout } from '../components'
 import Canteen from '../pages/Canteen'
 import Admin from '../pages/Admin/Admin'
 import Container from '../components/Container'
 import SchoolBus from '../pages/SchoolBus'
+import Hospital from '../pages/Hospital'
 import AdminUsers from '../pages/Admin/AdminUsers'
 import AiChat from '@/pages/AiTest/AiChat'
 import AdminVectorDB from '@/pages/Admin/AdminVectorDB'
@@ -30,6 +31,8 @@ function AppRouter() {
         </Route> 
         <Route path="/canteen" element={<Canteen />} />
         <Route path="/bus" element={<SchoolBus />} />
+        <Route path="/learning" element={<LearningPath />} />
+        <Route path="/hospital" element={<Hospital />} />
         {/* <Route path="/reviews" element={<Reviews />} /> */}
         <Route path="/userinfo" element={<UserInfoPage key={`userinfo${token}`} />} />
         <Route path="/aitest" element={<AiChat />} />
